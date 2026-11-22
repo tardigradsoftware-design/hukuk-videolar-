@@ -29,9 +29,9 @@ const AD = `${ID}_${KISA ? 'short' : 'uzun'}`;
 const ham = path.join(KOK, 'veri', 'ses_ham', `${AD}.mp3`);
 fs.mkdirSync(path.join(KOK, 'veri', 'ses'), { recursive: true });
 const ses = path.join(KOK, 'veri', 'ses', `${AD}.wav`);
-// hız + ses seviyesi (kısa: 1.20x; uzun: hook 1.20x, sonrası 1.00x)
+// hız + ses seviyesi (kısa: 1.40x; uzun: hook 1.40x, sonrası 1.25x)
 const info = JSON.parse(execFileSync('python3', [path.join(__dirname, 'ses_hazirla.py'), ham, metin, TUR, ses]).toString());
-console.error(`ses: ${info.ham_sure}s → ${info.sure}s` + (info.kesim ? ` (hook ${info.hook_kelime} kelime, ${info.kesim}s'de 1.00x'e geçiş)` : ' (1.20x)'));
+console.error(`ses: ${info.ham_sure}s → ${info.sure}s` + (info.kesim ? ` (hook ${info.hook_kelime} kelime, ${info.kesim}s'de 1.25x'e geçiş)` : ' (1.40x)'));
 const plan = require(path.join(KOK, 'planlar', `${ID}_${TUR}.js`));
 
 // --- dudak senkronu + kelime zamanları

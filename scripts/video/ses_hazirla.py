@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Ham sesi videoya hazırlar: hız + ses seviyesi.
 
-kisa: tamamı 1.20x hızda.
-uzun: hook (giriş) kısmı 1.20x, "Birinci adım" ile başlayan ana içerik 1.00x.
+kisa: tamamı 1.40x hızda.
+uzun: hook (giriş) kısmı 1.40x, "Birinci adım" ile başlayan ana içerik 1.25x.
       Hook bitişi metinden bulunur ve sesteki en yakın duraklamaya oturtulur.
 Ses -14 LUFS'a normalize edilir (YouTube standardı). Ton değişmez (atempo).
 
@@ -11,7 +11,8 @@ Kullanım: python3 ses_hazirla.py ham.mp3 "metin" kisa|uzun cikti.wav  → JSON 
 import json, re, subprocess, sys
 import numpy as np
 
-HIZ = 1.20
+HIZ = 1.40        # kısa: tamamı; uzun: hook
+HIZ_ANA = 1.25    # uzun: hook sonrası
 SR = 48000
 V = set('aeıioöuüâîûAEIİOÖUÜÂÎÛ')
 
@@ -66,7 +67,7 @@ def main():
         yakin = [a for a in adaylar if a[1] < 3.0]
         kesim = min(yakin, key=lambda a: a[1])[0] if yakin else tahmin
         f = (f'[0:a]atrim=0:{kesim:.3f},asetpts=PTS-STARTPTS,atempo={HIZ}[a];'
-             f'[0:a]atrim={kesim:.3f},asetpts=PTS-STARTPTS[b];[a][b]concat=n=2:v=0:a=1,{norm}[o]')
+             f'[0:a]atrim={kesim:.3f},asetpts=PTS-STARTPTS,atempo={HIZ_ANA}[b];[a][b]concat=n=2:v=0:a=1,{norm}[o]')
         subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', ham, '-filter_complex', f, '-map', '[o]', '-ar', str(SR), '-ac', '1', cikti], check=True)
         info.update(hook_kelime=k, hook_metin=' '.join(words[:k])[-80:], kesim_ham=round(kesim, 3),
                     kesim=round(kesim / HIZ, 3), tahmin_ham=round(tahmin, 3))
