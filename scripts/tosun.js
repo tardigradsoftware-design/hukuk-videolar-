@@ -60,40 +60,41 @@ function arm(side, cx, cy, ex, ey) {
   </g>`;
 }
 
-// ---------- yüz ----------
-const EX = [170, 230], EY = 118;
+// ---------- yüz (sade, düz, belirgin) ----------
+const EX = [168, 232], EY = 120;
 function brows(kind) {
-  const t = { normal: [0, 0, 0], up: [-8, -8, 0], worry: [-6, -6, 1], angry: [2, 2, -1], think: [-10, 0, 0], happy: [-4, -4, 0] }[kind];
+  const t = { normal: [0, 0, 0], up: [-7, -7, 0], worry: [-5, -5, 1], angry: [3, 3, -1], think: [-9, 0, 0], happy: [-4, -4, 0] }[kind];
   const [dl, dr, tilt] = t;
-  const b = (x, d, s) => `<path d="M${x - 13} ${98 + d + tilt * 6 * s} Q${x} ${92 + d} ${x + 13} ${98 + d - tilt * 6 * s}" fill="none" stroke="${O}" stroke-width="6.5" stroke-linecap="round"/>`;
+  const arch = tilt === 0 ? 5 : 0;
+  const b = (x, d, s) => `<path d="M${x - 14} ${96 + d + tilt * 7 * s} Q${x} ${96 + d - arch} ${x + 14} ${96 + d - tilt * 7 * s}" fill="none" stroke="${O}" stroke-width="8" stroke-linecap="round"/>`;
   return `<g id="brows">${b(EX[0], dl, -1)}${b(EX[1], dr, 1)}</g>`;
 }
 function eyes(kind) {
-  const open = (x, dx = 0, dy = 0) => `<ellipse cx="${x + dx}" cy="${EY + dy}" rx="8.5" ry="11.5" fill="${O}"/><circle cx="${x + dx + 3}" cy="${EY + dy - 4.5}" r="3.6" fill="#fff"/><circle cx="${x + dx - 3}" cy="${EY + dy + 5}" r="1.6" fill="#fff"/>`;
-  const arc = x => `<path d="M${x - 11} ${EY + 3} Q${x} ${EY - 11} ${x + 11} ${EY + 3}" fill="none" stroke="${O}" stroke-width="6.5" stroke-linecap="round"/>`;
-  const wide = x => `<circle cx="${x}" cy="${EY}" r="14" fill="#fff" ${st(5)}/><circle cx="${x}" cy="${EY + 1}" r="6.5" fill="${O}"/><circle cx="${x + 2}" cy="${EY - 2}" r="2" fill="#fff"/>`;
+  const dot = (x, dx = 0, dy = 0) => `<ellipse cx="${x + dx}" cy="${EY + dy}" rx="10" ry="13" fill="${O}"/>`;
+  const arc = x => `<path d="M${x - 12} ${EY + 4} Q${x} ${EY - 12} ${x + 12} ${EY + 4}" fill="none" stroke="${O}" stroke-width="8" stroke-linecap="round"/>`;
+  const wide = x => `<circle cx="${x}" cy="${EY}" r="15" fill="#fff" ${st(6)}/><circle cx="${x}" cy="${EY + 1}" r="7" fill="${O}"/>`;
   const g = {
-    normal: open(EX[0]) + open(EX[1]),
+    normal: dot(EX[0]) + dot(EX[1]),
     happy: arc(EX[0]) + arc(EX[1]),
     wide: wide(EX[0]) + wide(EX[1]),
-    wink: open(EX[0]) + arc(EX[1]),
-    up: open(EX[0], 3, -3) + open(EX[1], 3, -3),
-    side: open(EX[0], 4) + open(EX[1], 4),
+    wink: dot(EX[0]) + arc(EX[1]),
+    up: dot(EX[0], 2, -3) + dot(EX[1], 2, -3),
+    side: dot(EX[0], 4) + dot(EX[1], 4),
   }[kind];
   return `<g id="eyes">${g}</g>`;
 }
 function mouth(kind) {
   const m = {
-    smile: `<path d="M188 146 Q200 157 212 146" fill="none" stroke="${O}" stroke-width="6" stroke-linecap="round"/>`,
-    big: `<path d="M184 143 Q200 168 216 143 Z" fill="${C.mouth}" ${st(5)}/><path d="M192 154 Q200 150 208 154 Q204 161 200 161 Q196 161 192 154 Z" fill="${C.tongue}"/>`,
-    talk: `<ellipse cx="200" cy="150" rx="10" ry="8" fill="${C.mouth}" ${st(5)}/><path d="M194 153 Q200 150 206 153" stroke="${C.tongue}" stroke-width="4" stroke-linecap="round"/>`,
-    o: `<ellipse cx="200" cy="152" rx="7" ry="9" fill="${C.mouth}" ${st(5)}/>`,
-    flat: `<path d="M190 150 H210" stroke="${O}" stroke-width="6" stroke-linecap="round"/>`,
-    smirk: `<path d="M188 150 Q202 154 213 143" fill="none" stroke="${O}" stroke-width="6" stroke-linecap="round"/>`,
+    smile: `<path d="M186 147 Q200 160 214 147" fill="none" stroke="${O}" stroke-width="7" stroke-linecap="round"/>`,
+    big: `<path d="M184 144 Q200 170 216 144 Z" fill="${O}" ${st(6)}/>`,
+    talk: `<ellipse cx="200" cy="152" rx="10" ry="8" fill="${O}"/>`,
+    o: `<ellipse cx="200" cy="153" rx="7" ry="9" fill="${O}"/>`,
+    flat: `<path d="M189 151 H211" stroke="${O}" stroke-width="7" stroke-linecap="round"/>`,
+    smirk: `<path d="M187 151 Q202 155 214 144" fill="none" stroke="${O}" stroke-width="7" stroke-linecap="round"/>`,
   }[kind];
   return `<g id="mouth">${m}</g>`;
 }
-const cheeks = (o = .75) => `<g id="cheeks" opacity="${o}"><ellipse cx="148" cy="138" rx="11" ry="6.5" fill="${C.cheek}"/><ellipse cx="252" cy="138" rx="11" ry="6.5" fill="${C.cheek}"/></g>`;
+const cheeks = (o = .6) => `<g id="cheeks" opacity="${o}"><ellipse cx="144" cy="142" rx="11" ry="6" fill="${C.cheek}"/><ellipse cx="256" cy="142" rx="11" ry="6" fill="${C.cheek}"/></g>`;
 
 // ---------- aksesuarlar ----------
 const wave = (x, y) => `<g stroke="${O}" stroke-width="5" stroke-linecap="round" fill="none"><path d="M${x + 22} ${y - 26} q8 8 6 18"/><path d="M${x + 32} ${y - 36} q12 12 9 28"/></g>`;
@@ -137,7 +138,7 @@ function render(p) {
   const armSvg = p.arms.map(a => arm(...a));
   const back = armSvg.filter((_, i) => (p.back || []).includes(p.arms[i][0]));
   const front = armSvg.filter((_, i) => !(p.back || []).includes(p.arms[i][0]));
-  const face = brows(p.brows) + eyes(p.eyes) + mouth(p.mouth) + cheeks(p.cheeks ?? .75);
+  const face = brows(p.brows) + eyes(p.eyes) + mouth(p.mouth) + cheeks(p.cheeks ?? .6);
   // düşünme pozunda el yüzün önünde (çenede) dursun
   const layers = p.back
     ? [shadow(), legs(p.legs), body(), head(), face, ...back, ...front, p.extra]
