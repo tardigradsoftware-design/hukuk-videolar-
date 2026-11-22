@@ -86,7 +86,7 @@ const L = KISA
 const html = sayfa({ W, H, L, tl });
 
 (async () => {
-  const outDir = path.join(KOK, 'cikti', TUR); fs.mkdirSync(outDir, { recursive: true });
+  const outDir = path.join(KOK, 'videolar', TUR); fs.mkdirSync(outDir, { recursive: true });
   const ad = `${ID} - ${baslik.replace(/[\/\\:*?"<>|]/g, '').trim()}.mp4`;
   const outPath = path.join(outDir, ad);
   const tmp = path.join(outDir, `.${ID}.html`); fs.writeFileSync(tmp, html);
@@ -96,7 +96,7 @@ const html = sayfa({ W, H, L, tl });
   const FPS = 30, n = Math.ceil(tl.duration * FPS);
   const ff = spawn('ffmpeg', ['-y', '-v', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-', '-i', ses,
     '-filter_complex', `[1:a]apad=whole_dur=${tl.duration}[a]`, '-map', '0:v', '-map', '[a]',
-    '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '19', '-preset', 'medium', '-c:a', 'aac', '-b:a', '192k', '-t', String(tl.duration), '-movflags', '+faststart', outPath], { stdio: ['pipe', 'inherit', 'inherit'] });
+    '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '24', '-preset', 'slow', '-tune', 'animation', '-c:a', 'aac', '-b:a', '192k', '-t', String(tl.duration), '-movflags', '+faststart', outPath], { stdio: ['pipe', 'inherit', 'inherit'] });
   for (let i = 0; i < n; i++) {
     await p.evaluate(t => frame(t), i / FPS);
     const buf = await p.screenshot({ type: 'jpeg', quality: 93 });
