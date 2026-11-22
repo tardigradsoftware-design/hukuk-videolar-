@@ -84,7 +84,7 @@ def fx_bildirim():
 
 FX = {'pop': fx_pop, 'tik': fx_tik, 'whoosh': fx_whoosh, 'swish': fx_swish, 'key': fx_key, 'click': fx_click,
       'thud': fx_thud, 'ding': fx_ding, 'boing': fx_boing, 'bildirim': fx_bildirim}
-SEV = {'pop': .22, 'tik': .14, 'whoosh': .16, 'swish': .10, 'key': .045, 'click': .18, 'thud': .32, 'ding': .16, 'boing': .14, 'bildirim': .2}
+SEV = {'pop': .42, 'tik': .28, 'whoosh': .32, 'swish': .22, 'key': .13, 'click': .36, 'thud': .55, 'ding': .32, 'boing': .26, 'bildirim': .4}
 
 
 # ---------------- MÜZİK (telifsiz, sentez) ----------------
@@ -155,13 +155,13 @@ def main():
     konusma = vr > np.percentile(vr, 95) * .12
     vref = np.percentile(vr[konusma], 50) if konusma.any() else .05
     # konuşma varken efektleri kıs (yumuşak geçişli)
-    g = np.where(konusma, .45, 1.0)
+    g = np.where(konusma, .75, 1.0)
     g = np.convolve(g, np.ones(5) / 5, mode='same')
     gs = np.repeat(g, W); gs = np.pad(gs, (0, n - len(gs)), constant_values=1.0)
     sfx *= gs
     # sınır: konuşma sırasında efekt ≤ konuşma -12 dB, sessizlikte ≤ ortalama konuşma -8 dB
     sr_ = rms(sfx)
-    lim = np.where(konusma, vr * 10 ** (-12 / 20), vref * 10 ** (-8 / 20))
+    lim = np.where(konusma, np.maximum(vr, vref * .6) * 10 ** (-6 / 20), vref * 10 ** (-3 / 20))
     asim = sr_ > lim
     if asim.any():
         f = np.ones_like(sr_); f[asim] = lim[asim] / sr_[asim]
@@ -170,7 +170,8 @@ def main():
         sfx *= fs
     sr2 = rms(sfx)
     oran = 20 * np.log10(np.max(sr2[konusma] / np.maximum(vr[konusma], 1e-6))) if konusma.any() else -99
-    print(f'kulak: düzeltilen dilim={int(asim.sum())}, konuşma sırasında en yüksek efekt/konuşma oranı={oran:.1f} dB', file=sys.stderr)
+    ort = 20 * np.log10(np.max(sr2[konusma]) / vref) if konusma.any() else -99
+    print(f'kulak: düzeltilen dilim={int(asim.sum())}, konuşma sırasında en yüksek efekt: ortalama konuşmaya göre {ort:.1f} dB (anlık en kötü {oran:.1f} dB)', file=sys.stderr)
     mix += sfx
     if '--muzik' in sys.argv:  # fon müziği varsayılan olarak KAPALI
         m = muzik(dur, 112 if tur == 'kisa' else 92)
