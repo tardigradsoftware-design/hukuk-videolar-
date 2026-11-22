@@ -13,7 +13,7 @@ module.exports = {
         { tip: 'edevlet', k: 0, x: 420, y: 520, satirlar: [{ t: 'Şahıs ödemeleri', sag: 'sorgulanıyor…' }, { t: 'Adına bekleyen ödeme', rozet: 'VAR ✓' }], alt: [0, 8], rozetK: [9] },
         { tip: 'damga', k: 15, x: 420, y: 540, yazi: '✗ ZAMANAŞIMI', rot: -8 },
         { tip: 'rozet', k: 20, x: 900, y: 420, e: '📅', yazi: 'YILDA EN AZ 1 KEZ', renk: 'y', rot: -3 },
-        { tip: 'rozet', k: 40, x: 900, y: 590, e: '✅', yazi: '5 NET ADIM', renk: 'k', rot: 2 },
+        { tip: 'rozet', k: 40, x: 900, y: 590, e: '✅', yazi: '5 NET ADIM', renk: 'k', rot: 2, firlat: true },
       ],
     },
     { // 1. ADIM — giriş + arama + ödeme tablosu
@@ -124,7 +124,7 @@ module.exports = {
       ogeler: [
         { tip: 'liste', k: 256, x: 560, y: 480, ogeler: [{ e: '📮', t: "PTT'ye aktarıldı → kimlikle PTT şubesi" }, { e: '📝', t: "Kuruma döndü → SGK'ya dilekçe" }], alt: [256, 271] },
         { tip: 'ikon', k: 265, x: 380, y: 720, e: '🪪', yazi: 'Nüfus cüzdanı' },
-        { tip: 'ikon', k: 277, x: 740, y: 720, e: '📝', yazi: 'Dilekçe' },
+        { tip: 'nesne', k: 276, x: 760, y: 700, ad: 'belge', yazi: 'DİLEKÇE', rot: 6, firlat: true },
         { tip: 'rozet', k: 279, x: 560, y: 860, e: '✅', yazi: 'YENİDEN HESABINA', renk: 'g', rot: -2 },
       ],
     },
@@ -133,7 +133,7 @@ module.exports = {
       mimik: [[282, 'mutlu', 'selam']],
       zipla: [287],
       ogeler: [
-        { tip: 'soru', k: 282, x: 560, y: 450, e: '💬', yazi: 'Sende unutulmuş ödeme çıktı mı? Kaç TL?', ust: 'YORUMLARA YAZ 👇' },
+        { tip: 'soru', k: 282, firlat: true, x: 560, y: 450, e: '💬', yazi: 'Sende unutulmuş ödeme çıktı mı? Kaç TL?', ust: 'YORUMLARA YAZ 👇' },
         { tip: 'rozet', k: 287, x: 560, y: 650, e: '🔔', yazi: 'ABONE OL', renk: 'k', rot: -3 },
       ],
     },

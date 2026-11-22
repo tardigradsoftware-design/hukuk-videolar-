@@ -40,10 +40,12 @@
       <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="6" fill="${C.paper}" ${ST(5)}/>
       <path d="M${x + 22} ${y + 20} H${x + w - 40} M${x + 22} ${y + 36} H${x + w - 70}" stroke="${C.paperLine}" stroke-width="6" stroke-linecap="round"/></g>`;
   }
-  function body() {
+  function body(flap = 0) {
+    const f = R(flap * 30);
     return `
     <path d="${BACK}" fill="${C.redBack}" ${ST(7)}/>
-    ${paper(150, 134, 310, 220, -4)}${paper(170, 146, 300, 220, 3)}${paper(160, 158, 312, 220, -1)}
+    <g transform="translate(0 ${-f})">${paper(150, 134, 310, 220, -4 - flap * 6)}</g><g transform="translate(0 ${R(-f * .7)})">${paper(170, 146, 300, 220, 3 + flap * 5)}</g>${paper(160, 158, 312, 220, -1)}
+    ${flap > .05 ? `<g opacity="${R(flap)}" stroke="${C.gold}" stroke-width="6" stroke-linecap="round"><path d="M300 ${120 - f} V${92 - f * 1.6} M250 ${128 - f} L232 ${104 - f * 1.4} M350 ${128 - f} L368 ${104 - f * 1.4}"/></g>` : ''}
     <path d="${FRONT}" fill="${C.red}" ${ST(7)}/>
     <path d="M128 404 Q128 422 146 422 H454 Q472 422 472 404 V396 H128 Z" fill="${C.redDark}"/>
     <path d="M136 182 V176 Q136 173 140 173 H240 M282 202 H462" stroke="${C.redHi}" stroke-width="5" stroke-linecap="round" fill="none"/>
@@ -193,7 +195,7 @@
     return `<ellipse cx="300" cy="556" rx="${R(130 - jump * .5)}" ry="12" fill="#000" opacity="${R(.13 - jump * .0006)}"/>
     ${leg('l', hips.l, fL, lift[0])}${leg('r', hips.r, fR, lift[1])}
     <g transform="translate(0 ${R(40 + by - jump)}) rotate(${R(lean)} 300 430) translate(300 430) scale(${R(1 + sq * .5)} ${R(1 - sq)}) translate(-300 -430)">
-      ${body()}${cubbe(s.aks)}
+      ${body(s.flap || 0)}${cubbe(s.aks)}
       <g id="face">${face}</g>
       ${arm('l', s.armL, s.aks)}${arm('r', s.armR, s.aks)}
     </g>
@@ -330,6 +332,12 @@
         else if (d < .62) { const k = (d - .12) / .5; s.jump = Math.sin(k * Math.PI) * 70; s.squash -= Math.sin(k * Math.PI) * .04; }
         else s.squash += Math.sin((d - .62) / .13 * Math.PI) * .07;
       }
+    }
+    // ---- dosyadan nesne fırlatma: kâğıtlar kalkar, gövde hafif esner
+    s.flap = 0;
+    for (const f of tl.firlat || []) {
+      const d = t - f + .15;
+      if (d >= 0 && d < .7) { const k = Math.sin(d / .7 * Math.PI); s.flap = Math.max(s.flap, k); s.squash -= k * .035; }
     }
     s.t = t; s.aks = tl.aks || null;
     return s;

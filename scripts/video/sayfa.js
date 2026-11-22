@@ -105,7 +105,15 @@ function ekranHTML(id, e) {
   return `<div class="sc" data-sc="${id}">${h}</div>`;
 }
 
+// Dosyadan çıkan nesneler (SVG)
+const NESNE = {
+  tokmak: `<svg width="190" height="150" viewBox="0 0 190 150"><g transform="rotate(-28 95 75)"><rect x="86" y="58" width="18" height="84" rx="8" fill="#A8693E" stroke="#151515" stroke-width="6"/><rect x="40" y="18" width="110" height="52" rx="14" fill="#A8693E" stroke="#151515" stroke-width="6"/><rect x="30" y="12" width="20" height="64" rx="8" fill="#F6B92B" stroke="#151515" stroke-width="6"/><rect x="140" y="12" width="20" height="64" rx="8" fill="#F6B92B" stroke="#151515" stroke-width="6"/><path d="M60 28 H120" stroke="#C98A55" stroke-width="6" stroke-linecap="round"/></g></svg>`,
+  belge: `<svg width="150" height="180" viewBox="0 0 150 180"><path d="M18 8 H102 L134 40 V170 H18 Z" fill="#fff" stroke="#151515" stroke-width="6" stroke-linejoin="round"/><path d="M102 8 V40 H134" fill="#eee" stroke="#151515" stroke-width="6" stroke-linejoin="round"/><path d="M36 60 H114 M36 82 H114 M36 104 H96" stroke="#cfcfcf" stroke-width="7" stroke-linecap="round"/><circle cx="104" cy="138" r="20" fill="#E8402F" stroke="#151515" stroke-width="5"/><path d="M95 138 l6 7 l12 -14" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  kitap: `<svg width="150" height="180" viewBox="0 0 150 180"><rect x="26" y="10" width="110" height="160" rx="10" fill="#fff4da" stroke="#151515" stroke-width="6"/><rect x="14" y="4" width="110" height="160" rx="10" fill="#C93224" stroke="#151515" stroke-width="6"/><path d="M34 6 V162" stroke="#8d1d14" stroke-width="8"/><rect x="46" y="36" width="64" height="26" rx="5" fill="#F6B92B" stroke="#151515" stroke-width="4"/><text x="78" y="55" text-anchor="middle" font-family="Inter Display,Arial" font-weight="900" font-size="15" fill="#151515">KANUN</text><path d="M78 90 V128 M64 128 H92 M58 98 H98 M58 98 L50 114 H66 Z M98 98 L90 114 H106 Z" stroke="#F6B92B" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+};
+
 const TIPLER = {
+  nesne: p => `<div class="ik">${NESNE[p.ad] || `<span class="em" style="font-size:120px">${p.ad}</span>`}${p.yazi ? `<b>${esc(p.yazi)}</b>` : ''}</div>`,
   portal: p => `<div class="pt" style="width:${p.w}px;height:${p.h}px"><div class="pt-bar"><i></i><i></i><i></i><div class="pt-url"><span class="em">🔒</span><span data-url></span></div></div>
     <div class="pt-hd"><span class="lg">e</span>e-Devlet Kapısı<span class="us">${esc(p.kullanici || '')}</span></div>
     <div class="pt-body">${Object.entries(p.ekranlar).map(([id, e]) => ekranHTML(id, e)).join('')}</div>
@@ -131,7 +139,7 @@ function sayfa({ W, H, L, tl }) {
 <script>${dosya}</script>
 <script>
 const TL = ${JSON.stringify(tl)};
-const MS = ${L.mascot[2]}, OS = ${L.ogeScale || 1};
+const MS = ${L.mascot[2]}, OS = ${L.ogeScale || 1}, MX = ${L.mascot[0]}, MY = ${L.mascot[1]};
 const backOut = k => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(k - 1, 3) + c1 * Math.pow(k - 1, 2); };
 const cl = (v,a,b) => Math.max(a, Math.min(b, v));
 document.querySelectorAll('.o').forEach((el,i)=>{ const r = el.getBoundingClientRect(); el.dataset.w = r.width; el.dataset.h = r.height; });
@@ -183,9 +191,16 @@ function frame(t){
     let s = 0, op = 0, rot = o.rot || 0;
     if (lt >= 0) { const k = cl(lt/.38,0,1); s = .55 + .45*backOut(k); op = cl(lt/.12,0,1); }
     if (o.tip === 'damga' && lt >= 0) { const k = cl(lt/.22,0,1); s = 1.9 - .9*k*k; op = cl(lt/.08,0,1); }
+    let dx = 0, dy = 0;
+    if (o.firlat && lt >= 0 && lt < .6) {
+      // dosyanın içinden kavis çizerek fırla, dönerek yerine otur
+      const k = easeIO(cl(lt / .6, 0, 1)), sxp = MX + MS * .5, syp = MY + MS * (230 / 600);
+      const px = sxp + (o.x - sxp) * k, py = syp + (o.y - syp) * k - Math.sin(k * Math.PI) * 260;
+      dx = px - o.x; dy = py - o.y; s = .2 + .85 * k - .05 * Math.sin(k * Math.PI); op = cl(lt / .06, 0, 1); rot = (o.rot || 0) + (1 - k) * 340;
+    } else if (o.firlat && lt >= .6) { const k = cl((lt - .6) / .25, 0, 1); s = 1 + .08 * Math.sin(k * Math.PI); }
     if (out >= 0) { const k = cl(out/.25,0,1); s *= 1 - .25*k; op *= 1-k; }
     el.style.opacity = op;
-    el.style.transform = 'translate('+(-w/2)+'px,'+(-h/2)+'px) scale('+(s*OS)+') rotate('+rot+'deg)';
+    el.style.transform = 'translate('+(dx - w/2)+'px,'+(dy - h/2)+'px) scale('+(s*OS)+') rotate('+rot+'deg)';
     if (op <= 0) return;
     // alt parçalar (liste satırları, rozetler) kendi kelimelerinde belirir
     el.querySelectorAll('[data-sub]').forEach(sub => { const st = (o.altT||[])[+sub.dataset.sub]; const k = st==null ? 1 : cl((t-st)/.3,0,1); sub.style.opacity = k; sub.style.transform = 'translateX('+((1-backOut(k))*30)+'px)'; });

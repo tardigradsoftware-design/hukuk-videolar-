@@ -78,12 +78,15 @@ const son = plan.son || {};
 tl.ifade.push({ t: d.duration - .2, ad: son.ifade || 'mutlu' }); tl.jest.push({ t: d.duration - .2, ad: son.jest || 'selam' });
 tl.duration = d.duration + (son.uzat ?? 1.2);
 tl.adimSayisi = plan.adimSayisi || 0;
+tl.aks = plan.aks || { cubbe: true, gozluk: true, rozet: true };   // varsayılan kostüm: avukat
+tl.firlat = tl.ogeler.filter(o => o.firlat).map(o => o.t0);
 
 // --- ses olayları (efektler) — sayfadaki animasyon zamanlarıyla birebir
 const olay = [];
 const ev = (t, tip, v) => olay.push({ t: +t.toFixed(3), tip, ...(v ? { v } : {}) });
 tl.basliklar.forEach((b, i) => { if (i > 0) ev(b.t, 'whoosh'); });
 tl.ogeler.forEach(o => {
+  if (o.firlat) { ev(o.t0 - .12, 'kagit'); ev(o.t0, 'whoosh', .8); ev(o.t0 + .58, 'pop'); return; }
   if (o.tip === 'damga') ev(o.t0 + .18, 'thud');
   else if (o.tip === 'portal') ev(o.t0, 'swish');
   else if (o.tip === 'soru') ev(o.t0, 'bildirim');

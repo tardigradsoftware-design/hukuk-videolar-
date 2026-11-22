@@ -82,9 +82,15 @@ def fx_bildirim():
     out = np.zeros(int(.6 * SR)); out[:len(a)] += a; out[int(.12 * SR):int(.12 * SR) + len(b)] += b
     return out
 
-FX = {'pop': fx_pop, 'tik': fx_tik, 'whoosh': fx_whoosh, 'swish': fx_swish, 'key': fx_key, 'click': fx_click,
+def fx_kagit():
+    d = .32; nn = bp(noise(d), 2500, 9000)
+    t = np.arange(len(nn)) / SR
+    flutter = (0.55 + 0.45 * np.sign(np.sin(2 * np.pi * 38 * t + rng.uniform(0, 6)))) * np.sin(np.linspace(0, np.pi, len(nn)))
+    return nn * flutter * .9
+
+FX = {'kagit': fx_kagit, 'pop': fx_pop, 'tik': fx_tik, 'whoosh': fx_whoosh, 'swish': fx_swish, 'key': fx_key, 'click': fx_click,
       'thud': fx_thud, 'ding': fx_ding, 'boing': fx_boing, 'bildirim': fx_bildirim}
-SEV = {'pop': .42, 'tik': .28, 'whoosh': .32, 'swish': .22, 'key': .13, 'click': .36, 'thud': .55, 'ding': .32, 'boing': .26, 'bildirim': .4}
+SEV = {'kagit': .30, 'pop': .42, 'tik': .28, 'whoosh': .32, 'swish': .22, 'key': .13, 'click': .36, 'thud': .55, 'ding': .32, 'boing': .26, 'bildirim': .4}
 
 
 # ---------------- MÜZİK (telifsiz, sentez) ----------------
