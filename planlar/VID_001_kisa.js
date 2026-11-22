@@ -19,8 +19,8 @@ module.exports = {
       ogeler: [
         { tip: 'liste', k: 14, x: 360, y: 470, ogeler: [{ e: '🏥', t: 'Sağlık iadeleri' }, { e: '🛡️', t: 'Eski sigorta alacakları' }, { e: '🐷', t: 'Otomatik BES kesintisi' }], alt: [14, 16, 20] },
         { tip: 'damga', k: 26, x: 360, y: 480, yazi: '✗ ZAMANAŞIMI', rot: -9 },
-        { tip: 'ok', k: 28, x: 240, y: 710 },
-        { tip: 'ikon', k: 28, x: 430, y: 710, e: '🏛️', yazi: 'DEVLET' },
+        { tip: 'ok', k: 28, x: 240, y: 680 },
+        { tip: 'ikon', k: 28, x: 430, y: 680, e: '🏛️', yazi: 'DEVLET' },
       ],
     },
     {

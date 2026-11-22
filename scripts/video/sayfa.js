@@ -137,16 +137,40 @@ const TIPLER = {
   arama: p => `<div class="kart ar"><span class="em">🔍</span><span class="tx" data-yaz="${esc(p.yazi)}"></span><span class="imlec" style="display:inline-block;width:3px;height:26px;background:#E8402F"></span></div>`,
 };
 
+const FONT_DIR = path.join(__dirname, '..', '..', 'assets', 'fonts');
+const STIL_YAPAYTU = () => `
+@font-face{font-family:'Unbounded';font-weight:900;src:url('file://${FONT_DIR}/unbounded-latin-900-normal.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Unbounded';font-weight:900;src:url('file://${FONT_DIR}/unbounded-latin-ext-900-normal.woff2') format('woff2');unicode-range:U+0100-02AF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+html,body{background:#FFFFFF}
+#bg,#bg.izgara,#bg.cizgi,#bg.leke{background:radial-gradient(#ededed 1.5px,transparent 1.5px) 0 0/28px 28px}
+.kart,.pt,.ad .no{border:7px solid #0E0E10!important;border-radius:30px!important;box-shadow:14px 14px 0 #0E0E10!important}
+.pl{border:6px solid #0E0E10;border-radius:22px;box-shadow:10px 10px 0 #0E0E10}
+#title,#sub span,.pl,.ik b,.ad b,.dm,.sr .tx,.ls .it,.ed .hd{font-family:'Unbounded',sans-serif!important;font-weight:900;letter-spacing:-.035em}
+#title{color:#0E0E10;font-size:calc(var(--ts)*.86)}#title .alt{color:#0E0E10}
+#sub span{font-size:calc(var(--ss)*.82)}
+#sub .on{background:#FF4D2E;box-shadow:5px 5px 0 #0E0E10}#sub .off{color:#8B8E95;background:#fff}
+#sub.cizgi .on{border-bottom-color:#FF4D2E}
+.pl.k{background:#0E0E10;color:#fff}.pl.y{background:#FCC033;color:#0E0E10}.pl.g{background:#0E0E10;color:#fff}
+.dm{border-color:#FF4D2E;color:#FF4D2E;font-size:40px;padding:8px 20px}
+.ik b{font-size:18px}.pl{font-size:24px}.ls .it{font-size:24px}.sr .tx{font-size:22px}.sr .tx small{font-size:15px}
+.ad .no{background:#0E0E10}.ed .hd{background:#0E0E10}.ed .muted{color:#8B8E95}.rz{background:#FCC033;color:#0E0E10}
+.yr .av{background:#0E0E10}.yr .gon{background:#FF4D2E}.sr .tx small{color:#8B8E95}
+#adimlar i{border:5px solid #0E0E10;box-shadow:6px 6px 0 #0E0E10;font-family:'Unbounded'}#adimlar i.on{background:#FF4D2E}#adimlar i.ok{background:#0E0E10}
+`;
+
 function sayfa({ W, H, L, tl }) {
   const dosya = fs.readFileSync(path.join(__dirname, '..', 'dosya', 'dosya.js'), 'utf8');
   const ogeler = tl.ogeler.map((o, i) => `<div class="o" id="o${i}" style="left:${o.x}px;top:${o.y}px;opacity:0">${TIPLER[o.tip](o)}</div>`).join('\n');
-  return `<!DOCTYPE html><html lang="tr"><head><meta charset="utf-8"><style>${CSS(W, H, L)}</style></head><body>
+  const yt = tl.stil === 'yapaytu';
+  return `<!DOCTYPE html><html lang="tr"><head><meta charset="utf-8"><style>${CSS(W, H, L)}${yt ? STIL_YAPAYTU() : ''}:root{--ts:${L.titleSize}px;--ss:${L.subSize}px}</style></head><body>
 <div id="bg" class="${(tl.tema || {}).bg || ''}"></div><div id="flas"></div><div id="cam"><div id="title"></div>${ogeler}<div id="sub" class="${(tl.tema || {}).altyazi || ''}"></div><div id="stage"></div></div>${tl.adimSayisi ? `<div id="adimlar">${Array.from({ length: tl.adimSayisi }, (_, i) => `<i>${i + 1}</i>`).join('')}</div>` : ''}
 <script>${dosya}</script>
 <script>
 const TL = ${JSON.stringify(tl)};
 const MS = ${L.mascot[2]}, OS = ${L.ogeScale || 1}, MX = ${L.mascot[0]}, MY = ${L.mascot[1]};
 const backOut = k => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(k - 1, 3) + c1 * Math.pow(k - 1, 2); };
+const YT = TL.stil === 'yapaytu';
+const yay = s => 1 - Math.exp(-s * 9) * Math.cos(s * 21);   // yaylı (spring) giriş, s = saniye
 const cl = (v,a,b) => Math.max(a, Math.min(b, v));
 document.querySelectorAll('.o').forEach((el,i)=>{ const r = el.getBoundingClientRect(); el.dataset.w = r.width; el.dataset.h = r.height; });
 // portal hedef noktalarını ölç (dönüşümsüz haldeyken)
@@ -202,9 +226,10 @@ function frame(t){
     const el = document.getElementById('o'+i), w = +el.dataset.w, h = +el.dataset.h;
     const lt = t - o.t0, out = o.t1 != null ? t - o.t1 : -1;
     let s = 0, op = 0, rot = o.rot || 0;
-    if (lt >= 0) { const k = cl(lt/.38,0,1); s = .55 + .45*backOut(k); op = cl(lt/.12,0,1); }
+    if (lt >= 0) { const k = cl(lt/.38,0,1); s = YT ? .5 + .5*yay(lt) : .55 + .45*backOut(k); op = cl(lt/.12,0,1); }
     if (o.tip === 'damga' && lt >= 0) { const k = cl(lt/.22,0,1); s = 1.9 - .9*k*k; op = cl(lt/.08,0,1); }
     let dx = 0, dy = 0;
+    if (YT && lt > .5 && o.tip !== 'portal' && o.tip !== 'damga') { dy = Math.sin(t * 2.1 + i * 1.7) * 4; rot += Math.sin(t * 1.4 + i) * .7; }   // hiçbir şey 2 sn'den uzun durmasın
     // rig koordinatından sayfa koordinatına
     const rig2page = (x, y) => [MX + MS * x / 600, MY + MS * (y + 40 + (MST.bob || 0) - (MST.jump || 0)) / 600];
     if (o.firlat === 'el' && lt >= -.32 && lt < 0) {
@@ -243,8 +268,12 @@ function frame(t){
     if (GC==='zoom' && d < .45) zs = 1 + .045 * Math.pow(1 - d/.45, 2);
     if (GC==='kaydir' && d < .4) tx = 70 * Math.pow(1 - d/.4, 3);
     if (GC==='flas' && d < .25) document.getElementById('flas').style.opacity = .55 * (1 - d/.25); }
+  let blur = 0;
+  if (YT && bi > 0) { const d = t - TL.basliklar[bi].t; zs = 1; tx = 0; document.getElementById('flas').style.opacity = 0;
+    if (d < 7/30) { const k = d / (7/30); zs = 1.16 - .16 * (1 - Math.pow(1 - k, 3)); blur = 10 * (1 - k); } }   // içe dalış: zoom + bulanıklık, 7 kare
   TL.ogeler.forEach(o => { if (o.tip === 'damga') { const d = t - o.t0 - .2; if (d >= 0 && d < .28) { const a = (1 - d/.28) * 9; sx = Math.sin(d*90)*a; sy = Math.cos(d*77)*a; } } });
   document.getElementById('cam').style.transform = 'translate('+(sx+tx)+'px,'+sy+'px) scale('+zs+')';
+  document.getElementById('cam').style.filter = blur > .2 ? 'blur('+blur+'px)' : 'none';
   const AD = document.getElementById('adimlar');
   if (AD) { const cur = bi >= 0 ? TL.basliklar[bi].adim || 0 : 0; [...AD.children].forEach((c, j) => { c.className = j + 1 === cur ? 'on' : (j + 1 < cur ? 'ok' : ''); }); AD.style.opacity = cur ? 1 : 0; }
   // maskot

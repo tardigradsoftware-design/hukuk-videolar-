@@ -7,6 +7,7 @@ const { sayfa } = require('./sayfa');
 
 const KOK = path.join(__dirname, '..', '..');
 const [, , ID, TUR = 'kisa'] = process.argv;
+const STIL = (process.argv.find(a => a.startsWith('--stil=')) || '').slice(7) || null;   // örn. --stil=yapaytu
 const KISA = TUR === 'kisa';
 
 // --- CSV (tırnaklı alanlar destekli)
@@ -78,6 +79,7 @@ const son = plan.son || {};
 tl.ifade.push({ t: d.duration - .2, ad: son.ifade || 'mutlu' }); tl.jest.push({ t: d.duration - .2, ad: son.jest || 'selam' });
 tl.duration = d.duration + (son.uzat ?? 1.2);
 tl.adimSayisi = plan.adimSayisi || 0;
+tl.stil = STIL || plan.stil || null;
 // çeşitlilik: video ID'sine göre sabit (deterministik) tema — her video farklı görünür
 const hs = str => { let h = 2166136261; for (const c of str) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } h ^= h >>> 13; h = Math.imul(h, 0x5bd1e995); return (h ^ (h >>> 15)) >>> 0; };
 const sec = (arr, ad) => arr[hs(ID + ':' + ad) % arr.length];
@@ -112,9 +114,9 @@ tl.ogeler.forEach(o => {
   });
 });
 tl.zipla.forEach(t => ev(t + .1, 'boing'));
-const olayP = ses.replace('.wav', '.olay.json'), miksP = ses.replace('.wav', '.miks.wav');
+const olayP = ses.replace('.wav', '.olay.json'), miksP = ses.replace('.wav', tl.stil ? `.${tl.stil}.miks.wav` : '.miks.wav');
 fs.writeFileSync(olayP, JSON.stringify({ sure: tl.duration, olaylar: olay }));
-const kulak = require('child_process').spawnSync('python3', [path.join(__dirname, 'miks.py'), ses, olayP, TUR, miksP], { encoding: 'utf8' });
+const kulak = require('child_process').spawnSync('python3', [path.join(__dirname, 'miks.py'), ses, olayP, TUR, miksP, ...(tl.stil === 'yapaytu' ? ['--muzik', '--sfx-db=-12'] : [])], { encoding: 'utf8' });
 if (kulak.status !== 0) throw new Error(kulak.stderr);
 console.error(kulak.stderr.trim());
 console.error(`ses efektleri: ${olay.length} olay (fon müziği yok)`);
@@ -125,11 +127,12 @@ const W = KISA ? 720 : 1920, H = KISA ? 1280 : 1080;
 const L = KISA
   ? { title: [52, 96, 616], titleSize: 62, sub: [0, 812, 720], subSize: 42, mascot: [170, 840, 400], ogeScale: 1.15 }
   : { title: [90, 70, 1100], titleSize: 76, sub: [0, 940, 1920], subSize: 50, mascot: [1190, 190, 700], ogeScale: 1.35 };
+if (tl.stil === 'yapaytu') L.mascot = KISA ? [370, 900, 330] : [1310, 440, 580];   // karakter sağ altta
 const html = sayfa({ W, H, L, tl });
 
 (async () => {
   const outDir = path.join(KOK, 'videolar', TUR); fs.mkdirSync(outDir, { recursive: true });
-  const ad = `${ID} - ${baslik.replace(/[\/\\:*?"<>|]/g, '').trim()}.mp4`;
+  const ad = `${ID} - ${baslik.replace(/[\/\\:*?"<>|]/g, '').trim()}${tl.stil === 'yapaytu' ? ' (v2)' : ''}.mp4`;
   const outPath = path.join(outDir, ad);
   const tmp = path.join(outDir, `.${ID}.html`); fs.writeFileSync(tmp, html);
   const browser = await chromium.launch();

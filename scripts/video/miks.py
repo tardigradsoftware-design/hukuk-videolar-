@@ -167,7 +167,9 @@ def main():
     sfx *= gs
     # sınır: konuşma sırasında efekt ≤ konuşma -12 dB, sessizlikte ≤ ortalama konuşma -8 dB
     sr_ = rms(sfx)
-    lim = np.where(konusma, np.maximum(vr, vref * .6) * 10 ** (-6 / 20), vref * 10 ** (-3 / 20))
+    SDB = float(next((a.split('=')[1] for a in sys.argv if a.startswith('--sfx-db=')), '-6'))
+    if SDB <= -12: g = np.where(konusma, .45, 1.0); g = np.convolve(g, np.ones(5) / 5, mode='same'); sfx *= np.pad(np.repeat(g, W), (0, n - len(np.repeat(g, W))), constant_values=1.0)
+    lim = np.where(konusma, (vr if SDB <= -12 else np.maximum(vr, vref * .6)) * 10 ** (SDB / 20), vref * 10 ** (min(-3, SDB + 3) / 20))
     asim = sr_ > lim
     if asim.any():
         f = np.ones_like(sr_); f[asim] = lim[asim] / sr_[asim]
