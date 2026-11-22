@@ -104,7 +104,9 @@ tl.ogeler.forEach(o => {
 tl.zipla.forEach(t => ev(t + .1, 'boing'));
 const olayP = ses.replace('.wav', '.olay.json'), miksP = ses.replace('.wav', '.miks.wav');
 fs.writeFileSync(olayP, JSON.stringify({ sure: tl.duration, olaylar: olay }));
-execFileSync('python3', [path.join(__dirname, 'miks.py'), ses, olayP, TUR, miksP]);
+const kulak = require('child_process').spawnSync('python3', [path.join(__dirname, 'miks.py'), ses, olayP, TUR, miksP], { encoding: 'utf8' });
+if (kulak.status !== 0) throw new Error(kulak.stderr);
+console.error(kulak.stderr.trim());
 console.error(`ses efektleri: ${olay.length} olay (fon müziği yok)`);
 tl.audio = miksP;
 

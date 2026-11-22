@@ -56,9 +56,10 @@ def fx_swish():
     d = .22; n = noise(d); e = np.sin(np.linspace(0, np.pi, len(n))) ** 3
     return bp(n, 1500, 6000) * e * .9
 def fx_key():
-    d = .035; n = bp(noise(d), 1800, 7000) * env(int(d * SR), .0003, .006)
-    body = tone(rng.uniform(180, 260), 120, d) * env(int(d * SR), .0005, .01) * .5
-    return (n * 1.2 + body) * rng.uniform(.6, 1.0)
+    # yumuşak, tok bir tuş sesi (tiz 'çıt' yok)
+    d = .03; n = bp(noise(d), 600, 2500) * env(int(d * SR), .001, .005)
+    body = tone(rng.uniform(150, 210), 110, d) * env(int(d * SR), .001, .008) * .6
+    return (n * .7 + body) * rng.uniform(.7, 1.0)
 def fx_click():
     d = .06; a = bp(noise(d), 2000, 8000) * env(int(d * SR), .0002, .004)
     b = tone(2400, 1800, d) * env(int(d * SR), .0002, .008) * .4
@@ -83,7 +84,7 @@ def fx_bildirim():
 
 FX = {'pop': fx_pop, 'tik': fx_tik, 'whoosh': fx_whoosh, 'swish': fx_swish, 'key': fx_key, 'click': fx_click,
       'thud': fx_thud, 'ding': fx_ding, 'boing': fx_boing, 'bildirim': fx_bildirim}
-SEV = {'pop': .30, 'tik': .22, 'whoosh': .20, 'swish': .14, 'key': .16, 'click': .30, 'thud': .45, 'ding': .25, 'boing': .2, 'bildirim': .3}
+SEV = {'pop': .22, 'tik': .14, 'whoosh': .16, 'swish': .10, 'key': .045, 'click': .18, 'thud': .32, 'ding': .16, 'boing': .14, 'bildirim': .2}
 
 
 # ---------------- MÜZİK (telifsiz, sentez) ----------------
@@ -144,6 +145,32 @@ def main():
         if a < 0 or a >= n: continue
         e = min(n, a + len(x))
         sfx[a:e] += x[:e - a] * SEV[tip] * ev.get('v', 1)
+    # --- KULAK: efektler konuşmayı asla bastırmasın
+    v = np.zeros(n, np.float32); v[:len(voice)] = voice
+    W = int(.05 * SR)
+    def rms(x):
+        k = len(x) // W
+        return np.sqrt((x[:k * W].reshape(k, W) ** 2).mean(1) + 1e-12)
+    vr = rms(v)
+    konusma = vr > np.percentile(vr, 95) * .12
+    vref = np.percentile(vr[konusma], 50) if konusma.any() else .05
+    # konuşma varken efektleri kıs (yumuşak geçişli)
+    g = np.where(konusma, .45, 1.0)
+    g = np.convolve(g, np.ones(5) / 5, mode='same')
+    gs = np.repeat(g, W); gs = np.pad(gs, (0, n - len(gs)), constant_values=1.0)
+    sfx *= gs
+    # sınır: konuşma sırasında efekt ≤ konuşma -12 dB, sessizlikte ≤ ortalama konuşma -8 dB
+    sr_ = rms(sfx)
+    lim = np.where(konusma, vr * 10 ** (-12 / 20), vref * 10 ** (-8 / 20))
+    asim = sr_ > lim
+    if asim.any():
+        f = np.ones_like(sr_); f[asim] = lim[asim] / sr_[asim]
+        f = np.minimum.reduce([f, np.roll(f, 1), np.roll(f, -1)])
+        fs = np.repeat(f, W); fs = np.pad(fs, (0, n - len(fs)), constant_values=1.0)
+        sfx *= fs
+    sr2 = rms(sfx)
+    oran = 20 * np.log10(np.max(sr2[konusma] / np.maximum(vr[konusma], 1e-6))) if konusma.any() else -99
+    print(f'kulak: düzeltilen dilim={int(asim.sum())}, konuşma sırasında en yüksek efekt/konuşma oranı={oran:.1f} dB', file=sys.stderr)
     mix += sfx
     if '--muzik' in sys.argv:  # fon müziği varsayılan olarak KAPALI
         m = muzik(dur, 112 if tur == 'kisa' else 92)
