@@ -62,13 +62,14 @@ plan.sahneler.forEach((s, si) => {
   const t0 = si === 0 ? 0 : T(s.k);
   const nxt = plan.sahneler[si + 1];
   const t1 = nxt ? T(nxt.k) - .1 : null;
-  tl.basliklar.push({ t: t0, ust: s.baslik[0], alt: s.baslik[1] });
+  tl.basliklar.push({ t: t0, ust: s.baslik[0], alt: s.baslik[1], adim: s.adim || 0 });
   (s.mimik || []).forEach(([k, ifade, jest]) => { const t = Math.max(0, T(k) - .15); if (ifade) tl.ifade.push({ t, ad: ifade }); if (jest) tl.jest.push({ t, ad: jest }); });
   (s.ogeler || []).forEach(o => {
     const e = Object.assign({}, o, { t0: Math.max(t0 + .1, T(o.k ?? s.k)), t1: o.k1 != null ? T(o.k1) : t1 });
     if (o.alt) e.altT = o.alt.map(T);
     if (o.rozetK) e.rozetT = o.rozetK.map(T);
     if (o.yazK != null) e.yazT = T(o.yazK);
+    if (o.akis) e.akis = o.akis.map(a => Object.assign({}, a, { T: Math.max(e.t0 + .2, T(a.k) + (a.dt || 0)) }));
     tl.ogeler.push(e);
   });
   (s.zipla || []).forEach(k => tl.zipla.push(T(k)));
@@ -76,7 +77,36 @@ plan.sahneler.forEach((s, si) => {
 const son = plan.son || {};
 tl.ifade.push({ t: d.duration - .2, ad: son.ifade || 'mutlu' }); tl.jest.push({ t: d.duration - .2, ad: son.jest || 'selam' });
 tl.duration = d.duration + (son.uzat ?? 1.2);
-tl.audio = ses;
+tl.adimSayisi = plan.adimSayisi || 0;
+
+// --- ses olayları (efektler) — sayfadaki animasyon zamanlarıyla birebir
+const olay = [];
+const ev = (t, tip, v) => olay.push({ t: +t.toFixed(3), tip, ...(v ? { v } : {}) });
+tl.basliklar.forEach((b, i) => { if (i > 0) ev(b.t, 'whoosh'); });
+tl.ogeler.forEach(o => {
+  if (o.tip === 'damga') ev(o.t0 + .18, 'thud');
+  else if (o.tip === 'portal') ev(o.t0, 'swish');
+  else if (o.tip === 'soru') ev(o.t0, 'bildirim');
+  else if (o.tip === 'rozet' && o.renk === 'g') { ev(o.t0, 'pop'); ev(o.t0 + .12, 'ding', .7); }
+  else ev(o.t0, 'pop');
+  (o.altT || []).forEach(t => ev(t, 'tik'));
+  (o.rozetT || []).forEach(t => t != null && ev(t, 'ding', .6));
+  const yazTxt = o.tip === 'yorum' || o.tip === 'arama' ? o.yazi : null;
+  if (yazTxt) { const st = o.yazT ?? o.t0 + .3, hz = o.hiz || 9; for (let c = 0; c < yazTxt.length; c++) if (yazTxt[c] !== ' ') ev(st + c / hz, 'key'); }
+  (o.akis || []).forEach(a => {
+    if (a.yap === 'yaz' || a.yap === 'url') { const hz = a.hiz || 14; for (let c = 0; c < a.yazi.length; c++) if (a.yazi[c] !== ' ') ev(a.T + c / hz, 'key'); }
+    if (a.yap === 'tikla') ev(a.T, 'click');
+    if (a.yap === 'ekran') ev(a.T, 'swish', .6);
+    if (a.yap === 'goster') ev(a.T, 'ding', .7);
+    if (a.yap === 'vurgula') ev(a.T, 'tik', .8);
+  });
+});
+tl.zipla.forEach(t => ev(t + .1, 'boing'));
+const olayP = ses.replace('.wav', '.olay.json'), miksP = ses.replace('.wav', '.miks.wav');
+fs.writeFileSync(olayP, JSON.stringify({ sure: tl.duration, olaylar: olay }));
+execFileSync('python3', [path.join(__dirname, 'miks.py'), ses, olayP, TUR, miksP]);
+console.error(`ses efektleri: ${olay.length} olay + fon müziği`);
+tl.audio = miksP;
 
 // --- yerleşim
 const W = KISA ? 720 : 1920, H = KISA ? 1280 : 1080;
@@ -94,8 +124,8 @@ const html = sayfa({ W, H, L, tl });
   const p = await browser.newPage({ viewport: { width: W, height: H } });
   await p.goto('file://' + tmp); await p.evaluate(() => document.fonts.ready);
   const FPS = 30, n = Math.ceil(tl.duration * FPS);
-  const ff = spawn('ffmpeg', ['-y', '-v', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-', '-i', ses,
-    '-filter_complex', `[1:a]apad=whole_dur=${tl.duration}[a]`, '-map', '0:v', '-map', '[a]',
+  const ff = spawn('ffmpeg', ['-y', '-v', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-', '-i', tl.audio,
+    '-map', '0:v', '-map', '1:a',
     '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '24', '-preset', 'slow', '-tune', 'animation', '-c:a', 'aac', '-b:a', '192k', '-t', String(tl.duration), '-movflags', '+faststart', outPath], { stdio: ['pipe', 'inherit', 'inherit'] });
   for (let i = 0; i < n; i++) {
     await p.evaluate(t => frame(t), i / FPS);

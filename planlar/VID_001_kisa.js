@@ -28,9 +28,10 @@ module.exports = {
       mimik: [[30, 'mutlu', 'yukari'], [36, 'emin', 'anlat'], [42, 'mutlu', 'basparmak']],
       zipla: [31],
       ogeler: [
-        { tip: 'yorum', k: 30, x: 360, y: 440, yazi: 'PARA', yazK: 31, hiz: 8 },
+        { tip: 'yorum', k: 30, k1: 44, x: 360, y: 440, yazi: 'PARA', yazK: 31, hiz: 8 },
         { tip: 'rozet', k: 36, x: 360, y: 620, e: '⏱️', yazi: 'SANİYELER İÇİNDE', renk: 'y', rot: -3 },
         { tip: 'rozet', k: 40, x: 360, y: 715, e: '🏦', yazi: 'HESABINA ÇEK', renk: 'g', rot: 2 },
+        { tip: 'soru', k: 44, x: 360, y: 440, e: '💬', yazi: "'PARA' yaz, rehber gelsin!", ust: 'YORUMLARA YAZ 👇' },
       ],
     },
   ],
