@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+<!-- Hak Kalkanı: Haklarını koruyan terazili kalkan -->
+<ellipse cx="200" cy="374" rx="85" ry="11" fill="#000" opacity=".13"/><rect x="157" y="326" width="26" height="26" rx="10" fill="#2F5BFF" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><rect x="217" y="326" width="26" height="26" rx="10" fill="#2F5BFF" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M200 50 L320 92 V190 Q320 290 200 340 Q80 290 80 190 V92 Z" fill="#2F5BFF" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M200 76 L296 110 V190 Q296 272 200 314 Z" fill="#2549D6"/>
+<g transform="translate(200 112) scale(1.1)" fill="none" stroke="#F6B92B" stroke-width="5" stroke-linecap="round">
+  <path d="M0 -22 V22 M-14 22 H14 M-24 -14 H24"/><path d="M-24 -14 L-32 4 H-16 Z M24 -14 L16 4 H32 Z" fill="#F6B92B"/></g>
+<g id="eyes">
+  <circle cx="172" cy="196" r="12" fill="#161616"/><circle cx="228" cy="196" r="12" fill="#161616"/>
+  <circle cx="176.2" cy="191.8" r="3.96" fill="#FFFFFF"/><circle cx="232.2" cy="191.8" r="3.96" fill="#FFFFFF"/></g><path id="mouth" d="M185 228 Q200 255 215 228 Z" fill="#C2321D" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/><ellipse cx="148" cy="222" rx="10" ry="6" fill="#FF8A8A" opacity=".7"/><ellipse cx="252" cy="222" rx="10" ry="6" fill="#FF8A8A" opacity=".7"/>
+<circle cx="72" cy="200" r="17" fill="#2F5BFF" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><circle cx="328" cy="200" r="17" fill="#2F5BFF" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

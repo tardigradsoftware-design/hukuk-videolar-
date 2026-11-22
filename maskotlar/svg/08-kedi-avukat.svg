@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+<!-- Avukat Pati: Kravatlı, kendinden emin kedi avukat -->
+<ellipse cx="200" cy="374" rx="85" ry="11" fill="#000" opacity=".13"/>
+<path d="M128 330 Q120 240 200 236 Q280 240 272 330 Q272 350 250 350 H150 Q128 350 128 330 Z" fill="#26324F" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M176 240 L200 272 L224 240" fill="#FFFFFF" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/><path d="M190 254 H210 L206 264 L214 300 L200 314 L186 300 L194 264 Z" fill="#F0442C" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M108 130 L112 52 L170 96 Z M292 130 L288 52 L230 96 Z" fill="#F6B92B" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M124 108 L126 74 L152 96 Z M276 108 L274 74 L248 96 Z" fill="#FF8A8A"/>
+<ellipse cx="200" cy="160" rx="100" ry="84" fill="#F6B92B" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<g id="eyes">
+  <circle cx="168" cy="152" r="12" fill="#161616"/><circle cx="232" cy="152" r="12" fill="#161616"/>
+  <circle cx="172.2" cy="147.8" r="3.96" fill="#FFFFFF"/><circle cx="236.2" cy="147.8" r="3.96" fill="#FFFFFF"/></g>
+<path d="M192 178 H208 L200 188 Z" fill="#FF8A8A" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M200 188 Q190 202 180 196 M200 188 Q210 202 220 196" fill="none" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M110 170 H150 M112 186 L150 180 M290 170 H250 M288 186 L250 180" stroke="#161616" stroke-width="4" stroke-linecap="round"/>
+<circle cx="122" cy="300" r="17" fill="#F6B92B" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><circle cx="278" cy="300" r="17" fill="#F6B92B" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

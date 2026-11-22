@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+<!-- Sütun Sami: Adliye binası sütunu; ağırbaşlı ama sevimli -->
+<ellipse cx="200" cy="374" rx="95" ry="11" fill="#000" opacity=".13"/>
+<rect x="100" y="320" width="200" height="40" rx="8" fill="#FFF4DA" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="128" y="96" width="144" height="228" fill="#FFF4DA" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M160 100 V320 M200 100 V170 M200 250 V320 M240 100 V320" stroke="#161616" stroke-width="4" opacity=".3"/>
+<path d="M90 96 Q90 60 130 60 H270 Q310 60 310 96 Z" fill="#FFF4DA" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="110" cy="88" r="16" fill="#FFF4DA" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><circle cx="290" cy="88" r="16" fill="#FFF4DA" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<g id="eyes">
+  <circle cx="174" cy="190" r="12" fill="#161616"/><circle cx="226" cy="190" r="12" fill="#161616"/>
+  <circle cx="178.2" cy="185.8" r="3.96" fill="#FFFFFF"/><circle cx="230.2" cy="185.8" r="3.96" fill="#FFFFFF"/></g><path id="mouth" d="M187 224 Q200 239.6 213 224" fill="none" stroke="#161616" stroke-width="6" stroke-linecap="round"/><ellipse cx="152" cy="218" rx="10" ry="6" fill="#FF8A8A" opacity=".7"/><ellipse cx="248" cy="218" rx="10" ry="6" fill="#FF8A8A" opacity=".7"/>
+<circle cx="118" cy="250" r="17" fill="#FFF4DA" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><circle cx="282" cy="250" r="17" fill="#FFF4DA" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

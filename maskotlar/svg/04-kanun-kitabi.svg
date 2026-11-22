@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+<!-- Kanun Kitabı: Her şeyi bilen kalın kırmızı kanun kitabı -->
+<ellipse cx="200" cy="374" rx="85" ry="11" fill="#000" opacity=".13"/><rect x="152" y="330" width="26" height="26" rx="10" fill="#F0442C" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><rect x="222" y="330" width="26" height="26" rx="10" fill="#F0442C" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="110" y="70" width="190" height="270" rx="16" fill="#FFF4DA" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="96" y="60" width="190" height="270" rx="16" fill="#F0442C" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M118 62 V328" stroke="#C2321D" stroke-width="8"/>
+<rect x="140" y="96" width="122" height="38" rx="8" fill="#FFF4DA" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="201" y="124" text-anchor="middle" font-family="Arial Black,Arial" font-weight="900" font-size="24" fill="#161616">KANUN</text>
+<g id="eyes">
+  <circle cx="175" cy="196" r="12" fill="#161616"/><circle cx="225" cy="196" r="12" fill="#161616"/>
+  <circle cx="179.2" cy="191.8" r="3.96" fill="#FFFFFF"/><circle cx="229.2" cy="191.8" r="3.96" fill="#FFFFFF"/></g><path id="mouth" d="M185 232 Q200 250 215 232" fill="none" stroke="#161616" stroke-width="6" stroke-linecap="round"/><ellipse cx="150" cy="226" rx="10" ry="6" fill="#FF8A8A" opacity=".7"/><ellipse cx="250" cy="226" rx="10" ry="6" fill="#FF8A8A" opacity=".7"/>
+<circle cx="88" cy="240" r="17" fill="#F0442C" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><circle cx="300" cy="210" r="17" fill="#F0442C" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

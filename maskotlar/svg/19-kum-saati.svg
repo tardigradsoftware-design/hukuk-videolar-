@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+<!-- Süre Saati: Zamanaşımı ve yasal süreleri hatırlatan kum saati -->
+<ellipse cx="200" cy="374" rx="90" ry="11" fill="#000" opacity=".13"/>
+<rect x="100" y="50" width="200" height="30" rx="10" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="100" y="326" width="200" height="30" rx="10" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M122 80 H278 Q278 170 214 204 Q278 236 278 326 H122 Q122 236 186 204 Q122 170 122 80 Z" fill="#DFF3FF" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M150 300 Q200 250 250 300 V320 H150 Z" fill="#F6B92B"/>
+<path d="M200 204 V300" stroke="#F6B92B" stroke-width="5" stroke-dasharray="6 8"/>
+<path d="M142 104 H258 Q250 150 200 176 Q150 150 142 104 Z" fill="#F6B92B"/>
+<g id="eyes">
+  <circle cx="178" cy="128" r="10" fill="#161616"/><circle cx="222" cy="128" r="10" fill="#161616"/>
+  <circle cx="181.5" cy="124.5" r="3.3000000000000003" fill="#FFFFFF"/><circle cx="225.5" cy="124.5" r="3.3000000000000003" fill="#FFFFFF"/></g><path id="mouth" d="M190 150 Q200 162 210 150" fill="none" stroke="#161616" stroke-width="6" stroke-linecap="round"/>
+<circle cx="92" cy="200" r="17" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><circle cx="308" cy="200" r="17" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

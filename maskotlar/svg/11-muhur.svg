@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+<!-- Mühür Mümtaz: "ONAYLANDI" damgası basan mühür -->
+<ellipse cx="200" cy="374" rx="100" ry="11" fill="#000" opacity=".13"/>
+<rect x="94" y="320" width="212" height="44" rx="10" fill="#F0442C" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M120 320 Q120 280 160 270 H240 Q280 280 280 320 Z" fill="#26324F" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="170" y="200" width="60" height="74" rx="18" fill="#26324F" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="200" cy="140" r="78" fill="#26324F" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<g id="eyes">
+  <circle cx="175" cy="132" r="12" fill="#161616"/><circle cx="225" cy="132" r="12" fill="#161616"/>
+  <circle cx="179.2" cy="127.8" r="3.96" fill="#FFFFFF"/><circle cx="229.2" cy="127.8" r="3.96" fill="#FFFFFF"/></g><path id="mouth" d="M187 162 Q200 177.6 213 162" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+<ellipse cx="152" cy="158" rx="10" ry="6" fill="#FF8A8A" opacity=".7"/><ellipse cx="248" cy="158" rx="10" ry="6" fill="#FF8A8A" opacity=".7"/>
+<text x="200" y="350" text-anchor="middle" font-family="Arial Black,Arial" font-weight="900" font-size="20" fill="#FFFFFF">ONAYLANDI</text>
+<circle cx="118" cy="236" r="17" fill="#26324F" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><circle cx="282" cy="236" r="17" fill="#26324F" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

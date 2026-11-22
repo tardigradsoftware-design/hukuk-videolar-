@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+<!-- Çanta Cemil: Avukat evrak çantası; dava dosyası taşıyan karakter -->
+<ellipse cx="200" cy="374" rx="100" ry="11" fill="#000" opacity=".13"/><rect x="137" y="320" width="26" height="26" rx="10" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><rect x="237" y="320" width="26" height="26" rx="10" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M160 120 V96 Q160 80 176 80 H224 Q240 80 240 96 V120" fill="none" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round" stroke-width="12"/>
+<rect x="70" y="116" width="260" height="210" rx="26" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M72 170 H328" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="182" y="156" width="36" height="28" rx="6" fill="#F6B92B" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<g id="eyes">
+  <circle cx="170" cy="226" r="12" fill="#161616"/><circle cx="230" cy="226" r="12" fill="#161616"/>
+  <circle cx="174.2" cy="221.8" r="3.96" fill="#FFFFFF"/><circle cx="234.2" cy="221.8" r="3.96" fill="#FFFFFF"/></g><path id="mouth" d="M185 262 Q200 280 215 262" fill="none" stroke="#161616" stroke-width="6" stroke-linecap="round"/><ellipse cx="145" cy="256" rx="10" ry="6" fill="#FF8A8A" opacity=".7"/><ellipse cx="255" cy="256" rx="10" ry="6" fill="#FF8A8A" opacity=".7"/>
+<circle cx="64" cy="250" r="17" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><circle cx="336" cy="250" r="17" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

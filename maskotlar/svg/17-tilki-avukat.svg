@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+<!-- Avukat Tilki: Takım elbiseli kurnaz ama dürüst tilki -->
+<ellipse cx="200" cy="374" rx="85" ry="11" fill="#000" opacity=".13"/>
+<path d="M130 334 Q124 250 200 246 Q276 250 270 334 Q270 352 250 352 H150 Q130 352 130 334 Z" fill="#26324F" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M174 250 L200 280 L226 250" fill="#FFFFFF" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/><path d="M190 262 H210 L206 272 L214 308 L200 322 L186 308 L194 272 Z" fill="#F6B92B" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M106 140 L98 50 L170 104 Z M294 140 L302 50 L230 104 Z" fill="#F07A1E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M200 260 Q110 240 100 150 Q100 96 200 92 Q300 96 300 150 Q290 240 200 260 Z" fill="#F07A1E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M200 258 Q140 246 132 196 Q170 214 200 214 Q230 214 268 196 Q260 246 200 258 Z" fill="#FFFFFF"/>
+<g id="eyes">
+  <circle cx="165" cy="160" r="12" fill="#161616"/><circle cx="235" cy="160" r="12" fill="#161616"/>
+  <circle cx="169.2" cy="155.8" r="3.96" fill="#FFFFFF"/><circle cx="239.2" cy="155.8" r="3.96" fill="#FFFFFF"/></g>
+<ellipse cx="200" cy="214" rx="13" ry="9" fill="#161616"/><path id="mouth" d="M191 230 Q200 240.8 209 230" fill="none" stroke="#161616" stroke-width="6" stroke-linecap="round"/>
+<circle cx="124" cy="306" r="17" fill="#F07A1E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><circle cx="276" cy="306" r="17" fill="#F07A1E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

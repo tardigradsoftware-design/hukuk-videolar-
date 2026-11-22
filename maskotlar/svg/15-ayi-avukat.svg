@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+<!-- Avukat Ayı: Papyonlu, güven veren ayıcık -->
+<ellipse cx="200" cy="374" rx="90" ry="11" fill="#000" opacity=".13"/>
+<ellipse cx="200" cy="300" rx="96" ry="62" fill="#26324F" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M170 252 L200 290 L230 252" fill="#FFFFFF" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="120" cy="96" r="32" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><circle cx="280" cy="96" r="32" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="120" cy="96" r="14" fill="#FF8A8A"/><circle cx="280" cy="96" r="14" fill="#FF8A8A"/>
+<circle cx="200" cy="160" r="96" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="200" cy="196" rx="44" ry="34" fill="#FFF4DA" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<g id="eyes">
+  <circle cx="167" cy="146" r="12" fill="#161616"/><circle cx="233" cy="146" r="12" fill="#161616"/>
+  <circle cx="171.2" cy="141.8" r="3.96" fill="#FFFFFF"/><circle cx="237.2" cy="141.8" r="3.96" fill="#FFFFFF"/></g>
+<ellipse cx="200" cy="184" rx="13" ry="9" fill="#161616"/><path id="mouth" d="M190 202 Q200 214 210 202" fill="none" stroke="#161616" stroke-width="6" stroke-linecap="round"/>
+<path d="M200 262 L174 248 V276 Z M200 262 L226 248 V276 Z" fill="#F0442C" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="200" cy="262" r="7" fill="#F0442C" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="112" cy="300" r="17" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><circle cx="288" cy="300" r="17" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

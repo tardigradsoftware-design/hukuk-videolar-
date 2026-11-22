@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+<!-- Cübbeli Damla: Sade, minimal cübbeli damla; her sahneye uyar -->
+<ellipse cx="200" cy="374" rx="80" ry="11" fill="#000" opacity=".13"/>
+<path d="M200 50 Q300 170 300 250 Q300 350 200 350 Q100 350 100 250 Q100 170 200 50 Z" fill="#F0442C" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M104 280 Q200 250 296 280 Q290 350 200 350 Q110 350 104 280 Z" fill="#161616" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M176 266 L200 306 L224 266" fill="#FFFFFF" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<g id="eyes">
+  <circle cx="175" cy="196" r="12" fill="#161616"/><circle cx="225" cy="196" r="12" fill="#161616"/>
+  <circle cx="179.2" cy="191.8" r="3.96" fill="#FFFFFF"/><circle cx="229.2" cy="191.8" r="3.96" fill="#FFFFFF"/></g><path id="mouth" d="M188 228 Q200 242.4 212 228" fill="none" stroke="#161616" stroke-width="6" stroke-linecap="round"/><ellipse cx="152" cy="222" rx="10" ry="6" fill="#FF8A8A" opacity=".7"/><ellipse cx="248" cy="222" rx="10" ry="6" fill="#FF8A8A" opacity=".7"/>
+<circle cx="98" cy="300" r="17" fill="#F0442C" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><circle cx="302" cy="300" r="17" fill="#F0442C" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

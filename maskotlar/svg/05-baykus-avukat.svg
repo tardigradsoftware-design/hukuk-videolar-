@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+<!-- Avukat Baykuş: Gözlüklü, cübbeli bilge baykuş -->
+<ellipse cx="200" cy="374" rx="85" ry="11" fill="#000" opacity=".13"/>
+<path d="M110 120 L96 70 L150 100 Z M290 120 L304 70 L250 100 Z" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="200" cy="215" rx="110" ry="140" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M118 260 Q200 230 282 260 Q286 330 240 352 H160 Q114 330 118 260 Z" fill="#161616" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M176 250 L200 290 L224 250" fill="#FFFFFF" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="160" cy="170" r="38" fill="#FFF4DA" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><circle cx="240" cy="170" r="38" fill="#FFF4DA" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<g id="eyes">
+  <circle cx="160" cy="172" r="13" fill="#161616"/><circle cx="240" cy="172" r="13" fill="#161616"/>
+  <circle cx="164.55" cy="167.45" r="4.29" fill="#FFFFFF"/><circle cx="244.55" cy="167.45" r="4.29" fill="#FFFFFF"/></g>
+<path d="M188 200 L212 200 L200 222 Z" fill="#F6B92B" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<g fill="none" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"><circle cx="160" cy="170" r="27"/><circle cx="240" cy="170" r="27"/><path d="M187 168 H213"/></g>
+<path d="M160 370 v-14 M240 370 v-14" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>
