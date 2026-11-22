@@ -78,7 +78,7 @@ const son = plan.son || {};
 tl.ifade.push({ t: d.duration - .2, ad: son.ifade || 'mutlu' }); tl.jest.push({ t: d.duration - .2, ad: son.jest || 'selam' });
 tl.duration = d.duration + (son.uzat ?? 1.2);
 tl.adimSayisi = plan.adimSayisi || 0;
-tl.aks = plan.aks || { cubbe: true, gozluk: true, rozet: true };   // varsayılan kostüm: avukat
+tl.aks = plan.aks || null;   // kostüm yok (yalnızca planda aks verilirse)
 tl.firlat = tl.ogeler.filter(o => o.firlat).map(o => o.t0);
 
 // --- ses olayları (efektler) — sayfadaki animasyon zamanlarıyla birebir
