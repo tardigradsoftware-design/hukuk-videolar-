@@ -9,3 +9,9 @@
 
 `tokmak/` klasöründe 6 varyasyon (T01–T06) var. Hepsini `tokmak/galeri.png` görselinde görebilirsin.
 Yeniden üretmek için: `node scripts/tokmak.js`
+
+## Tokmak Tosun: ana maskot ve poz seti
+
+`tosun/` klasöründe ana maskotun 6 pozu (P01–P06) var: Merhaba, Anlatıyor, Düşünüyor, Şaşkın, Dikkat, Onaylıyor.
+Her SVG katmanlara ayrılmış durumda: `head`, `body`, `legs`, `arm-l`, `arm-r`, `brows`, `eyes`, `mouth`, `cheeks`. Video aşamasında bu katmanlar ayrı ayrı oynatılacak.
+Yeniden üretmek için: `node scripts/tosun.js`

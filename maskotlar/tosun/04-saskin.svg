@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+<!-- Tokmak Tosun — Şaşkın: Şok edici bilgi, "bunu bilmiyordun!" anları -->
+<ellipse cx="200" cy="384" rx="84" ry="10" fill="#000" opacity=".12"/>
+<g id="legs">
+  <path d="M192 284 L170 328" stroke="#1A1A1A" stroke-width="9" stroke-linecap="round"/><path d="M208 284 L232 324" stroke="#1A1A1A" stroke-width="9" stroke-linecap="round"/>
+  
+  <path d="M148.4 346 Q145.7 328 170 328 Q188 328 188 346 Z" fill="#1A1A1A" stroke="#1A1A1A" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M158 333 Q160 331 154 336" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".55"/>
+  <path d="M216 342 Q214 324 232 324 Q256.3 324 256.3 342 Z" fill="#1A1A1A" stroke="#1A1A1A" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M232 329 Q242 327 248 332" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".55"/>
+  </g>
+<g id="body">
+  <rect x="188" y="168" width="24" height="122" rx="11" fill="#A8693E" stroke="#1A1A1A" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="194" y="176" width="5" height="70" rx="2.5" fill="#C98A55"/>
+  <path d="M190 172 H210" stroke="#1A1A1A" stroke-width="4" opacity=".25"/>
+  </g>
+<g id="arm-l">
+  <path d="M68 132 Q26 90 40 52" fill="none" stroke="#1A1A1A" stroke-width="11" stroke-linecap="round"/>
+  <path d="M68 132 Q26 90 40 52" fill="none" stroke="#7A4524" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="40" cy="52" r="15" fill="#A8693E" stroke="#1A1A1A" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="35" cy="47" r="4" fill="#C98A55"/>
+  </g>
+<g id="arm-r">
+  <path d="M332 132 Q374 90 360 52" fill="none" stroke="#1A1A1A" stroke-width="11" stroke-linecap="round"/>
+  <path d="M332 132 Q374 90 360 52" fill="none" stroke="#7A4524" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="360" cy="52" r="15" fill="#A8693E" stroke="#1A1A1A" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="355" cy="47" r="4" fill="#C98A55"/>
+  </g>
+<g id="head">
+  <rect x="100" y="66" width="200" height="104" rx="20" fill="#A8693E"/>
+  <rect x="100" y="66" width="200" height="44" rx="20" fill="#C98A55"/>
+  <rect x="100" y="96" width="200" height="14" fill="#C98A55"/>
+  <path d="M150 160 Q176 155 198 160 M232 162 Q248 158 262 162" fill="none" stroke="#7A4524" stroke-width="3.5" stroke-linecap="round" opacity=".45"/>
+  <rect x="100" y="66" width="200" height="104" rx="20" fill="none" stroke="#1A1A1A" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="112" y="64" width="13" height="108" rx="4" fill="#F6B92B" stroke="#1A1A1A" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="275" y="64" width="13" height="108" rx="4" fill="#F6B92B" stroke="#1A1A1A" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M116 72 V100 M279 72 V100" stroke="#FFE08A" stroke-width="3" stroke-linecap="round"/>
+  
+  <rect x="66" y="54" width="40" height="128" rx="17" fill="#7A4524" stroke="#1A1A1A" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="74" y="64" width="7" height="58" rx="3.5" fill="#9A5B33"/>
+  <rect x="294" y="54" width="40" height="128" rx="17" fill="#7A4524" stroke="#1A1A1A" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="302" y="64" width="7" height="58" rx="3.5" fill="#9A5B33"/>
+  </g>
+<g id="brows"><path d="M157 86 Q170 86 183 98" fill="none" stroke="#1A1A1A" stroke-width="6.5" stroke-linecap="round"/><path d="M217 98 Q230 86 243 86" fill="none" stroke="#1A1A1A" stroke-width="6.5" stroke-linecap="round"/></g><g id="eyes"><circle cx="170" cy="118" r="14" fill="#fff" stroke="#1A1A1A" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="170" cy="119" r="6.5" fill="#1A1A1A"/><circle cx="172" cy="116" r="2" fill="#fff"/><circle cx="230" cy="118" r="14" fill="#fff" stroke="#1A1A1A" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="230" cy="119" r="6.5" fill="#1A1A1A"/><circle cx="232" cy="116" r="2" fill="#fff"/></g><g id="mouth"><ellipse cx="200" cy="152" rx="7" ry="9" fill="#7A1F14" stroke="#1A1A1A" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/></g><g id="cheeks" opacity="0.35"><ellipse cx="148" cy="138" rx="11" ry="6.5" fill="#FF8E8E"/><ellipse cx="252" cy="138" rx="11" ry="6.5" fill="#FF8E8E"/></g>
+<path d="M318 30 Q330 46 324 54 Q318 60 312 54 Q306 46 318 30 Z" fill="#4FA8FF" stroke="#1A1A1A" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+
+</svg>
