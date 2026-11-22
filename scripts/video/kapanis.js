@@ -1,4 +1,4 @@
-// Kapanış (deneme, profesyonel): abone kartı + imleç tıklaması + zil; uzunda "sıradaki video" alanları.
+// Kapanış (deneme): abone kartı; maskot yürüyüp ABONE düğmesine ve zile ELİYLE dokunur.
 // node scripts/video/kapanis.js kisa|uzun  →  maskotlar/kapanis/kapanis_<tur>.mp4
 const fs = require('fs'), path = require('path'), { spawn, execFileSync } = require('child_process');
 const { chromium } = require('playwright');
@@ -8,85 +8,93 @@ const TUR = process.argv[2] || 'uzun', KISA = TUR === 'kisa';
 
 const KANAL = { ad: 'Haklarını Bil', alt: 'Hukuk rehberleri • Her gün yeni video' };
 const W = KISA ? 720 : 1920, H = KISA ? 1280 : 1080, FPS = 30;
-// zaman çizelgesi (sn)
+const MS = KISA ? 340 : 470;
+// zaman çizelgesi (sn): yürü1 → abone dokunuşu → yürü2 → zil dokunuşu → el salla
 const Z = KISA
-  ? { sure: 2.8, kart: .05, imlecGir: .35, tikAbone: .95, tikZil: 1.55, menu: 1.6 }
-  : { sure: 7.0, kart: .15, imlecGir: .8, tikAbone: 1.7, tikZil: 2.6, menu: 2.65 };
+  ? { sure: 3.0, kart: .05, mGir: .1, yuru1: null, abone: .6, yuru2: [.9, 1.25], zil: 1.55, salla: 2.0 }
+  : { sure: 7.0, kart: .15, mGir: .35, yuru1: [.75, 1.3], abone: 1.65, yuru2: [2.0, 2.55], zil: 2.9, salla: 3.5 };
+const UZAN = .3, BAS = .12, DON = .28;                 // dokunuş: uzan / bas / geri çek
 const BUTON = KISA ? 'Takip et' : 'Abone ol', BUTON_OK = KISA ? 'Takip ediliyor' : 'Abone olundu';
-
-// avatar: maskotun yüzü (kırpılmış)
 const avatar = D.svg(D.poz({ ifade: 'emin' }), 'av').replace('viewBox="0 0 600 600"', 'viewBox="150 200 300 300"').replace(/width="600" height="600"/, 'width="100%" height="100%"');
 
-// küçük maskot: sakin bekleme, sonda el sallama
-const MASK = { cues: [], kelimeler: [], ifade: [{ t: 0, ad: 'emin' }, { t: Z.tikAbone + .1, ad: 'mutlu' }], jest: [{ t: 0, ad: 'bekle' }, { t: Z.sure - (KISA ? 1.1 : 2.2), ad: 'selam' }] };
-const MS = KISA ? 300 : 360, MPOS = KISA ? [W / 2 - MS / 2, 250] : [120, 600];
+// maskot zaman çizelgesi (mimik, el sallama, yürüme bacakları)
+const MASK = {
+  cues: [], kelimeler: [],
+  ifade: [{ t: 0, ad: 'emin' }, { t: Z.abone, ad: 'mutlu' }],
+  jest: [{ t: 0, ad: 'bekle' }, { t: Z.salla, ad: 'selam' }],
+  yuru: [Z.yuru1, Z.yuru2].filter(Boolean).map(([t0, t1]) => ({ t0, t1 })),
+};
 
 const css = `*{box-sizing:border-box}html,body{margin:0;width:${W}px;height:${H}px;overflow:hidden;background:#F4F4F2;font-family:'Inter','Inter Display',sans-serif}
 #bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 50%,rgba(0,0,0,.06)),radial-gradient(#d4d4d4 1.6px,transparent 1.6px) 0 0/26px 26px}
-#ust{position:absolute;left:0;right:0;top:${KISA ? 150 : 210}px;text-align:center;font-family:'Inter Display';font-weight:900;font-size:${KISA ? 46 : 64}px;color:#151515;letter-spacing:-.5px}
+#ust{position:absolute;left:0;right:0;top:${KISA ? 330 : 170}px;text-align:center;font-family:'Inter Display';font-weight:900;font-size:${KISA ? 50 : 64}px;line-height:1.08;color:#151515;letter-spacing:-.5px}
 #ust span{color:#E8402F}
-#kart{position:absolute;left:${KISA ? 40 : 480}px;top:${KISA ? 590 : 400}px;width:${KISA ? 640 : 880}px;background:#fff;border:4px solid #151515;border-radius:28px;box-shadow:8px 8px 0 #151515;padding:${KISA ? 28 : 36}px;display:flex;align-items:center;gap:${KISA ? 20 : 28}px}
+#kart{position:absolute;left:${KISA ? 30 : 330}px;top:${KISA ? 560 : 330}px;width:${KISA ? 470 : 940}px;background:#fff;border:4px solid #151515;border-radius:28px;box-shadow:8px 8px 0 #151515;padding:${KISA ? 28 : 36}px;display:flex;align-items:center;gap:${KISA ? 20 : 28}px}
 .av{flex:none;width:${KISA ? 110 : 150}px;height:${KISA ? 110 : 150}px;border-radius:50%;background:#FBE3DF;border:4px solid #151515;overflow:hidden}
 .bilgi{flex:1;min-width:0}.bilgi b{display:block;font-family:'Inter Display';font-weight:900;font-size:${KISA ? 36 : 48}px;color:#151515;line-height:1.05}
-.bilgi span{display:block;margin-top:6px;font-weight:600;font-size:${KISA ? 18 : 24}px;color:#6b6b6b}
-.btns{display:flex;align-items:center;gap:12px;margin-top:${KISA ? 16 : 20}px}
-.ab{height:${KISA ? 56 : 66}px;padding:0 ${KISA ? 26 : 34}px;border-radius:999px;background:#151515;color:#fff;font-weight:800;font-size:${KISA ? 22 : 28}px;display:flex;align-items:center;gap:8px;transition:none}
+.bilgi span{display:block;margin-top:6px;font-weight:600;font-size:${KISA ? 17 : 24}px;color:#6b6b6b;${KISA ? '' : 'max-width:330px'}}
+.btns{display:flex;align-items:center;gap:12px;${KISA ? 'margin-top:14px;justify-content:flex-end' : 'position:absolute;right:36px;top:50%;transform:translateY(-50%)'}}
+.ab{height:${KISA ? 56 : 66}px;width:${KISA ? 196 : 258}px;justify-content:center;white-space:nowrap;padding:0;border-radius:999px;background:#151515;color:#fff;font-weight:800;font-size:${KISA ? 20 : 28}px;display:flex;align-items:center;gap:8px}
 .ab.ok{background:#ececec;color:#151515}
 .zil{width:${KISA ? 56 : 66}px;height:${KISA ? 56 : 66}px;border-radius:50%;background:#ececec;display:flex;align-items:center;justify-content:center}
 .zil svg{width:55%;height:55%}
-#menu{position:absolute;background:#fff;border-radius:14px;box-shadow:0 10px 28px rgba(0,0,0,.18);padding:8px 0;font-weight:700;font-size:${KISA ? 19 : 22}px;color:#151515;width:${KISA ? 270 : 320}px;opacity:0}
-#menu div{padding:12px 20px;display:flex;justify-content:space-between}#menu div.on{background:#f3f3f3}
-#imlec{position:absolute;width:${KISA ? 40 : 46}px;height:${KISA ? 40 : 46}px;z-index:9}
-#dalga{position:absolute;width:70px;height:70px;margin:-35px 0 0 -35px;border-radius:50%;border:4px solid #2f6fe0;opacity:0;z-index:8}
+#bildirim{position:absolute;z-index:9;background:#151515;color:#fff;font-weight:800;font-size:${KISA ? 20 : 24}px;padding:12px 18px;border-radius:14px;white-space:nowrap;opacity:0}
+#bildirim .em{font-family:'Noto Color Emoji'}
+.dalga{position:absolute;width:70px;height:70px;margin:-35px 0 0 -35px;border-radius:50%;border:4px solid #E8402F;opacity:0;z-index:8}
 .sv{position:absolute;border:4px dashed #b9b9b9;border-radius:22px;display:flex;align-items:flex-end;padding:18px 22px;font-weight:800;font-size:22px;color:#9a9a9a;letter-spacing:1px}
-#stage{position:absolute;left:${MPOS[0]}px;top:${MPOS[1]}px;width:${MS}px;height:${MS}px}`;
+#stage{position:absolute;width:${MS}px;height:${MS}px;z-index:5}#stage svg{overflow:visible}`;
 
-const ZIL = (dolu) => `<svg viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0-6 6v4l-2 3h16l-2-3V9a6 6 0 0 0-6-6z" fill="${dolu ? '#151515' : 'none'}" stroke="#151515" stroke-width="2" stroke-linejoin="round"/><path d="M10 19a2 2 0 0 0 4 0" fill="none" stroke="#151515" stroke-width="2"/></svg>`;
+const ZIL = dolu => `<svg viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0-6 6v4l-2 3h16l-2-3V9a6 6 0 0 0-6-6z" fill="${dolu ? '#151515' : 'none'}" stroke="#151515" stroke-width="2" stroke-linejoin="round"/><path d="M10 19a2 2 0 0 0 4 0" fill="none" stroke="#151515" stroke-width="2"/></svg>`;
 const html = `<!DOCTYPE html><html lang="tr"><head><meta charset="utf-8"><style>${css}</style></head><body><div id="bg"></div>
 <div id="ust">${KISA ? 'Haklarını kaçırma,<br><span>takipte kal</span>' : 'Bir sonraki rehberde <span>görüşmek üzere</span>'}</div>
-${KISA ? '' : `<div class="sv" style="left:1450px;top:380px;width:400px;height:225px">SIRADAKİ VİDEO</div><div class="sv" style="left:1450px;top:650px;width:400px;height:225px">ÖNERİLEN</div>`}
+${KISA ? '' : `<div class="sv" style="left:330px;top:640px;width:400px;height:225px">SIRADAKİ VİDEO</div><div class="sv" style="left:770px;top:640px;width:400px;height:225px">ÖNERİLEN</div>`}
 <div id="kart"><div class="av">${avatar}</div><div class="bilgi"><b>${KANAL.ad}</b><span>${KANAL.alt}</span>
 <div class="btns"><div class="ab" id="ab">${BUTON}</div><div class="zil" id="zil">${ZIL(false)}</div></div></div></div>
-<div id="menu"><div>Tüm bildirimler <span id="tik"></span></div><div>Kişiselleştirilmiş</div><div>Hiçbiri</div></div>
-<div id="stage"></div><div id="dalga"></div>
-<svg id="imlec" viewBox="0 0 34 34"><path d="M5 3 L5 27 L11 21 L15 31 L20 29 L16 19 L25 19 Z" fill="#fff" stroke="#151515" stroke-width="2.5" stroke-linejoin="round"/></svg>
+<div id="bildirim"><span class="em">🔔</span> Bildirimler açık</div>
+<div class="dalga" id="d1"></div><div class="dalga" id="d2"></div><div id="stage"></div>
 <script>${fs.readFileSync(path.join(__dirname, '..', 'dosya', 'dosya.js'), 'utf8')}</script>
 <script>
-const Z = ${JSON.stringify(Z)}, MASK = ${JSON.stringify(MASK)}, MS = ${MS}, ZILD = ${JSON.stringify(ZIL(true))}, ZILB = ${JSON.stringify(ZIL(false))}, BOK = ${JSON.stringify(BUTON_OK)};
+const Z=${JSON.stringify(Z)}, MASK=${JSON.stringify(MASK)}, MS=${MS}, UZAN=${UZAN}, BAS=${BAS}, DON=${DON};
+const ZILD=${JSON.stringify(ZIL(true))}, ZILB=${JSON.stringify(ZIL(false))}, BOK=${JSON.stringify(BUTON_OK)}, BTX=${JSON.stringify(BUTON)};
 const cl=(v,a,b)=>Math.max(a,Math.min(b,v)), io=k=>k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2, out=k=>1-Math.pow(1-k,3);
-const ab=document.getElementById('ab'), zil=document.getElementById('zil'), kart=document.getElementById('kart'), menu=document.getElementById('menu');
-const merkez = el => { const r=el.getBoundingClientRect(); return [r.left+r.width*.5, r.top+r.height*.55]; };
-const P_AB = merkez(ab), P_ZIL = merkez(zil), P_BAS = [${W} * ${KISA ? .85 : .72}, ${H} * ${KISA ? .95 : .92}];
-const zr = zil.getBoundingClientRect(); menu.style.left=(zr.left - ${KISA ? 120 : 40})+'px'; menu.style.top=(zr.bottom+12)+'px';
-const MENU_TUM = (()=>{ const r=menu.firstElementChild.getBoundingClientRect(); return [r.left+r.width*.4, r.top+r.height*.5]; })();
+const ab=document.getElementById('ab'), zil=document.getElementById('zil'), kart=document.getElementById('kart'), bil=document.getElementById('bildirim'), stage=document.getElementById('stage');
+const mrk = el => { const r=el.getBoundingClientRect(); return [r.left+r.width*(el===ab?.32:.5), r.top+r.height*.5]; };
+const P_AB=mrk(ab), P_ZIL=mrk(zil);
+const zr=zil.getBoundingClientRect(), br=bil.getBoundingClientRect(); bil.style.left=(zr.right-br.width)+'px'; bil.style.top=(kart.getBoundingClientRect().top-br.height-14)+'px';
+// sol el, hedefe şu rig vektörüyle uzanır (omuzdan sol-yukarı): böylece gövde düğmenin sağında durur
+const SOL_OMUZ=[124,318], REACH=[-98,-36];
+const durusX = P => P[0] - MS*(SOL_OMUZ[0]+REACH[0])/600;   // maskot sahnesinin sol kenarı
+const durusY = P => P[1] - MS*(SOL_OMUZ[1]+REACH[1]+40)/600;
+const X_AB=durusX(P_AB), X_ZIL=durusX(P_ZIL), Y0=durusY(P_AB);
+function mX(t){
+  if (Z.yuru1){ if (t<Z.yuru1[0]) return X_ZIL+MS*.25; if (t<Z.yuru1[1]) return X_ZIL+MS*.25+(X_AB-X_ZIL-MS*.25)*io((t-Z.yuru1[0])/(Z.yuru1[1]-Z.yuru1[0])); }
+  if (t<Z.yuru2[0]) return X_AB; if (t<Z.yuru2[1]) return X_AB+(X_ZIL-X_AB)*io((t-Z.yuru2[0])/(Z.yuru2[1]-Z.yuru2[0])); return X_ZIL;
+}
+// dokunuş: hedefe uzan, bas, geri çek → 0..1 (1 = hedefte)
+const dokun = (t,T) => t<T-UZAN||t>T+BAS+DON ? 0 : t<T ? io((t-T+UZAN)/UZAN) : t<T+BAS ? 1 : 1-io((t-T-BAS)/DON);
 function frame(t){
-  // kart ve başlık: yumuşak giriş
-  const kk = out(cl((t-Z.kart)/.5,0,1));
-  kart.style.opacity=kk; kart.style.transform='translateY('+((1-kk)*40)+'px)';
-  const uk = out(cl((t-Z.kart-.15)/.5,0,1)); const U=document.getElementById('ust'); U.style.opacity=uk; U.style.transform='translateY('+((1-uk)*-20)+'px)';
-  document.querySelectorAll('.sv').forEach((s,i)=>{ const k=out(cl((t-.4-i*.15)/.5,0,1)); s.style.opacity=k; });
-  // imleç yolu: giriş → abone düğmesi (tık) → zil (tık) → menü "Tüm bildirimler" (tık)
-  const yol=[[Z.imlecGir-.01,P_BAS],[Z.tikAbone,P_AB],[Z.tikZil,P_ZIL],[Z.menu+.45,MENU_TUM]];
-  let p=P_BAS; for(let i=1;i<yol.length;i++){ const [t1,p1]=yol[i],[t0,p0]=yol[i-1]; const st=Math.max(t0+.1,t1-.55); if(t>=t1){p=p1;continue;} if(t>st){const k=io((t-st)/(t1-st)); p=[p0[0]+(p1[0]-p0[0])*k,p0[1]+(p1[1]-p0[1])*k];} break; }
-  const im=document.getElementById('imlec'), vis=cl((t-Z.imlecGir)/.2,0,1)*(1-cl((t-(Z.menu+.9))/.3,0,1));
-  im.style.opacity=vis; im.style.left=(p[0]-6)+'px'; im.style.top=(p[1]-4)+'px';
-  // tıklama dalgası
-  const D2=document.getElementById('dalga'); let dk=-1, dp=p; [[Z.tikAbone,P_AB],[Z.tikZil,P_ZIL],[Z.menu+.45,MENU_TUM]].forEach(([tt,pp])=>{ if(t>=tt&&t<tt+.4){dk=(t-tt)/.4;dp=pp;} });
-  D2.style.opacity=dk<0?0:1-dk; D2.style.left=dp[0]+'px'; D2.style.top=dp[1]+'px'; D2.style.transform='scale('+(.3+dk*.9)+')';
-  // düğme durumları
-  const basildi = t>=Z.tikAbone;
-  ab.classList.toggle('ok',basildi); ab.innerHTML = basildi ? '✓ '+BOK : '${BUTON}';
-  ab.style.transform = (t>=Z.tikAbone && t<Z.tikAbone+.12) ? 'scale(.95)' : 'none';
-  zil.innerHTML = t>=Z.menu+.45 ? ZILD : ZILB;
-  const sal = t>=Z.menu+.45 && t<Z.menu+1.2 ? Math.sin((t-Z.menu-.45)*28)*14*(1-(t-Z.menu-.45)/.75) : 0;
-  zil.firstElementChild.style.transform='rotate('+sal+'deg)';
-  const mk = cl((t-Z.menu)/.15,0,1)*(1-cl((t-Z.menu-.75)/.2,0,1));
-  menu.style.opacity=mk; menu.style.transform='translateY('+((1-mk)*-8)+'px)';
-  document.getElementById('tik').textContent = t>=Z.menu+.45 ? '✓' : '';
-  menu.firstElementChild.classList.toggle('on', t>=Z.menu+.25);
+  const kk=out(cl((t-Z.kart)/.5,0,1)); kart.style.opacity=kk; kart.style.transform='translateY('+((1-kk)*40)+'px)';
+  const U=document.getElementById('ust'), uk=out(cl((t-Z.kart-.15)/.5,0,1)); U.style.opacity=uk; U.style.transform='translateY('+((1-uk)*-20)+'px)';
+  document.querySelectorAll('.sv').forEach((s,i)=>{ s.style.opacity=out(cl((t-.4-i*.15)/.5,0,1)); });
   // maskot
-  const ms = cl((t-.2)/.4,0,1);
-  const S=document.getElementById('stage'); S.style.opacity=ms; S.innerHTML=Dosya.svg(Dosya.stateAt(MASK,t),'m',MS,MS);
+  const s=Dosya.stateAt(MASK,t), x=mX(t), y=Y0;
+  stage.style.left=x+'px'; stage.style.top=y+'px'; stage.style.opacity=cl((t-Z.mGir)/.3,0,1);
+  const toRig=P=>[(P[0]-x)*600/MS, (P[1]-y)*600/MS-40-(s.bob||0)+(s.jump||0)];
+  for (const [T,P] of [[Z.abone,P_AB],[Z.zil,P_ZIL]]) {
+    const k=dokun(t,T); if (k<=0) continue;
+    const nat=Dosya.elKonum(s.armL,'l'), hd=toRig(P), q=[nat[0]+(hd[0]-nat[0])*k, nat[1]+(hd[1]-nat[1])*k];
+    s.armL=Dosya.kolIK(q[0],q[1],'acik','l'); s.look=[-.8,-.2]; s.lean=-2*k;
+  }
+  stage.innerHTML=Dosya.svg(s,'m',MS,MS);
+  // düğmeler
+  const basildi=t>=Z.abone;
+  ab.classList.toggle('ok',basildi); ab.innerHTML=basildi?'✓ '+BOK:BTX;
+  ab.style.transform=(t>=Z.abone&&t<Z.abone+BAS)?'scale(.94)':'none';
+  zil.innerHTML=t>=Z.zil?ZILD:ZILB;
+  zil.style.transform=(t>=Z.zil&&t<Z.zil+BAS)?'scale(.9)':'none';
+  const sal=t>=Z.zil&&t<Z.zil+.8?Math.sin((t-Z.zil)*28)*14*(1-(t-Z.zil)/.8):0; zil.firstElementChild.style.transform='rotate('+sal+'deg)';
+  const bk=cl((t-Z.zil-.05)/.2,0,1)*(1-cl((t-Z.zil-1.6)/.3,0,1)); bil.style.opacity=bk; bil.style.transform='translateY('+((1-bk)*12)+'px)';
+  [[Z.abone,P_AB,'d1'],[Z.zil,P_ZIL,'d2']].forEach(([T,P,id])=>{ const d=document.getElementById(id), k=(t-T)/.45; d.style.opacity=k>=0&&k<1?1-k:0; d.style.left=P[0]+'px'; d.style.top=P[1]+'px'; d.style.transform='scale('+(.4+cl(k,0,1)*1.1)+')'; });
 }
 </script></body></html>`;
 
@@ -96,8 +104,8 @@ function frame(t){
   const sesDir = path.join(out, '.ses'); fs.mkdirSync(sesDir, { recursive: true });
   const sessiz = path.join(sesDir, `${TUR}_sessiz.wav`), olay = path.join(sesDir, `${TUR}_olay.json`), miks = path.join(sesDir, `${TUR}_miks.wav`);
   execFileSync('ffmpeg', ['-y', '-v', 'error', '-f', 'lavfi', '-i', 'anullsrc=r=48000:cl=mono', '-t', String(Z.sure), sessiz]);
-  const ev = [{ t: Z.kart, tip: 'swish', v: .7 }, { t: Z.tikAbone, tip: 'click' }, { t: Z.tikAbone + .05, tip: 'ding', v: .6 },
-    { t: Z.tikZil, tip: 'click' }, { t: Z.menu + .45, tip: 'click' }, { t: Z.menu + .5, tip: 'bildirim', v: .8 }];
+  const ev = [{ t: Z.kart, tip: 'swish', v: .7 }, { t: Z.abone, tip: 'click' }, { t: Z.abone + .05, tip: 'ding', v: .6 },
+    { t: Z.zil, tip: 'click' }, { t: Z.zil + .05, tip: 'bildirim', v: .8 }];
   fs.writeFileSync(olay, JSON.stringify({ sure: Z.sure, olaylar: ev }));
   execFileSync('python3', [path.join(__dirname, 'miks.py'), sessiz, olay, TUR, miks, '--lufs=-20'], { stdio: 'ignore' });
   const browser = await chromium.launch();

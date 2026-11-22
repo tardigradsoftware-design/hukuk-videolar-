@@ -225,12 +225,12 @@
     return [hx + Math.cos(d) * 72, hy + Math.sin(d) * 72];
   }
   // sağ kolu (tx,ty) noktasına uzat: [omuz açısı, dirsek, el, esneme]
-  function kolIK(tx, ty, hand) {
-    const [sx, sy] = SH.r, dx = tx - sx, dy = ty - sy, d = Math.hypot(dx, dy);
+  function kolIK(tx, ty, hand, side = 'r') {
+    const [sx, sy] = SH[side], dx = (side === 'l' ? -1 : 1) * (tx - sx), dy = ty - sy, d = Math.hypot(dx, dy);
     const reach = 106, st = Math.max(1, d / (reach * .97)), L1 = 56 * st, L2 = 50 * st;
     const phi = Math.atan2(dx, dy), al = Math.acos(clamp((L1 * L1 + d * d - L2 * L2) / (2 * L1 * d), -1, 1));
-    const a1 = phi + al, ex = sx + Math.sin(a1) * L1, ey = sy + Math.cos(a1) * L1;
-    const a2 = Math.atan2(tx - ex, ty - ey) - a1;
+    const a1 = phi + al, ex = Math.sin(a1) * L1, ey = sy + Math.cos(a1) * L1;
+    const a2 = Math.atan2(dx - ex, (ty - ey)) - a1;
     return [deg(a1), deg(a2), hand, st];
   }
 
