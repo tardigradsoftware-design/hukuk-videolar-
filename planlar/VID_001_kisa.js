@@ -10,7 +10,7 @@ module.exports = {
       mimik: [[0, 'saskin', 'isaret'], [4, 'dusunceli', 'dusun'], [9, 'emin', 'anlat'], [12, 'mutlu', 'eller_yukari']],
       ogeler: [
         { tip: 'edevlet', k: 0, x: 360, y: 450, satirlar: [{ t: 'Şahıs ödemeleri', sag: 'sorgulandı' }, { t: 'Adına bekleyen ödeme', rozet: 'VAR ✓' }], alt: [1, 7], rozetK: [9] },
-        { tip: 'ikon', k: 12, x: 560, y: 660, e: '💰', yazi: 'PARA', rot: 6, firlat: true },
+        { tip: 'ikon', k: 12, x: 560, y: 660, e: '💰', yazi: 'PARA', rot: 6, firlat: 'el' },
       ],
     },
     {

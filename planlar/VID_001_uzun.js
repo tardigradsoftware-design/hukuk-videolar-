@@ -124,7 +124,7 @@ module.exports = {
       ogeler: [
         { tip: 'liste', k: 256, x: 560, y: 480, ogeler: [{ e: '📮', t: "PTT'ye aktarıldı → kimlikle PTT şubesi" }, { e: '📝', t: "Kuruma döndü → SGK'ya dilekçe" }], alt: [256, 271] },
         { tip: 'ikon', k: 265, x: 380, y: 720, e: '🪪', yazi: 'Nüfus cüzdanı' },
-        { tip: 'nesne', k: 276, x: 760, y: 700, ad: 'belge', yazi: 'DİLEKÇE', rot: 6, firlat: true },
+        { tip: 'nesne', k: 276, x: 760, y: 700, ad: 'belge', yazi: 'DİLEKÇE', rot: 6, firlat: 'el' },
         { tip: 'rozet', k: 279, x: 560, y: 860, e: '✅', yazi: 'YENİDEN HESABINA', renk: 'g', rot: -2 },
       ],
     },

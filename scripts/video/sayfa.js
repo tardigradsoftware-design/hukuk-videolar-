@@ -178,7 +178,9 @@ function portal(o, i, el, t){
   acts.forEach(a=>{ if (a.yap==='tikla') { const n = el.querySelector('[data-id="'+a.hedef+'"]'); if (n && n.classList.contains('bt')) n.style.transform = (t>=a.T && t<a.T+.15) ? 'scale(.94)' : 'none'; } });
 }
 let lastTitle = -1;
+let MST = null;
 function frame(t){
+  MST = Dosya.stateAt(TL, t);
   // başlık
   const bi = TL.basliklar.reduce((a,b,i)=> b.t<=t ? i : a, -1);
   const T = document.getElementById('title');
@@ -192,11 +194,19 @@ function frame(t){
     if (lt >= 0) { const k = cl(lt/.38,0,1); s = .55 + .45*backOut(k); op = cl(lt/.12,0,1); }
     if (o.tip === 'damga' && lt >= 0) { const k = cl(lt/.22,0,1); s = 1.9 - .9*k*k; op = cl(lt/.08,0,1); }
     let dx = 0, dy = 0;
+    // rig koordinatından sayfa koordinatına
+    const rig2page = (x, y) => [MX + MS * x / 600, MY + MS * (y + 40 + (MST.bob || 0) - (MST.jump || 0)) / 600];
+    if (o.firlat === 'el' && lt >= -.32 && lt < 0) {
+      // nesne elde: maskotun yumruğunda küçük halde yukarı çıkıyor
+      const hp = Dosya.elKonum(MST.armR), [px, py] = rig2page(hp[0], hp[1] - 18);
+      dx = px - o.x; dy = py - o.y; s = .32; op = 1; rot = (o.rot || 0) - 10;
+    }
     if (o.firlat && lt >= 0 && lt < .6) {
-      // dosyanın içinden kavis çizerek fırla, dönerek yerine otur
-      const k = easeIO(cl(lt / .6, 0, 1)), sxp = MX + MS * .5, syp = MY + MS * (230 / 600);
-      const px = sxp + (o.x - sxp) * k, py = syp + (o.y - syp) * k - Math.sin(k * Math.PI) * 260;
-      dx = px - o.x; dy = py - o.y; s = .2 + .85 * k - .05 * Math.sin(k * Math.PI); op = cl(lt / .06, 0, 1); rot = (o.rot || 0) + (1 - k) * 340;
+      // dosyanın içinden (veya elden) kavis çizerek fırla, dönerek yerine otur
+      const k = easeIO(cl(lt / .6, 0, 1));
+      const src = o.firlat === 'el' ? rig2page(405, 52) : rig2page(300, 190), sxp = src[0], syp = src[1];
+      const px = sxp + (o.x - sxp) * k, py = syp + (o.y - syp) * k - Math.sin(k * Math.PI) * (o.firlat === 'el' ? 160 : 260);
+      dx = px - o.x; dy = py - o.y; s = (o.firlat === 'el' ? .32 : .2) + (o.firlat === 'el' ? .73 : .85) * k - .05 * Math.sin(k * Math.PI); op = o.firlat === 'el' ? 1 : cl(lt / .06, 0, 1); rot = (o.rot || 0) + (1 - k) * (o.firlat === 'el' ? 200 : 340);
     } else if (o.firlat && lt >= .6) { const k = cl((lt - .6) / .25, 0, 1); s = 1 + .08 * Math.sin(k * Math.PI); }
     if (out >= 0) { const k = cl(out/.25,0,1); s *= 1 - .25*k; op *= 1-k; }
     el.style.opacity = op;
@@ -222,7 +232,7 @@ function frame(t){
   const AD = document.getElementById('adimlar');
   if (AD) { const cur = bi >= 0 ? TL.basliklar[bi].adim || 0 : 0; [...AD.children].forEach((c, j) => { c.className = j + 1 === cur ? 'on' : (j + 1 < cur ? 'ok' : ''); }); AD.style.opacity = cur ? 1 : 0; }
   // maskot
-  document.getElementById('stage').innerHTML = Dosya.svg(Dosya.stateAt(TL, t), 'f', MS, MS);
+  document.getElementById('stage').innerHTML = Dosya.svg(MST, 'f', MS, MS);
 }
 </script></body></html>`;
 }

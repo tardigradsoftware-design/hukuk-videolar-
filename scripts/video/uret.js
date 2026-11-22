@@ -79,13 +79,15 @@ tl.ifade.push({ t: d.duration - .2, ad: son.ifade || 'mutlu' }); tl.jest.push({ 
 tl.duration = d.duration + (son.uzat ?? 1.2);
 tl.adimSayisi = plan.adimSayisi || 0;
 tl.aks = plan.aks || null;   // kostüm yok (yalnızca planda aks verilirse)
-tl.firlat = tl.ogeler.filter(o => o.firlat).map(o => o.t0);
+tl.firlat = tl.ogeler.filter(o => o.firlat === true).map(o => o.t0);
+tl.cek = tl.ogeler.filter(o => o.firlat === 'el').map(o => o.t0);
 
 // --- ses olayları (efektler) — sayfadaki animasyon zamanlarıyla birebir
 const olay = [];
 const ev = (t, tip, v) => olay.push({ t: +t.toFixed(3), tip, ...(v ? { v } : {}) });
 tl.basliklar.forEach((b, i) => { if (i > 0) ev(b.t, 'whoosh'); });
 tl.ogeler.forEach(o => {
+  if (o.firlat === 'el') { ev(o.t0 - .5, 'kagit'); ev(o.t0 - .3, 'tik'); ev(o.t0 + .05, 'whoosh', .7); ev(o.t0 + .58, 'pop'); return; }
   if (o.firlat) { ev(o.t0 - .12, 'kagit'); ev(o.t0, 'whoosh', .8); ev(o.t0 + .58, 'pop'); return; }
   if (o.tip === 'damga') ev(o.t0 + .18, 'thud');
   else if (o.tip === 'portal') ev(o.t0, 'swish');

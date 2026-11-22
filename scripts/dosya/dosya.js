@@ -46,6 +46,7 @@
     <path d="${BACK}" fill="${C.redBack}" ${ST(7)}/>
     <g transform="translate(0 ${-f})">${paper(150, 134, 310, 220, -4 - flap * 6)}</g><g transform="translate(0 ${R(-f * .7)})">${paper(170, 146, 300, 220, 3 + flap * 5)}</g>${paper(160, 158, 312, 220, -1)}
     ${flap > .05 ? `<g opacity="${R(flap)}" stroke="${C.gold}" stroke-width="6" stroke-linecap="round"><path d="M300 ${120 - f} V${92 - f * 1.6} M250 ${128 - f} L232 ${104 - f * 1.4} M350 ${128 - f} L368 ${104 - f * 1.4}"/></g>` : ''}
+    <!--ON-->
     <path d="${FRONT}" fill="${C.red}" ${ST(7)}/>
     <path d="M128 404 Q128 422 146 422 H454 Q472 422 472 404 V396 H128 Z" fill="${C.redDark}"/>
     <path d="M136 182 V176 Q136 173 140 173 H240 M282 202 H462" stroke="${C.redHi}" stroke-width="5" stroke-linecap="round" fill="none"/>
@@ -142,7 +143,7 @@
     return `<g transform="${T}">${g}</g>`;
   }
   function arm(side, a, aks) {
-    const [sx, sy] = SH[side], sg = side === 'l' ? -1 : 1, L1 = 56, L2 = 50;
+    const [sx, sy] = SH[side], sg = side === 'l' ? -1 : 1, st = a[3] || 1, L1 = 56 * st, L2 = 50 * st;
     const r1 = rad(a[0]), r2 = rad(a[0] + a[1]);
     const ex = sx + sg * Math.sin(r1) * L1, ey = sy + Math.cos(r1) * L1;
     const hx = ex + sg * Math.sin(r2) * L2, hy = ey + Math.cos(r2) * L2;
@@ -195,13 +196,29 @@
     return `<ellipse cx="300" cy="556" rx="${R(130 - jump * .5)}" ry="12" fill="#000" opacity="${R(.13 - jump * .0006)}"/>
     ${leg('l', hips.l, fL, lift[0])}${leg('r', hips.r, fR, lift[1])}
     <g transform="translate(0 ${R(40 + by - jump)}) rotate(${R(lean)} 300 430) translate(300 430) scale(${R(1 + sq * .5)} ${R(1 - sq)}) translate(-300 -430)">
-      ${body(s.flap || 0)}${cubbe(s.aks)}
+      ${(() => { const [bk, fr] = body(s.flap || 0).split('<!--ON-->'); return bk + (s.armBehind ? arm('r', s.armR, s.aks) : '') + fr; })()}${cubbe(s.aks)}
       <g id="face">${face}</g>
-      ${arm('l', s.armL, s.aks)}${arm('r', s.armR, s.aks)}
+      ${arm('l', s.armL, s.aks)}${s.armBehind ? '' : arm('r', s.armR, s.aks)}
     </g>
     <g transform="translate(0 ${R(40 + by - jump)})">${fx(s.fx, s.t || 0)}</g>`;
   }
   const svg = (s, id, w = 600, h = 600, bg = null) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="${w}" height="${h}">${bg ? `<rect width="600" height="600" fill="${bg}"/>` : ''}${draw(s, id)}</svg>`;
+
+  // sağ elin konumu (rig koordinatı)
+  function elKonum(a, side = 'r') {
+    const [sx, sy] = SH[side], sg = side === 'l' ? -1 : 1, st = a[3] || 1;
+    const r1 = rad(a[0]), r2 = rad(a[0] + a[1]);
+    return [sx + sg * (Math.sin(r1) * 56 * st + Math.sin(r2) * 50 * st), sy + Math.cos(r1) * 56 * st + Math.cos(r2) * 50 * st];
+  }
+  // sağ kolu (tx,ty) noktasına uzat: [omuz açısı, dirsek, el, esneme]
+  function kolIK(tx, ty, hand) {
+    const [sx, sy] = SH.r, dx = tx - sx, dy = ty - sy, d = Math.hypot(dx, dy);
+    const reach = 106, st = Math.max(1, d / (reach * .97)), L1 = 56 * st, L2 = 50 * st;
+    const phi = Math.atan2(dx, dy), al = Math.acos(clamp((L1 * L1 + d * d - L2 * L2) / (2 * L1 * d), -1, 1));
+    const a1 = phi + al, ex = sx + Math.sin(a1) * L1, ey = sy + Math.cos(a1) * L1;
+    const a2 = Math.atan2(tx - ex, ty - ey) - a1;
+    return [deg(a1), deg(a2), hand, st];
+  }
 
   // ================== PRESETLER ==================
   const FX0 = { ter: 0, yanak: 0, soru: 0, parilti: 0, ofke: 0, gozyasi: 0 };
@@ -339,10 +356,27 @@
       const d = t - f + .15;
       if (d >= 0 && d < .7) { const k = Math.sin(d / .7 * Math.PI); s.flap = Math.max(s.flap, k); s.squash -= k * .035; }
     }
+    // ---- elle çıkarma: el dosyaya girer, nesneyi tutup çeker, fırlatır
+    s.armBehind = false;
+    for (const T0 of tl.cek || []) {
+      const d = t - T0;
+      if (d < -1.0 || d > .45) continue;
+      const nat = elKonum(s.armR), A = [400, 140], B = [395, 215], Cc = [405, 70];
+      const lerp2 = (p, q, k) => [p[0] + (q[0] - p[0]) * k, p[1] + (q[1] - p[1]) * k];
+      let p, hand = 'acik';
+      if (d < -.6) p = lerp2(nat, A, ease((d + 1.0) / .4));
+      else if (d < -.42) { p = lerp2(A, B, ease((d + .6) / .18)); s.armBehind = (d > -.5); }
+      else if (d < -.05) { p = lerp2(B, Cc, ease((d + .42) / .37)); hand = 'yumruk'; s.armBehind = d < -.32; }
+      else if (d < .1) { p = Cc; hand = 'yumruk'; }
+      else { p = lerp2(Cc, nat, ease((d - .1) / .35)); }
+      s.armR = kolIK(p[0], p[1], hand);
+      if (d > -.55 && d < 0) s.flap = Math.max(s.flap, Math.sin((d + .55) / .55 * Math.PI));
+      s.look = [.4, -.8];
+    }
     s.t = t; s.aks = tl.aks || null;
     return s;
   }
 
-  const api = { C, draw, svg, poz, stateAt, IFADE, VISEME, JEST };
+  const api = { C, draw, svg, poz, stateAt, elKonum, IFADE, VISEME, JEST };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.Dosya = api;
 })(this);
