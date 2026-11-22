@@ -50,6 +50,29 @@
     <path d="${FRONT}" fill="none" ${ST(7)}/>`;
   }
 
+  // ---------------- HUKUKÇU AKSESUARLARI ----------------
+  // a: { cubbe: true|'bordo', yaka: true, gozluk: true, rozet: true, kitap: true, canta: true }
+  function cubbe(a) {
+    if (!a || !a.cubbe) return '';
+    const col = a.cubbe === 'bordo' ? '#5A1A22' : '#1B1B22';
+    const L = 'M116 196 Q150 188 192 206 L214 432 H116 Z';
+    const Rr = 'M484 196 Q450 188 408 206 L386 432 H484 Z';
+    const fold = '<path d="M150 260 Q160 340 150 420 M450 260 Q440 340 450 420" stroke="#3a3a44" stroke-width="4" fill="none" stroke-linecap="round"/>';
+    const yaka = a.yaka !== false ? `<path d="M192 206 L214 432" stroke="#fff" stroke-width="9" stroke-linecap="round"/><path d="M408 206 L386 432" stroke="#fff" stroke-width="9" stroke-linecap="round"/>` : '';
+    return `<g id="cubbe"><path d="${L}" fill="${col}" ${ST(6)}/><path d="${Rr}" fill="${col}" ${ST(6)}/>${fold}${yaka}
+      ${a.rozet ? `<g transform="translate(152 248)"><circle r="17" fill="${C.gold}" ${ST(4)}/><path d="M0 -9 V9 M-7 9 H7 M-11 -5 H11 M-11 -5 L-14 2 H-8 Z M11 -5 L8 2 H14 Z" stroke="${C.line}" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>` : ''}</g>`;
+  }
+  function gozluk(a) {
+    if (!a || !a.gozluk) return '';
+    return `<g id="gozluk" fill="none" stroke="${C.line}" stroke-width="7"><circle cx="${EYE.l[0]}" cy="${EYE.l[1]}" r="45"/><circle cx="${EYE.r[0]}" cy="${EYE.r[1]}" r="45"/><path d="M287 292 Q300 284 313 292"/><path d="M197 290 L172 282 M403 290 L428 282" stroke-linecap="round"/></g>`;
+  }
+  function elde(side, a, hx, hy) {
+    if (!a) return '';
+    if (side === 'r' && a.canta) return `<g transform="translate(${R(hx)} ${R(hy + 12)})"><path d="M-12 0 V-10 Q-12 -16 -6 -16 H6 Q12 -16 12 -10 V0" fill="none" stroke="${C.line}" stroke-width="6"/><rect x="-36" y="0" width="72" height="52" rx="9" fill="#7A4A2A" ${ST(5)}/><path d="M-36 18 H36" stroke="${C.line}" stroke-width="4"/><rect x="-7" y="12" width="14" height="12" rx="3" fill="${C.gold}" ${ST(3)}/></g>`;
+    if (side === 'l' && a.kitap) return `<g transform="translate(${R(hx)} ${R(hy + 10)}) rotate(-8)"><rect x="-30" y="-8" width="60" height="74" rx="6" fill="${C.redBack}" ${ST(5)}/><path d="M-21 -6 V64" stroke="#7d1a12" stroke-width="5"/><rect x="-12" y="6" width="34" height="13" rx="2" fill="${C.gold}"/><text x="5" y="16" text-anchor="middle" font-family="Arial Black,Arial" font-weight="900" font-size="9" fill="${C.line}">KANUN</text></g>`;
+    return '';
+  }
+
   // ---------------- YÜZ ----------------
   const EYE = { l: [242, 296], r: [358, 296] }, ERX = 37, ERY = 35;
   function eye(side, s, id) {
@@ -116,13 +139,13 @@
     if (pose === 'isaret') g = `<circle cx="0" cy="12" r="14" fill="${F}"/><rect x="-5" y="14" width="11" height="32" rx="5.5" fill="${F}"/><circle cx="${thumbX}" cy="7" r="6" fill="${F}"/>`;
     return `<g transform="${T}">${g}</g>`;
   }
-  function arm(side, a) {
+  function arm(side, a, aks) {
     const [sx, sy] = SH[side], sg = side === 'l' ? -1 : 1, L1 = 56, L2 = 50;
     const r1 = rad(a[0]), r2 = rad(a[0] + a[1]);
     const ex = sx + sg * Math.sin(r1) * L1, ey = sy + Math.cos(r1) * L1;
     const hx = ex + sg * Math.sin(r2) * L2, hy = ey + Math.cos(r2) * L2;
     const dir = deg(Math.atan2(hy - ey, hx - ex));
-    return `<path d="M${sx} ${sy} L${R(ex)} ${R(ey)} L${R(hx)} ${R(hy)}" fill="none" ${ST(10)}/>${hand(a[2], hx, hy, dir, sg)}`;
+    return `<path d="M${sx} ${sy} L${R(ex)} ${R(ey)} L${R(hx)} ${R(hy)}" fill="none" ${ST(10)}/>${elde(side, aks, hx, hy)}${hand(a[2], hx, hy, dir, sg)}`;
   }
 
   // ---------------- BACAKLAR (2 kemikli IK) ----------------
@@ -166,13 +189,13 @@
     const lift = s.footLift || [0, 0];
     const fL = [feet.l[0], feet.l[1] - (s.footUp ? s.footUp[0] : 0) - jump * .7];
     const fR = [feet.r[0], feet.r[1] - (s.footUp ? s.footUp[1] : 0) - jump * .7];
-    const face = `${brow('l', s.brows.l)}${brow('r', s.brows.r)}${eye('l', s, id)}${eye('r', s, id)}${mouth(s.mouth, id)}`;
+    const face = `${brow('l', s.brows.l)}${brow('r', s.brows.r)}${eye('l', s, id)}${eye('r', s, id)}${gozluk(s.aks)}${mouth(s.mouth, id)}`;
     return `<ellipse cx="300" cy="556" rx="${R(130 - jump * .5)}" ry="12" fill="#000" opacity="${R(.13 - jump * .0006)}"/>
     ${leg('l', hips.l, fL, lift[0])}${leg('r', hips.r, fR, lift[1])}
     <g transform="translate(0 ${R(40 + by - jump)}) rotate(${R(lean)} 300 430) translate(300 430) scale(${R(1 + sq * .5)} ${R(1 - sq)}) translate(-300 -430)">
-      ${body()}
+      ${body()}${cubbe(s.aks)}
       <g id="face">${face}</g>
-      ${arm('l', s.armL)}${arm('r', s.armR)}
+      ${arm('l', s.armL, s.aks)}${arm('r', s.armR, s.aks)}
     </g>
     <g transform="translate(0 ${R(40 + by - jump)})">${fx(s.fx, s.t || 0)}</g>`;
   }
@@ -231,11 +254,11 @@
   const ifadeState = name => { const e = IFADE[name] || IFADE.notr; return JSON.parse(JSON.stringify(Object.assign({}, e, { fx: Object.assign({}, FX0, e.fx) }))); };
 
   // Statik poz (galeri için)
-  function poz({ ifade = 'notr', jest = 'bekle', viseme = null, t = 0 } = {}) {
+  function poz({ ifade = 'notr', jest = 'bekle', viseme = null, t = 0, aks = null } = {}) {
     const s = ifadeState(ifade);
     if (viseme) s.mouth = Object.assign({}, VISEME[viseme], { c: VISEME[viseme].c + (s.mouth.c > 0 ? s.mouth.c * .4 : s.mouth.c * .5) });
     const j = JEST[jest];
-    return Object.assign(s, { armL: j.L.slice(), armR: j.R.slice(), bob: 0, lean: 0, t });
+    return Object.assign(s, { armL: j.L.slice(), armR: j.R.slice(), bob: 0, lean: 0, t, aks });
   }
 
   // ================== ZAMAN ÇİZELGESİ ==================
@@ -308,7 +331,7 @@
         else s.squash += Math.sin((d - .62) / .13 * Math.PI) * .07;
       }
     }
-    s.t = t;
+    s.t = t; s.aks = tl.aks || null;
     return s;
   }
 
