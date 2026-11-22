@@ -83,10 +83,22 @@ function mouth(kind = 'gulumse') {
 }
 const cheeks = () => `<g id="cheeks"><ellipse cx="249" cy="164.5" rx="17" ry="10" fill="${K.cheek}"/><ellipse cx="391" cy="164.5" rx="17" ry="10" fill="${K.cheek}"/></g>`;
 
-function mascot({ arms = 'merhaba', brow = 'normal', eye = 'normal', mth = 'gulumse', extra = '' } = {}) {
+// ---- erkek detayları ----
+const collar = () => `<g id="collar" transform="translate(320.5 238) scale(1.7) translate(-320.5 -238)"><path d="M300 236 L320 262 L292 270 Z M341 236 L321 262 L349 270 Z" fill="#fff" ${st(6)}/></g>`;
+const necktie = (c = '#D6322A') => `<g id="tie" transform="translate(320.5 244) scale(1.5) translate(-320.5 -244)">
+  <path d="M311 244 H330 L327 262 H314 Z" fill="${c}" ${st(6)}/>
+  <path d="M314 262 H327 L337 322 L320.5 340 L304 322 Z" fill="${c}" ${st(6)}/>
+  <path d="M316 280 L333 298" stroke="#fff" stroke-width="4" opacity=".35"/></g>`;
+const bowtie = (c = '#D6322A') => `<g id="bowtie" transform="translate(320.5 268) scale(1.5) translate(-320.5 -252)">
+  <path d="M320 252 L284 234 V272 Z M321 252 L357 234 V272 Z" fill="${c}" ${st(6)}/>
+  <rect x="309" y="241" width="23" height="22" rx="6" fill="${c}" ${st(6)}/></g>`;
+const mustache = () => `<g id="mustache" transform="translate(320 176) scale(1.05 .9) translate(-320 -184)"><path d="M320 178 Q304 168 290 174 Q280 180 284 190 Q292 184 302 188 Q312 192 320 186 Q328 192 338 188 Q348 184 356 190 Q360 180 350 174 Q336 168 320 178 Z" fill="${K.line}"/></g>`;
+
+function mascot({ arms = 'merhaba', brow = 'normal', eye = 'normal', mth = 'gulumse', extra = '', giyim = null, biyik = false, yanak = true } = {}) {
   const [L, R] = ARMS[arms];
   return [shadow(), legs(), handle(), arm('arm-l', ...shoulder('l', L[1]), ...L), arm('arm-r', ...shoulder('r', R[1]), ...R),
-    head(), cheeks(), brows(brow), eyes(eye), mouth(mth), extra].join('\n');
+    giyim === 'kravat' ? collar() + necktie() : '', giyim === 'papyon' ? bowtie() : '',
+    head(), yanak ? cheeks() : '', brows(brow), eyes(eye), biyik ? mustache() : '', mouth(mth), extra].join('\n');
 }
 const wrap = (body, note) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="640" height="640">\n<!-- ${note} -->\n${body}\n</svg>\n`;
 
@@ -119,4 +131,15 @@ h1{margin:0 0 30px;font:900 44px Arial Black,Arial}h1 em{font-style:normal;color
 .n{position:absolute;top:10px;left:12px;background:#F0442C;color:#fff;font:900 15px Arial Black,Arial;padding:3px 9px;border-radius:8px;border:3px solid #121212}</style>
 <h1>ANA <em>MASKOT</em> · İFADE SETİ</h1><div class="g">${cards.join('\n')}</div></html>`);
 module.exports = { mascot, wrap };
+
+if (process.argv[2] === 'erkek') {
+  const V = [
+    ['A', 'Kravatlı', { giyim: 'kravat' }],
+    ['B', 'Kravat + bıyık', { giyim: 'kravat', biyik: true, yanak: false }],
+    ['C', 'Papyon + bıyık', { giyim: 'papyon', biyik: true, yanak: false }],
+    ['D', 'Papyonlu', { giyim: 'papyon', yanak: false }],
+  ];
+  const html = V.map(([k, ad, o]) => `<div class="c"><div class="n">${k}</div>${wrap(mascot(o), ad)}<b>${ad}</b></div>`).join('');
+  fs.writeFileSync(path.join(out, 'erkek-secenekler.html'), `<!DOCTYPE html><meta charset="utf-8"><style>body{margin:0;padding:30px;background:#f4f4f2;font-family:Arial}.g{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}.c{position:relative;background:#fff;border:4px solid #121212;border-radius:20px;box-shadow:6px 6px 0 #121212;padding:40px 10px 14px;text-align:center}.c svg{width:100%;height:auto}.c b{font:900 22px Arial Black,Arial}.n{position:absolute;top:10px;left:12px;background:#F0442C;color:#fff;font:900 18px Arial Black;padding:3px 11px;border-radius:8px;border:3px solid #121212}</style><div class="g">${html}</div>`);
+}
 console.log(`${SET.length} dosya üretildi.`);

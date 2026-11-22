@@ -16,6 +16,8 @@
   <path d="M542 184 L606 150" stroke="#121212" stroke-width="9" stroke-linecap="round"/>
   <circle cx="606" cy="150" r="17" fill="#A66839" stroke="#121212" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>
 </g>
+
+
 <g id="head">
   <rect x="140" y="43" width="360" height="194" fill="#A66839"/>
   <rect x="140" y="43" width="360" height="60" fill="#C3834C"/>
@@ -29,6 +31,7 @@
 <g id="brows" stroke="#121212" stroke-width="10" stroke-linecap="butt">
   <path d="M246 62 L293 57"/><path d="M346 57 L393 62"/></g>
 <g id="eyes"><ellipse cx="272.5" cy="124" rx="14.5" ry="21" fill="#121212"/><circle cx="277.5" cy="113" r="4.5" fill="#fff"/><ellipse cx="367.5" cy="124" rx="14.5" ry="21" fill="#121212"/><circle cx="372.5" cy="113" r="4.5" fill="#fff"/></g>
+
 <g id="mouth"><ellipse cx="320" cy="203" rx="12" ry="10" fill="#121212"/></g>
 
 </svg>
