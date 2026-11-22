@@ -78,6 +78,11 @@ const son = plan.son || {};
 tl.ifade.push({ t: d.duration - .2, ad: son.ifade || 'mutlu' }); tl.jest.push({ t: d.duration - .2, ad: son.jest || 'selam' });
 tl.duration = d.duration + (son.uzat ?? 1.2);
 tl.adimSayisi = plan.adimSayisi || 0;
+// çeşitlilik: video ID'sine göre sabit (deterministik) tema — her video farklı görünür
+const hs = str => { let h = 2166136261; for (const c of str) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } h ^= h >>> 13; h = Math.imul(h, 0x5bd1e995); return (h ^ (h >>> 15)) >>> 0; };
+const sec = (arr, ad) => arr[hs(ID + ':' + ad) % arr.length];
+tl.tema = Object.assign({ bg: sec(['', 'izgara', 'cizgi', 'leke'], 'bg'), baslik: sec(['kay', 'yaz', 'zoom'], 'baslik'), gecis: sec(['zoom', 'kaydir', 'flas'], 'gecis'), altyazi: sec(['', 'cizgi'], 'altyazi') }, plan.tema || {});
+console.error('tema:', JSON.stringify(tl.tema));
 tl.aks = plan.aks || null;   // kostüm yok (yalnızca planda aks verilirse)
 tl.firlat = tl.ogeler.filter(o => o.firlat === true).map(o => o.t0);
 tl.cek = tl.ogeler.filter(o => o.firlat === 'el').map(o => o.t0);

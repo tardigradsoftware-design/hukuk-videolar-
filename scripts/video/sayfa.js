@@ -6,6 +6,12 @@ const CSS = (W, H, L) => `
 *{box-sizing:border-box}
 html,body{margin:0;width:${W}px;height:${H}px;overflow:hidden;background:#F4F4F2;font-family:'Inter Display','Inter',sans-serif;-webkit-font-smoothing:antialiased}
 #bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 50%,rgba(0,0,0,.07)),radial-gradient(#d2d2d2 1.7px,transparent 1.7px) 0 0/26px 26px}
+#bg.izgara{background:radial-gradient(ellipse at 50% 45%,transparent 50%,rgba(0,0,0,.07)),linear-gradient(#e2e2e0 1.5px,transparent 1.5px) 0 0/44px 44px,linear-gradient(90deg,#e2e2e0 1.5px,transparent 1.5px) 0 0/44px 44px}
+#bg.cizgi{background:radial-gradient(ellipse at 50% 45%,transparent 50%,rgba(0,0,0,.07)),repeating-linear-gradient(135deg,transparent 0 26px,rgba(0,0,0,.035) 26px 29px)}
+#bg.leke{background:radial-gradient(circle at 12% 18%,rgba(232,64,47,.10),transparent 28%),radial-gradient(circle at 88% 82%,rgba(246,185,43,.14),transparent 30%),radial-gradient(#d6d6d6 1.5px,transparent 1.5px) 0 0/30px 30px}
+#flas{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:8}
+#sub.cizgi span{background:none!important;box-shadow:none!important;padding:0 4px}
+#sub.cizgi .on{color:#151515;border-bottom:9px solid #E8402F;border-radius:0}#sub.cizgi .off{color:#bdbdbd}
 #title{position:absolute;left:${L.title[0]}px;top:${L.title[1]}px;width:${L.title[2]}px;font-weight:900;font-size:${L.titleSize}px;line-height:1.0;color:#151515;letter-spacing:-.5px}
 #title .alt{color:#E8402F}
 #title .satir{display:block;transform-origin:left center}
@@ -135,7 +141,7 @@ function sayfa({ W, H, L, tl }) {
   const dosya = fs.readFileSync(path.join(__dirname, '..', 'dosya', 'dosya.js'), 'utf8');
   const ogeler = tl.ogeler.map((o, i) => `<div class="o" id="o${i}" style="left:${o.x}px;top:${o.y}px;opacity:0">${TIPLER[o.tip](o)}</div>`).join('\n');
   return `<!DOCTYPE html><html lang="tr"><head><meta charset="utf-8"><style>${CSS(W, H, L)}</style></head><body>
-<div id="bg"></div><div id="cam"><div id="title"></div>${ogeler}<div id="sub"></div><div id="stage"></div></div>${tl.adimSayisi ? `<div id="adimlar">${Array.from({ length: tl.adimSayisi }, (_, i) => `<i>${i + 1}</i>`).join('')}</div>` : ''}
+<div id="bg" class="${(tl.tema || {}).bg || ''}"></div><div id="flas"></div><div id="cam"><div id="title"></div>${ogeler}<div id="sub" class="${(tl.tema || {}).altyazi || ''}"></div><div id="stage"></div></div>${tl.adimSayisi ? `<div id="adimlar">${Array.from({ length: tl.adimSayisi }, (_, i) => `<i>${i + 1}</i>`).join('')}</div>` : ''}
 <script>${dosya}</script>
 <script>
 const TL = ${JSON.stringify(tl)};
@@ -185,7 +191,12 @@ function frame(t){
   const bi = TL.basliklar.reduce((a,b,i)=> b.t<=t ? i : a, -1);
   const T = document.getElementById('title');
   if (bi !== lastTitle) { lastTitle = bi; T.innerHTML = bi<0 ? '' : '<span class="satir">'+TL.basliklar[bi].ust+'</span><span class="satir alt">'+TL.basliklar[bi].alt+'</span>'; }
-  if (bi>=0) { const k = cl((t-TL.basliklar[bi].t)/.3,0,1); [...T.children].forEach((s,j)=>{ const kk = cl(k*1.3 - j*.3,0,1); s.style.transform='translateX('+((1-backOut(kk))*-40)+'px)'; s.style.opacity=kk; }); }
+  const TA = (TL.tema||{}).baslik || 'kay';
+  if (bi>=0) { const B=TL.basliklar[bi], k = cl((t-B.t)/.3,0,1);
+    [...T.children].forEach((s,j)=>{ const kk = cl(k*1.3 - j*.3,0,1);
+      if (TA==='yaz') { const txt = j ? B.alt : B.ust, n = Math.floor(cl((t-B.t-j*.18)*38,0,txt.length)); s.textContent = txt.slice(0,n) || '\u00a0'; s.style.opacity = 1; s.style.transform='none'; }
+      else if (TA==='zoom') { s.style.transform='scale('+(1.25-.25*backOut(kk))+')'; s.style.opacity=kk; }
+      else { s.style.transform='translateX('+((1-backOut(kk))*-40)+'px)'; s.style.opacity=kk; } }); }
   // öğeler
   TL.ogeler.forEach((o,i)=>{
     const el = document.getElementById('o'+i), w = +el.dataset.w, h = +el.dataset.h;
@@ -226,9 +237,14 @@ function frame(t){
   else { const pair = w % 2 === 0 ? [w, w+1] : [w-1, w]; sub.innerHTML = pair.filter(i=>W[i]).map(i=>'<span class="'+(i===w?'on':'off')+'">'+W[i].w.replace(/[,.!?;:"]/g,'').toLocaleUpperCase('tr')+'</span>').join(''); }
   // kamera
   let zs = 1, sx = 0, sy = 0;
-  if (bi >= 0) { const d = t - TL.basliklar[bi].t; if (d < .45) zs = 1 + .045 * Math.pow(1 - d/.45, 2); }
+  const GC = (TL.tema||{}).gecis || 'zoom';
+  let tx = 0; document.getElementById('flas').style.opacity = 0;
+  if (bi > 0) { const d = t - TL.basliklar[bi].t;
+    if (GC==='zoom' && d < .45) zs = 1 + .045 * Math.pow(1 - d/.45, 2);
+    if (GC==='kaydir' && d < .4) tx = 70 * Math.pow(1 - d/.4, 3);
+    if (GC==='flas' && d < .25) document.getElementById('flas').style.opacity = .55 * (1 - d/.25); }
   TL.ogeler.forEach(o => { if (o.tip === 'damga') { const d = t - o.t0 - .2; if (d >= 0 && d < .28) { const a = (1 - d/.28) * 9; sx = Math.sin(d*90)*a; sy = Math.cos(d*77)*a; } } });
-  document.getElementById('cam').style.transform = 'translate('+sx+'px,'+sy+'px) scale('+zs+')';
+  document.getElementById('cam').style.transform = 'translate('+(sx+tx)+'px,'+sy+'px) scale('+zs+')';
   const AD = document.getElementById('adimlar');
   if (AD) { const cur = bi >= 0 ? TL.basliklar[bi].adim || 0 : 0; [...AD.children].forEach((c, j) => { c.className = j + 1 === cur ? 'on' : (j + 1 < cur ? 'ok' : ''); }); AD.style.opacity = cur ? 1 : 0; }
   // maskot

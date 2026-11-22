@@ -32,11 +32,14 @@
 - Drive'a yükleme yapılamıyor (bağlantı limiti ~3 MB); kullanıcı GitHub'dan indirir.
 - `veri/`, `tts/` repoya girmez. Render bitmeden mp4 commit etme.
 
-## Üretim
+## Üretim (token tasarruflu)
 ```
-node scripts/video/kelimeler.js VID_XXX kisa|uzun   # plan için kelime sıraları
-# planlar/VID_XXX_kisa.js ve _uzun.js yaz (k = kelime sırası)
-node scripts/video/uret.js VID_XXX kisa|uzun
+node scripts/video/planla.js VID_XXX kisa|uzun     # otomatik plan → planlar/ (sahne, portal, ikon, damga, mimik, fırlatma)
+# yalnızca başlıkları (baslik) elle iyileştir; gerekirse küçük düzeltme
+node scripts/video/uret.js VID_XXX kisa|uzun       # render (+ tema: ID'ye göre bg/başlık/geçiş/altyazı)
 ```
+- Her videoyu bir kontrol görseliyle (tile) gözden geçir; uzun okumalar yapma.
+- Yayın temposu: YouTube günde 1 shorts + 1 uzun; diğer platformlar günde 1 shorts.
+- Para kazanma uyumu (YouTube "özgün olmayan içerik"): her video farklı plan+tema, özgün senaryo; şablon kopyası video üretme.
 - Plan öğeleri: edevlet, liste, damga, ikon, nesne (tokmak/belge/kitap), rozet, ok, yorum, adim, arama, portal, soru.
 - Mimik: notr, mutlu, bitkin, saskin, kizgin, dusunceli, korkmus, emin, uzgun. Jest: bekle, selam, anlat, isaret, yukari, omuz, basparmak, belde, dusun, eller_yukari, dur.
