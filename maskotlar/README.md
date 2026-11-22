@@ -1,5 +1,15 @@
 # Hukuk Maskotları
 
+## ✅ ANA MASKOT: `ana/`
+
+Kullanıcının verdiği referans görsel (`ana/referans.png`) birebir vektöre çevrildi.
+- `ana/01-ana.svg`: referansın birebir vektör kopyası, arka planı şeffaf
+- `ana/02…10`: ifade ve poz seti (konuşuyor, göz kırpma, mutlu, şaşkın, anlatıyor, düşünüyor, ciddi, üzgün, göz kırpan)
+- Katmanlar: `shadow`, `legs`, `handle`, `arm-l`, `arm-r`, `head`, `cheeks`, `brows`, `eyes`, `mouth`
+- Yeniden üretmek için: `node scripts/ana-maskot.js` (videoda kullanmak için `mascot({...})` fonksiyonunu dışa aktarır)
+
+---
+## Arşiv (önceki denemeler)
 20 maskot adayı. Hepsini `galeri.html` dosyasında ya da `galeri.png` görselinde topluca görebilirsin.
 
 - `svg/` klasöründe her maskot ayrı bir SVG dosyası (400x400). Gözler `id="eyes"` grubunda, ağız `id="mouth"` olarak duruyor. Video aşamasında göz kırpma ve konuşma animasyonu bu parçalara eklenecek.
