@@ -78,8 +78,8 @@ html,body{margin:0;width:${W}px;height:${H}px;overflow:hidden;background:#F4F4F2
 .pt .rs .r b{font-size:19px;color:#22304a}.pt .rs .r span{font-size:14px;color:#7a8599;font-weight:600}
 .pt .rs .r.hv{background:#eef4ff}
 .pt table{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.06)}
-.pt th{background:#22304a;color:#fff;font-size:15px;text-align:left;padding:12px 14px;font-weight:800}
-.pt td{font-size:17px;padding:12px 14px;border-bottom:1px solid #edf0f4;font-weight:700;color:#283449}
+.pt th{background:#22304a;color:#fff;font-size:15px;text-align:left;padding:10px 14px;font-weight:800}
+.pt td{font-size:17px;padding:9px 14px;border-bottom:1px solid #edf0f4;font-weight:700;color:#283449}
 .pt tr.hl td{background:#fff3c4}
 .pt .ch{display:inline-block;padding:4px 10px;border-radius:8px;font-size:14px;font-weight:900;background:#ffe3d6;color:#c24614}
 .pt .ch.g{background:#d9f4e6;color:#13794c}
