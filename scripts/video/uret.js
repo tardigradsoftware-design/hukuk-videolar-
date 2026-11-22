@@ -25,11 +25,34 @@ const satir = csv(fs.readFileSync(path.join(KOK, 'veri', 'senaryolar.csv'), 'utf
 if (!satir) throw new Error(ID + ' senaryoda yok');
 const metin = satir[KISA ? 'shorts video tts' : 'uzun video tts'];
 const baslik = satir[KISA ? 'shorts video başlığı' : 'uzun video başlığı'];
-const ses = path.join(KOK, 'veri', 'ses', `${ID}_${KISA ? 'short' : 'uzun'}.mp3`);
+const AD = `${ID}_${KISA ? 'short' : 'uzun'}`;
+const ham = path.join(KOK, 'veri', 'ses_ham', `${AD}.mp3`);
+fs.mkdirSync(path.join(KOK, 'veri', 'ses'), { recursive: true });
+const ses = path.join(KOK, 'veri', 'ses', `${AD}.wav`);
+// hız + ses seviyesi (kısa: 1.20x; uzun: hook 1.20x, sonrası 1.00x)
+const info = JSON.parse(execFileSync('python3', [path.join(__dirname, 'ses_hazirla.py'), ham, metin, TUR, ses]).toString());
+console.error(`ses: ${info.ham_sure}s → ${info.sure}s` + (info.kesim ? ` (hook ${info.hook_kelime} kelime, ${info.kesim}s'de 1.00x'e geçiş)` : ' (1.20x)'));
 const plan = require(path.join(KOK, 'planlar', `${ID}_${TUR}.js`));
 
 // --- dudak senkronu + kelime zamanları
-const d = JSON.parse(execFileSync('python3', [path.join(__dirname, '..', 'dosya', 'dudak.py'), ses, metin], { maxBuffer: 64 << 20 }).toString());
+const dudak = (wav, txt) => JSON.parse(execFileSync('python3', [path.join(__dirname, '..', 'dosya', 'dudak.py'), wav, txt], { maxBuffer: 64 << 20 }).toString());
+let d;
+if (info.kesim) {
+  // hız farklı iki parça ayrı hizalanır, sonra birleştirilir
+  const words = metin.split(/\s+/), k = info.hook_kelime, cut = info.kesim;
+  const pa = ses.replace('.wav', '.a.wav'), pb = ses.replace('.wav', '.b.wav');
+  execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', ses, '-t', String(cut), pa]);
+  execFileSync('ffmpeg', ['-y', '-v', 'error', '-ss', String(cut), '-i', ses, pb]);
+  const A = dudak(pa, words.slice(0, k).join(' ')), B = dudak(pb, words.slice(k).join(' '));
+  const n = Math.round(cut * 100), ev = A.env.values.slice(0, n); while (ev.length < n) ev.push(0);
+  d = {
+    duration: info.sure,
+    cues: [...A.cues.filter(c => c.t < cut), ...B.cues.map(c => ({ t: +(c.t + cut).toFixed(3), v: c.v }))],
+    words: [...A.words, ...B.words.map(w => ({ w: w.w, t0: +(w.t0 + cut).toFixed(3), t1: +(w.t1 + cut).toFixed(3) }))],
+    env: { rate: 100, values: ev.concat(B.env.values) },
+  };
+  fs.unlinkSync(pa); fs.unlinkSync(pb);
+} else d = dudak(ses, metin);
 const kel = d.words; // [{w,t0,t1}]
 const T = k => (kel[Math.min(k, kel.length - 1)] || { t0: 0 }).t0 - .05; // kelime indeksinden zaman
 
@@ -59,7 +82,7 @@ tl.audio = ses;
 const W = KISA ? 720 : 1920, H = KISA ? 1280 : 1080;
 const L = KISA
   ? { title: [52, 96, 616], titleSize: 62, sub: [0, 812, 720], subSize: 42, mascot: [170, 840, 400], ogeScale: 1.15 }
-  : { title: [90, 80, 1000], titleSize: 84, sub: [0, 930, 1920], subSize: 52, mascot: [1220, 250, 640] };
+  : { title: [90, 70, 1100], titleSize: 76, sub: [0, 940, 1920], subSize: 50, mascot: [1190, 190, 700], ogeScale: 1.35 };
 const html = sayfa({ W, H, L, tl });
 
 (async () => {

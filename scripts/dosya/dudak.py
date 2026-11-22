@@ -103,17 +103,38 @@ def distribute(ph, segs):
 
 
 def align(text, segs):
-    # Önce virgül+nokta, sonra yalnız cümle sonu ile parçala; parça sayısı
-    # sessizliklerle ayrılmış konuşma bölümü sayısına eşitse parça parça hizala.
-    for pat in (r'(?<=[,.!?;:…])\s+', r'(?<=[.!?…])\s+'):
-        phrases = [p for p in re.split(pat, text.strip()) if phonemes(p)]
-        if len(phrases) == len(segs) and len(segs) > 1:
-            cues, base = [], 0
-            for p, s in zip(phrases, segs):
-                cues += distribute(phonemes(p, base), [s])
-                base += len(p.split())
-            return cues
-    return distribute(phonemes(text), segs)
+    """Çapa (anchor) yöntemi: noktalama sonrası duraklamalar sesteki sessizliklerle
+    eşleştirilir; aradaki harfler o parçanın konuşma süresine yayılır. Böylece uzun
+    seslerde bile kayma birikmez."""
+    words = text.split()
+    ph = phonemes(text)
+    if not ph: return []
+    W = sum(p[1] for p in ph)
+    cum, c = {}, 0
+    for v, w, wi in ph:
+        c += w; cum[wi] = c
+    bounds = [(wi, cum[wi] / W, 2 if re.search(r'[.!?…]["”\']?$', words[wi]) else 1)
+              for wi in range(len(words) - 1) if wi in cum and re.search(r'[,.!?;:…]["”\']?$', words[wi])]
+    lens = [e - s for s, e in segs]
+    D = sum(lens)
+    E, acc = [], 0
+    for L in lens:
+        acc += L; E.append(acc)
+    anchors, last_k, last_E, last_f = [], -1, 0.0, 0.0
+    for wi, frac, strength in bounds:
+        if last_k >= len(segs) - 2: break
+        target = last_E + (frac - last_f) / max(1e-6, 1 - last_f) * (D - last_E)
+        cands = [(abs(E[k] - target), k) for k in range(last_k + 1, len(segs) - 1)]
+        if not cands: break
+        d, k = min(cands)
+        if d < (0.9 if strength == 2 else 0.45):
+            anchors.append((wi, k)); last_k, last_E, last_f = k, E[k], frac
+    cues, w0, k0 = [], 0, 0
+    for wi, k in anchors + [(len(words) - 1, len(segs) - 1)]:
+        sub = [p for p in ph if w0 <= p[2] <= wi]
+        if sub: cues += distribute(sub, segs[k0:k + 1])
+        w0, k0 = wi + 1, k + 1
+    return cues
 
 
 def amp_only(env, segs):
