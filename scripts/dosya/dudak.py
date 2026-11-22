@@ -62,57 +62,69 @@ def tr_lower(t):
     return t.replace('İ', 'i').replace('I', 'ı').lower()
 
 
-def phonemes(text):
+def phonemes(text, word_base=0):
     out = []
+    wi = word_base - 1
+    prev_space = True
     for ch in tr_lower(text):
+        if ch.isspace():
+            prev_space = True
+            continue
+        if prev_space:
+            wi += 1
+            prev_space = False
         if ch in VIS:
             v, w = VIS[ch]
             if v is None:
                 if out: out[-1][1] += w
                 continue
-            out.append([v, w])
+            out.append([v, w, wi])
         elif ch in 'âîû':
-            out.append([{'â': 'A', 'î': 'I', 'û': 'U'}[ch], 1.0])
+            out.append([{'â': 'A', 'î': 'I', 'û': 'U'}[ch], 1.0, wi])
     return out
 
 
 def distribute(ph, segs):
     """Harfleri konuşma bölümlerine ağırlıklarına göre yayar."""
     total = sum(e - s for s, e in segs)
-    W = sum(w for _, w in ph) or 1
+    W = sum(p[1] for p in ph) or 1
     cues, si, pos = [], 0, segs[0][0]
-    for v, w in ph:
+    for v, w, wi in ph:
         d = w / W * total
         while d > 1e-6 and si < len(segs):
             s, e = segs[si]
             take = min(d, e - pos)
-            cues.append((pos, v))
+            cues.append((pos, v, wi))
             pos += take; d -= take
             if pos >= e - 1e-6:
-                cues.append((e, 'X')); si += 1
+                cues.append((e, 'X', None)); si += 1
                 if si < len(segs): pos = segs[si][0]
     return cues
 
 
 def align(text, segs):
-    # Cümle/virgül sayısı sessizlik sayısıyla uyuşuyorsa parça parça hizala (daha isabetli)
-    phrases = [p for p in re.split(r'[,.!?;:…]+', text) if phonemes(p)]
-    if text and len(phrases) == len(segs) and len(segs) > 1:
-        cues = []
-        for p, s in zip(phrases, segs): cues += distribute(phonemes(p), [s])
-        return cues
+    # Önce virgül+nokta, sonra yalnız cümle sonu ile parçala; parça sayısı
+    # sessizliklerle ayrılmış konuşma bölümü sayısına eşitse parça parça hizala.
+    for pat in (r'(?<=[,.!?;:…])\s+', r'(?<=[.!?…])\s+'):
+        phrases = [p for p in re.split(pat, text.strip()) if phonemes(p)]
+        if len(phrases) == len(segs) and len(segs) > 1:
+            cues, base = [], 0
+            for p, s in zip(phrases, segs):
+                cues += distribute(phonemes(p, base), [s])
+                base += len(p.split())
+            return cues
     return distribute(phonemes(text), segs)
 
 
 def amp_only(env, segs):
-    cues = [(0.0, 'X')]
+    cues = [(0.0, 'X', None)]
     for s, e in segs:
         t = s
         while t < e:
             a = env[min(len(env) - 1, int(t / HOP))]
-            cues.append((t, 'A' if a > .75 else 'E' if a > .5 else 'K' if a > .25 else 'P'))
+            cues.append((t, 'A' if a > .75 else 'E' if a > .5 else 'K' if a > .25 else 'P', None))
             t += .09
-        cues.append((e, 'X'))
+        cues.append((e, 'X', None))
     return cues
 
 
@@ -122,16 +134,29 @@ def main():
     x = load(path)
     env = envelope(x)
     segs = voiced_segments(env)
-    if not segs: cues = [(0.0, 'X')]
-    elif text.strip(): cues = [(0.0, 'X')] + align(text, segs)
+    if not segs: cues = [(0.0, 'X', None)]
+    elif text.strip(): cues = [(0.0, 'X', None)] + align(text, segs)
     else: cues = amp_only(env, segs)
     # aynı şekli birleştir, P (dudak kapanışı) en az 40 ms görünsün
+    # kelime zamanları
+    words = text.split()
+    wt = {}
+    for t, v, wi in cues:
+        if wi is None: continue
+        a = wt.setdefault(wi, [t, t])
+        a[0] = min(a[0], t); a[1] = max(a[1], t)
+    starts = sorted(wt)
+    wlist = []
+    for k, wi in enumerate(starts):
+        nxt = [t for t, v, w2 in cues if t > wt[wi][1] and (w2 != wi)]
+        end = nxt[0] if nxt else wt[wi][1] + .2
+        if wi < len(words): wlist.append({'w': words[wi], 't0': round(wt[wi][0], 3), 't1': round(end, 3)})
     clean = []
-    for t, v in sorted(cues, key=lambda c: c[0]):
+    for t, v, _ in sorted(cues, key=lambda c: c[0]):
         if clean and clean[-1]['v'] == v: continue
         if clean and abs(clean[-1]['t'] - t) < 1e-4: clean[-1]['v'] = v; continue
         clean.append({'t': round(t, 3), 'v': v})
-    json.dump({'duration': round(len(x) / SR, 3), 'cues': clean,
+    json.dump({'duration': round(len(x) / SR, 3), 'cues': clean, 'words': wlist,
                'env': {'rate': int(1 / HOP), 'values': [round(float(v), 3) for v in env]}}, sys.stdout)
 
 
