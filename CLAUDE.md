@@ -15,7 +15,7 @@
 - İçerik doğrulaması istenmiyor.
 
 ## Ses
-- Kısa: tamamı **1.40x**. Uzun: hook (ilk "Birinci/İlk adım" cümlesine kadar) **1.40x**, sonrası **1.25x**. Ton korunur, -14 LUFS.
+- Kısa: tamamı **1.25x**. Uzun: hook (ilk "Birinci/İlk adım" cümlesine kadar) **1.25x**, sonrası **1.00x**. Ton korunur, -14 LUFS.
 - **Fon müziği yok.**
 - Efektler duyulur ama konuşmayı bastırmaz (konuşma ortalamasının ~3–5 dB altı). Klavye sesi yumuşak.
 

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Ham sesi videoya hazırlar: hız + ses seviyesi.
 
-kisa: tamamı 1.40x hızda.
-uzun: hook (giriş) kısmı 1.40x, "Birinci adım" ile başlayan ana içerik 1.25x.
+kisa: tamamı 1.25x hızda.
+uzun: hook (giriş) kısmı 1.25x, "Birinci adım" ile başlayan ana içerik 1.00x.
       Hook bitişi metinden bulunur ve sesteki en yakın duraklamaya oturtulur.
 Ses -14 LUFS'a normalize edilir (YouTube standardı). Ton değişmez (atempo).
 
@@ -11,8 +11,8 @@ Kullanım: python3 ses_hazirla.py ham.mp3 "metin" kisa|uzun cikti.wav  → JSON 
 import json, re, subprocess, sys
 import numpy as np
 
-HIZ = 1.40        # kısa: tamamı; uzun: hook
-HIZ_ANA = 1.25    # uzun: hook sonrası
+HIZ = 1.25        # kısa: tamamı; uzun: hook
+HIZ_ANA = 1.00    # uzun: hook sonrası
 SR = 48000
 V = set('aeıioöuüâîûAEIİOÖUÜÂÎÛ')
 
