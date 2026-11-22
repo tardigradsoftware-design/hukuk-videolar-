@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Ses miksajı: seslendirme + sentezlenmiş ses efektleri + fon müziği.
+"""Ses miksajı: seslendirme + sentezlenmiş ses efektleri (fon müziği kapalı; --muzik ile açılır).
 
 Tüm efektler ve müzik kodla üretilir (telifsiz). Müzik konuşma sırasında kısılır (ducking).
 Kullanım: python3 miks.py ses.wav olaylar.json kisa|uzun cikti.wav
@@ -144,14 +144,14 @@ def main():
         if a < 0 or a >= n: continue
         e = min(n, a + len(x))
         sfx[a:e] += x[:e - a] * SEV[tip] * ev.get('v', 1)
-    m = muzik(dur, 112 if tur == 'kisa' else 92)
-    # ducking: konuşma varken müzik kısılır
-    k = int(.05 * SR)
-    ve = np.sqrt(np.convolve(np.pad(voice, (0, n - len(voice))) ** 2, np.ones(k) / k, mode='same'))
-    ve = np.convolve(ve, np.ones(int(.3 * SR)) / int(.3 * SR), mode='same')
-    duck = 1 - .6 * np.clip(ve / (np.percentile(ve, 90) + 1e-6), 0, 1)
-    mus_gain = .55 if tur == 'kisa' else .42
-    mix += sfx + m * duck * mus_gain
+    mix += sfx
+    if '--muzik' in sys.argv:  # fon müziği varsayılan olarak KAPALI
+        m = muzik(dur, 112 if tur == 'kisa' else 92)
+        k = int(.05 * SR)
+        ve = np.sqrt(np.convolve(np.pad(voice, (0, n - len(voice))) ** 2, np.ones(k) / k, mode='same'))
+        ve = np.convolve(ve, np.ones(int(.3 * SR)) / int(.3 * SR), mode='same')
+        duck = 1 - .6 * np.clip(ve / (np.percentile(ve, 90) + 1e-6), 0, 1)
+        mix += m * duck * (.55 if tur == 'kisa' else .42)
     mix = np.tanh(mix * 1.0)  # yumuşak sınırlayıcı
     pcm = (np.clip(mix, -1, 1) * 32767).astype(np.int16).tobytes()
     subprocess.run(['ffmpeg', '-y', '-v', 'error', '-f', 's16le', '-ar', str(SR), '-ac', '1', '-i', '-',

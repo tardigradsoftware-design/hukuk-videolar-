@@ -105,7 +105,7 @@ tl.zipla.forEach(t => ev(t + .1, 'boing'));
 const olayP = ses.replace('.wav', '.olay.json'), miksP = ses.replace('.wav', '.miks.wav');
 fs.writeFileSync(olayP, JSON.stringify({ sure: tl.duration, olaylar: olay }));
 execFileSync('python3', [path.join(__dirname, 'miks.py'), ses, olayP, TUR, miksP]);
-console.error(`ses efektleri: ${olay.length} olay + fon müziği`);
+console.error(`ses efektleri: ${olay.length} olay (fon müziği yok)`);
 tl.audio = miksP;
 
 // --- yerleşim

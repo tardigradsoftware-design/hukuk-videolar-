@@ -127,7 +127,7 @@ function sayfa({ W, H, L, tl }) {
   const dosya = fs.readFileSync(path.join(__dirname, '..', 'dosya', 'dosya.js'), 'utf8');
   const ogeler = tl.ogeler.map((o, i) => `<div class="o" id="o${i}" style="left:${o.x}px;top:${o.y}px;opacity:0">${TIPLER[o.tip](o)}</div>`).join('\n');
   return `<!DOCTYPE html><html lang="tr"><head><meta charset="utf-8"><style>${CSS(W, H, L)}</style></head><body>
-<div id="bg"></div><div id="cam"><div id="title"></div>${ogeler}<div id="sub"></div><div id="stage"></div></div><div id="bar"></div>${tl.adimSayisi ? `<div id="adimlar">${Array.from({ length: tl.adimSayisi }, (_, i) => `<i>${i + 1}</i>`).join('')}</div>` : ''}
+<div id="bg"></div><div id="cam"><div id="title"></div>${ogeler}<div id="sub"></div><div id="stage"></div></div>${tl.adimSayisi ? `<div id="adimlar">${Array.from({ length: tl.adimSayisi }, (_, i) => `<i>${i + 1}</i>`).join('')}</div>` : ''}
 <script>${dosya}</script>
 <script>
 const TL = ${JSON.stringify(tl)};
@@ -204,7 +204,6 @@ function frame(t){
   if (bi >= 0) { const d = t - TL.basliklar[bi].t; if (d < .45) zs = 1 + .045 * Math.pow(1 - d/.45, 2); }
   TL.ogeler.forEach(o => { if (o.tip === 'damga') { const d = t - o.t0 - .2; if (d >= 0 && d < .28) { const a = (1 - d/.28) * 9; sx = Math.sin(d*90)*a; sy = Math.cos(d*77)*a; } } });
   document.getElementById('cam').style.transform = 'translate('+sx+'px,'+sy+'px) scale('+zs+')';
-  document.getElementById('bar').style.width = (100 * cl(t / TL.duration, 0, 1)) + '%';
   const AD = document.getElementById('adimlar');
   if (AD) { const cur = bi >= 0 ? TL.basliklar[bi].adim || 0 : 0; [...AD.children].forEach((c, j) => { c.className = j + 1 === cur ? 'on' : (j + 1 < cur ? 'ok' : ''); }); AD.style.opacity = cur ? 1 : 0; }
   // maskot
