@@ -6,6 +6,10 @@ h1{margin:0 0 30px;font:900 44px Arial Black,Arial}h1 em{font-style:normal;color
 .n{position:absolute;top:10px;left:12px;background:#F0442C;color:#fff;font:900 15px Arial Black,Arial;padding:3px 9px;border-radius:8px;border:3px solid #121212}</style>
 <h1>ANA <em>MASKOT</em> · İFADE SETİ</h1><div class="g"><div class="c"><div class="n">01</div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="640" height="640">
 <!-- Ana maskot — Ana (referans): Varsayılan: el sallıyor, gülümsüyor -->
+<defs><filter id="kontur" x="-20%" y="-20%" width="140%" height="140%">
+  <feMorphology in="SourceAlpha" operator="dilate" radius="3.5" result="d"/>
+  <feFlood flood-color="#121212"/><feComposite in2="d" operator="in" result="o"/>
+  <feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
 <ellipse id="shadow" cx="320" cy="578" rx="157" ry="12.5" fill="#000" opacity=".13"/>
 <g id="legs">
   <rect x="278" y="440" width="14" height="92" fill="#121212"/>
@@ -34,16 +38,22 @@ h1{margin:0 0 30px;font:900 44px Arial Black,Arial}h1 em{font-style:normal;color
   <rect x="484.5" y="31" width="56" height="217.5" rx="27" fill="#784B28" stroke="#121212" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/>
 </g>
 <g id="cheeks"><ellipse cx="249" cy="164.5" rx="17" ry="10" fill="#FF9595"/><ellipse cx="391" cy="164.5" rx="17" ry="10" fill="#FF9595"/></g>
-<g id="brows" stroke="#121212" stroke-width="10" stroke-linecap="butt">
+<g id="face" filter="url(#kontur)">
+<g id="brows" stroke="#FFFFFF" stroke-width="10" stroke-linecap="butt">
   <path d="M246 72 L293 67"/><path d="M346 67 L393 72"/></g>
-<g id="eyes"><ellipse cx="272.5" cy="124" rx="14.5" ry="21" fill="#121212"/><circle cx="277.5" cy="113" r="4.5" fill="#fff"/><ellipse cx="367.5" cy="124" rx="14.5" ry="21" fill="#121212"/><circle cx="372.5" cy="113" r="4.5" fill="#fff"/></g>
+<g id="eyes"><ellipse cx="272.5" cy="124" rx="14.5" ry="21" fill="#FFFFFF"/><ellipse cx="367.5" cy="124" rx="14.5" ry="21" fill="#FFFFFF"/></g>
 
-<g id="mouth"><path d="M302 197 Q320 210 338 197" fill="none" stroke="#121212" stroke-width="10" stroke-linecap="round"/></g>
+<g id="mouth"><path d="M302 197 Q320 210 338 197" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round"/></g>
+</g>
 
 </svg>
 <b>Ana (referans)</b><span>Varsayılan: el sallıyor, gülümsüyor</span></div>
 <div class="c"><div class="n">02</div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="640" height="640">
 <!-- Ana maskot — Konuşuyor: Seslendirme sırasında ağız açık kare -->
+<defs><filter id="kontur" x="-20%" y="-20%" width="140%" height="140%">
+  <feMorphology in="SourceAlpha" operator="dilate" radius="3.5" result="d"/>
+  <feFlood flood-color="#121212"/><feComposite in2="d" operator="in" result="o"/>
+  <feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
 <ellipse id="shadow" cx="320" cy="578" rx="157" ry="12.5" fill="#000" opacity=".13"/>
 <g id="legs">
   <rect x="278" y="440" width="14" height="92" fill="#121212"/>
@@ -72,16 +82,22 @@ h1{margin:0 0 30px;font:900 44px Arial Black,Arial}h1 em{font-style:normal;color
   <rect x="484.5" y="31" width="56" height="217.5" rx="27" fill="#784B28" stroke="#121212" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/>
 </g>
 <g id="cheeks"><ellipse cx="249" cy="164.5" rx="17" ry="10" fill="#FF9595"/><ellipse cx="391" cy="164.5" rx="17" ry="10" fill="#FF9595"/></g>
-<g id="brows" stroke="#121212" stroke-width="10" stroke-linecap="butt">
+<g id="face" filter="url(#kontur)">
+<g id="brows" stroke="#FFFFFF" stroke-width="10" stroke-linecap="butt">
   <path d="M246 72 L293 67"/><path d="M346 67 L393 72"/></g>
-<g id="eyes"><ellipse cx="272.5" cy="124" rx="14.5" ry="21" fill="#121212"/><circle cx="277.5" cy="113" r="4.5" fill="#fff"/><ellipse cx="367.5" cy="124" rx="14.5" ry="21" fill="#121212"/><circle cx="372.5" cy="113" r="4.5" fill="#fff"/></g>
+<g id="eyes"><ellipse cx="272.5" cy="124" rx="14.5" ry="21" fill="#FFFFFF"/><ellipse cx="367.5" cy="124" rx="14.5" ry="21" fill="#FFFFFF"/></g>
 
-<g id="mouth"><ellipse cx="320" cy="203" rx="12" ry="10" fill="#121212"/></g>
+<g id="mouth"><ellipse cx="320" cy="203" rx="12" ry="10" fill="#FFFFFF"/></g>
+</g>
 
 </svg>
 <b>Konuşuyor</b><span>Seslendirme sırasında ağız açık kare</span></div>
 <div class="c"><div class="n">03</div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="640" height="640">
 <!-- Ana maskot — Göz kırpma: Animasyon: göz kırpma karesi -->
+<defs><filter id="kontur" x="-20%" y="-20%" width="140%" height="140%">
+  <feMorphology in="SourceAlpha" operator="dilate" radius="3.5" result="d"/>
+  <feFlood flood-color="#121212"/><feComposite in2="d" operator="in" result="o"/>
+  <feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
 <ellipse id="shadow" cx="320" cy="578" rx="157" ry="12.5" fill="#000" opacity=".13"/>
 <g id="legs">
   <rect x="278" y="440" width="14" height="92" fill="#121212"/>
@@ -110,16 +126,22 @@ h1{margin:0 0 30px;font:900 44px Arial Black,Arial}h1 em{font-style:normal;color
   <rect x="484.5" y="31" width="56" height="217.5" rx="27" fill="#784B28" stroke="#121212" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/>
 </g>
 <g id="cheeks"><ellipse cx="249" cy="164.5" rx="17" ry="10" fill="#FF9595"/><ellipse cx="391" cy="164.5" rx="17" ry="10" fill="#FF9595"/></g>
-<g id="brows" stroke="#121212" stroke-width="10" stroke-linecap="butt">
+<g id="face" filter="url(#kontur)">
+<g id="brows" stroke="#FFFFFF" stroke-width="10" stroke-linecap="butt">
   <path d="M246 72 L293 67"/><path d="M346 67 L393 72"/></g>
-<g id="eyes"><path d="M258.5 128 H286.5" stroke="#121212" stroke-width="8" stroke-linecap="round"/><path d="M353.5 128 H381.5" stroke="#121212" stroke-width="8" stroke-linecap="round"/></g>
+<g id="eyes"><path d="M258.5 128 H286.5" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/><path d="M353.5 128 H381.5" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/></g>
 
-<g id="mouth"><path d="M302 197 Q320 210 338 197" fill="none" stroke="#121212" stroke-width="10" stroke-linecap="round"/></g>
+<g id="mouth"><path d="M302 197 Q320 210 338 197" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round"/></g>
+</g>
 
 </svg>
 <b>Göz kırpma</b><span>Animasyon: göz kırpma karesi</span></div>
 <div class="c"><div class="n">04</div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="640" height="640">
 <!-- Ana maskot — Mutlu: Güzel haber, çözüm -->
+<defs><filter id="kontur" x="-20%" y="-20%" width="140%" height="140%">
+  <feMorphology in="SourceAlpha" operator="dilate" radius="3.5" result="d"/>
+  <feFlood flood-color="#121212"/><feComposite in2="d" operator="in" result="o"/>
+  <feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
 <ellipse id="shadow" cx="320" cy="578" rx="157" ry="12.5" fill="#000" opacity=".13"/>
 <g id="legs">
   <rect x="278" y="440" width="14" height="92" fill="#121212"/>
@@ -148,16 +170,22 @@ h1{margin:0 0 30px;font:900 44px Arial Black,Arial}h1 em{font-style:normal;color
   <rect x="484.5" y="31" width="56" height="217.5" rx="27" fill="#784B28" stroke="#121212" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/>
 </g>
 <g id="cheeks"><ellipse cx="249" cy="164.5" rx="17" ry="10" fill="#FF9595"/><ellipse cx="391" cy="164.5" rx="17" ry="10" fill="#FF9595"/></g>
-<g id="brows" stroke="#121212" stroke-width="10" stroke-linecap="butt">
+<g id="face" filter="url(#kontur)">
+<g id="brows" stroke="#FFFFFF" stroke-width="10" stroke-linecap="butt">
   <path d="M246 62 L293 57"/><path d="M346 57 L393 62"/></g>
-<g id="eyes"><path d="M258.5 126 Q272.5 110 286.5 126" fill="none" stroke="#121212" stroke-width="8" stroke-linecap="round"/><path d="M353.5 126 Q367.5 110 381.5 126" fill="none" stroke="#121212" stroke-width="8" stroke-linecap="round"/></g>
+<g id="eyes"><path d="M258.5 126 Q272.5 110 286.5 126" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/><path d="M353.5 126 Q367.5 110 381.5 126" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/></g>
 
-<g id="mouth"><path d="M300 193 Q320 226 340 193 Z" fill="#121212" stroke="#121212" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g id="mouth"><path d="M300 193 Q320 226 340 193 Z" fill="#FFFFFF"/></g>
+</g>
 
 </svg>
 <b>Mutlu</b><span>Güzel haber, çözüm</span></div>
 <div class="c"><div class="n">05</div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="640" height="640">
 <!-- Ana maskot — Şaşkın: "Bunu bilmiyordun!" -->
+<defs><filter id="kontur" x="-20%" y="-20%" width="140%" height="140%">
+  <feMorphology in="SourceAlpha" operator="dilate" radius="3.5" result="d"/>
+  <feFlood flood-color="#121212"/><feComposite in2="d" operator="in" result="o"/>
+  <feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
 <ellipse id="shadow" cx="320" cy="578" rx="157" ry="12.5" fill="#000" opacity=".13"/>
 <g id="legs">
   <rect x="278" y="440" width="14" height="92" fill="#121212"/>
@@ -186,16 +214,22 @@ h1{margin:0 0 30px;font:900 44px Arial Black,Arial}h1 em{font-style:normal;color
   <rect x="484.5" y="31" width="56" height="217.5" rx="27" fill="#784B28" stroke="#121212" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/>
 </g>
 <g id="cheeks"><ellipse cx="249" cy="164.5" rx="17" ry="10" fill="#FF9595"/><ellipse cx="391" cy="164.5" rx="17" ry="10" fill="#FF9595"/></g>
-<g id="brows" stroke="#121212" stroke-width="10" stroke-linecap="butt">
+<g id="face" filter="url(#kontur)">
+<g id="brows" stroke="#FFFFFF" stroke-width="10" stroke-linecap="butt">
   <path d="M246 62 L293 57"/><path d="M346 57 L393 62"/></g>
-<g id="eyes"><ellipse cx="272.5" cy="124" rx="17" ry="25" fill="#121212"/><circle cx="278.5" cy="111" r="5.5" fill="#fff"/><ellipse cx="367.5" cy="124" rx="17" ry="25" fill="#121212"/><circle cx="373.5" cy="111" r="5.5" fill="#fff"/></g>
+<g id="eyes"><ellipse cx="272.5" cy="124" rx="17" ry="25" fill="#FFFFFF"/><ellipse cx="367.5" cy="124" rx="17" ry="25" fill="#FFFFFF"/></g>
 
-<g id="mouth"><ellipse cx="320" cy="205" rx="9" ry="12" fill="#121212"/></g>
+<g id="mouth"><ellipse cx="320" cy="205" rx="9" ry="12" fill="#FFFFFF"/></g>
+</g>
 
 </svg>
 <b>Şaşkın</b><span>"Bunu bilmiyordun!"</span></div>
 <div class="c"><div class="n">06</div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="640" height="640">
 <!-- Ana maskot — Anlatıyor: İçeriği işaret eder -->
+<defs><filter id="kontur" x="-20%" y="-20%" width="140%" height="140%">
+  <feMorphology in="SourceAlpha" operator="dilate" radius="3.5" result="d"/>
+  <feFlood flood-color="#121212"/><feComposite in2="d" operator="in" result="o"/>
+  <feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
 <ellipse id="shadow" cx="320" cy="578" rx="157" ry="12.5" fill="#000" opacity=".13"/>
 <g id="legs">
   <rect x="278" y="440" width="14" height="92" fill="#121212"/>
@@ -224,16 +258,22 @@ h1{margin:0 0 30px;font:900 44px Arial Black,Arial}h1 em{font-style:normal;color
   <rect x="484.5" y="31" width="56" height="217.5" rx="27" fill="#784B28" stroke="#121212" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/>
 </g>
 <g id="cheeks"><ellipse cx="249" cy="164.5" rx="17" ry="10" fill="#FF9595"/><ellipse cx="391" cy="164.5" rx="17" ry="10" fill="#FF9595"/></g>
-<g id="brows" stroke="#121212" stroke-width="10" stroke-linecap="butt">
+<g id="face" filter="url(#kontur)">
+<g id="brows" stroke="#FFFFFF" stroke-width="10" stroke-linecap="butt">
   <path d="M246 62 L293 57"/><path d="M346 57 L393 62"/></g>
-<g id="eyes"><ellipse cx="272.5" cy="124" rx="14.5" ry="21" fill="#121212"/><circle cx="277.5" cy="113" r="4.5" fill="#fff"/><ellipse cx="367.5" cy="124" rx="14.5" ry="21" fill="#121212"/><circle cx="372.5" cy="113" r="4.5" fill="#fff"/></g>
+<g id="eyes"><ellipse cx="272.5" cy="124" rx="14.5" ry="21" fill="#FFFFFF"/><ellipse cx="367.5" cy="124" rx="14.5" ry="21" fill="#FFFFFF"/></g>
 
-<g id="mouth"><ellipse cx="320" cy="203" rx="12" ry="10" fill="#121212"/></g>
+<g id="mouth"><ellipse cx="320" cy="203" rx="12" ry="10" fill="#FFFFFF"/></g>
+</g>
 
 </svg>
 <b>Anlatıyor</b><span>İçeriği işaret eder</span></div>
 <div class="c"><div class="n">07</div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="640" height="640">
 <!-- Ana maskot — Düşünüyor: "Peki bu yasal mı?" -->
+<defs><filter id="kontur" x="-20%" y="-20%" width="140%" height="140%">
+  <feMorphology in="SourceAlpha" operator="dilate" radius="3.5" result="d"/>
+  <feFlood flood-color="#121212"/><feComposite in2="d" operator="in" result="o"/>
+  <feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
 <ellipse id="shadow" cx="320" cy="578" rx="157" ry="12.5" fill="#000" opacity=".13"/>
 <g id="legs">
   <rect x="278" y="440" width="14" height="92" fill="#121212"/>
@@ -262,16 +302,22 @@ h1{margin:0 0 30px;font:900 44px Arial Black,Arial}h1 em{font-style:normal;color
   <rect x="484.5" y="31" width="56" height="217.5" rx="27" fill="#784B28" stroke="#121212" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/>
 </g>
 <g id="cheeks"><ellipse cx="249" cy="164.5" rx="17" ry="10" fill="#FF9595"/><ellipse cx="391" cy="164.5" rx="17" ry="10" fill="#FF9595"/></g>
-<g id="brows" stroke="#121212" stroke-width="10" stroke-linecap="butt">
+<g id="face" filter="url(#kontur)">
+<g id="brows" stroke="#FFFFFF" stroke-width="10" stroke-linecap="butt">
   <path d="M246 60 L293 55"/><path d="M346 67 L393 72"/></g>
-<g id="eyes"><ellipse cx="272.5" cy="124" rx="14.5" ry="21" fill="#121212"/><circle cx="277.5" cy="113" r="4.5" fill="#fff"/><ellipse cx="367.5" cy="124" rx="14.5" ry="21" fill="#121212"/><circle cx="372.5" cy="113" r="4.5" fill="#fff"/></g>
+<g id="eyes"><ellipse cx="272.5" cy="124" rx="14.5" ry="21" fill="#FFFFFF"/><ellipse cx="367.5" cy="124" rx="14.5" ry="21" fill="#FFFFFF"/></g>
 
-<g id="mouth"><path d="M305 203 H335" stroke="#121212" stroke-width="10" stroke-linecap="round"/></g>
+<g id="mouth"><path d="M305 203 H335" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round"/></g>
+</g>
 
 </svg>
 <b>Düşünüyor</b><span>"Peki bu yasal mı?"</span></div>
 <div class="c"><div class="n">08</div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="640" height="640">
 <!-- Ana maskot — Ciddi / Uyarı: Cezalar, "sakın yapma" -->
+<defs><filter id="kontur" x="-20%" y="-20%" width="140%" height="140%">
+  <feMorphology in="SourceAlpha" operator="dilate" radius="3.5" result="d"/>
+  <feFlood flood-color="#121212"/><feComposite in2="d" operator="in" result="o"/>
+  <feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
 <ellipse id="shadow" cx="320" cy="578" rx="157" ry="12.5" fill="#000" opacity=".13"/>
 <g id="legs">
   <rect x="278" y="440" width="14" height="92" fill="#121212"/>
@@ -300,16 +346,22 @@ h1{margin:0 0 30px;font:900 44px Arial Black,Arial}h1 em{font-style:normal;color
   <rect x="484.5" y="31" width="56" height="217.5" rx="27" fill="#784B28" stroke="#121212" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/>
 </g>
 <g id="cheeks"><ellipse cx="249" cy="164.5" rx="17" ry="10" fill="#FF9595"/><ellipse cx="391" cy="164.5" rx="17" ry="10" fill="#FF9595"/></g>
-<g id="brows" stroke="#121212" stroke-width="10" stroke-linecap="butt">
+<g id="face" filter="url(#kontur)">
+<g id="brows" stroke="#FFFFFF" stroke-width="10" stroke-linecap="butt">
   <path d="M246 68 L293 75"/><path d="M346 75 L393 68"/></g>
-<g id="eyes"><ellipse cx="272.5" cy="124" rx="14.5" ry="21" fill="#121212"/><circle cx="277.5" cy="113" r="4.5" fill="#fff"/><ellipse cx="367.5" cy="124" rx="14.5" ry="21" fill="#121212"/><circle cx="372.5" cy="113" r="4.5" fill="#fff"/></g>
+<g id="eyes"><ellipse cx="272.5" cy="124" rx="14.5" ry="21" fill="#FFFFFF"/><ellipse cx="367.5" cy="124" rx="14.5" ry="21" fill="#FFFFFF"/></g>
 
-<g id="mouth"><path d="M305 203 H335" stroke="#121212" stroke-width="10" stroke-linecap="round"/></g>
+<g id="mouth"><path d="M305 203 H335" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round"/></g>
+</g>
 
 </svg>
 <b>Ciddi / Uyarı</b><span>Cezalar, "sakın yapma"</span></div>
 <div class="c"><div class="n">09</div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="640" height="640">
 <!-- Ana maskot — Üzgün: Hak kaybı, kötü senaryo -->
+<defs><filter id="kontur" x="-20%" y="-20%" width="140%" height="140%">
+  <feMorphology in="SourceAlpha" operator="dilate" radius="3.5" result="d"/>
+  <feFlood flood-color="#121212"/><feComposite in2="d" operator="in" result="o"/>
+  <feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
 <ellipse id="shadow" cx="320" cy="578" rx="157" ry="12.5" fill="#000" opacity=".13"/>
 <g id="legs">
   <rect x="278" y="440" width="14" height="92" fill="#121212"/>
@@ -338,16 +390,22 @@ h1{margin:0 0 30px;font:900 44px Arial Black,Arial}h1 em{font-style:normal;color
   <rect x="484.5" y="31" width="56" height="217.5" rx="27" fill="#784B28" stroke="#121212" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/>
 </g>
 <g id="cheeks"><ellipse cx="249" cy="164.5" rx="17" ry="10" fill="#FF9595"/><ellipse cx="391" cy="164.5" rx="17" ry="10" fill="#FF9595"/></g>
-<g id="brows" stroke="#121212" stroke-width="10" stroke-linecap="butt">
+<g id="face" filter="url(#kontur)">
+<g id="brows" stroke="#FFFFFF" stroke-width="10" stroke-linecap="butt">
   <path d="M246 80 L293 63"/><path d="M346 63 L393 80"/></g>
-<g id="eyes"><ellipse cx="272.5" cy="124" rx="14.5" ry="21" fill="#121212"/><circle cx="277.5" cy="113" r="4.5" fill="#fff"/><ellipse cx="367.5" cy="124" rx="14.5" ry="21" fill="#121212"/><circle cx="372.5" cy="113" r="4.5" fill="#fff"/></g>
+<g id="eyes"><ellipse cx="272.5" cy="124" rx="14.5" ry="21" fill="#FFFFFF"/><ellipse cx="367.5" cy="124" rx="14.5" ry="21" fill="#FFFFFF"/></g>
 
-<g id="mouth"><path d="M302 209 Q320 195 338 209" fill="none" stroke="#121212" stroke-width="10" stroke-linecap="round"/></g>
+<g id="mouth"><path d="M302 209 Q320 195 338 209" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round"/></g>
+</g>
 
 </svg>
 <b>Üzgün</b><span>Hak kaybı, kötü senaryo</span></div>
 <div class="c"><div class="n">10</div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="640" height="640">
 <!-- Ana maskot — Göz kırpan: Kapanış, "takip et" -->
+<defs><filter id="kontur" x="-20%" y="-20%" width="140%" height="140%">
+  <feMorphology in="SourceAlpha" operator="dilate" radius="3.5" result="d"/>
+  <feFlood flood-color="#121212"/><feComposite in2="d" operator="in" result="o"/>
+  <feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
 <ellipse id="shadow" cx="320" cy="578" rx="157" ry="12.5" fill="#000" opacity=".13"/>
 <g id="legs">
   <rect x="278" y="440" width="14" height="92" fill="#121212"/>
@@ -376,11 +434,13 @@ h1{margin:0 0 30px;font:900 44px Arial Black,Arial}h1 em{font-style:normal;color
   <rect x="484.5" y="31" width="56" height="217.5" rx="27" fill="#784B28" stroke="#121212" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/>
 </g>
 <g id="cheeks"><ellipse cx="249" cy="164.5" rx="17" ry="10" fill="#FF9595"/><ellipse cx="391" cy="164.5" rx="17" ry="10" fill="#FF9595"/></g>
-<g id="brows" stroke="#121212" stroke-width="10" stroke-linecap="butt">
+<g id="face" filter="url(#kontur)">
+<g id="brows" stroke="#FFFFFF" stroke-width="10" stroke-linecap="butt">
   <path d="M246 72 L293 67"/><path d="M346 67 L393 72"/></g>
-<g id="eyes"><ellipse cx="272.5" cy="124" rx="14.5" ry="21" fill="#121212"/><circle cx="277.5" cy="113" r="4.5" fill="#fff"/><path d="M353.5 126 Q367.5 110 381.5 126" fill="none" stroke="#121212" stroke-width="8" stroke-linecap="round"/></g>
+<g id="eyes"><ellipse cx="272.5" cy="124" rx="14.5" ry="21" fill="#FFFFFF"/><path d="M353.5 126 Q367.5 110 381.5 126" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/></g>
 
-<g id="mouth"><path d="M300 193 Q320 226 340 193 Z" fill="#121212" stroke="#121212" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g id="mouth"><path d="M300 193 Q320 226 340 193 Z" fill="#FFFFFF"/></g>
+</g>
 
 </svg>
 <b>Göz kırpan</b><span>Kapanış, "takip et"</span></div></div></html>

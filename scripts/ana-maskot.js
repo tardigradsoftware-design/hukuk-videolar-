@@ -6,6 +6,7 @@ const path = require('path');
 const K = {
   line: '#121212', top: '#C3834C', low: '#A66839', cap: '#784B28', gold: '#F5BD2C',
   cheek: '#FF9595', hand: '#A66839', shadow: '#000',
+  face: '#FFFFFF', // yüz organları (göz, kaş, ağız, bıyık) beyaz
 };
 const st = w => `stroke="${K.line}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"`;
 
@@ -56,14 +57,14 @@ const TILT = [3, -2, -2, 3]; // referanstaki hafif eğim
 function brows(kind = 'normal') {
   const [l, r] = BROW;
   const d = { normal: [0, 0, 0, 0], kalkik: [-10, -10, -10, -10], kizgin: [-4, 8, 8, -4], uzgun: [8, -4, -4, 8], soru: [-12, -12, 0, 0] }[kind];
-  return `<g id="brows" stroke="${K.line}" stroke-width="10" stroke-linecap="butt">
+  return `<g id="brows" stroke="${K.face}" stroke-width="10" stroke-linecap="butt">
   <path d="M${l[0]} ${l[2] + d[0] + TILT[0]} L${l[1]} ${l[2] + d[1] + TILT[1]}"/><path d="M${r[0]} ${r[2] + d[2] + TILT[2]} L${r[1]} ${r[2] + d[3] + TILT[3]}"/></g>`;
 }
 function eyes(kind = 'normal') {
-  const open = ([x, y]) => `<ellipse cx="${x}" cy="${y}" rx="14.5" ry="21" fill="${K.line}"/><circle cx="${x + 5}" cy="${y - 11}" r="4.5" fill="#fff"/>`;
-  const closed = ([x, y]) => `<path d="M${x - 14} ${y + 2} Q${x} ${y - 14} ${x + 14} ${y + 2}" fill="none" stroke="${K.line}" stroke-width="8" stroke-linecap="round"/>`;
-  const blink = ([x, y]) => `<path d="M${x - 14} ${y + 4} H${x + 14}" stroke="${K.line}" stroke-width="8" stroke-linecap="round"/>`;
-  const big = ([x, y]) => `<ellipse cx="${x}" cy="${y}" rx="17" ry="25" fill="${K.line}"/><circle cx="${x + 6}" cy="${y - 13}" r="5.5" fill="#fff"/>`;
+  const open = ([x, y]) => `<ellipse cx="${x}" cy="${y}" rx="14.5" ry="21" fill="${K.face}"/>`;
+  const closed = ([x, y]) => `<path d="M${x - 14} ${y + 2} Q${x} ${y - 14} ${x + 14} ${y + 2}" fill="none" stroke="${K.face}" stroke-width="8" stroke-linecap="round"/>`;
+  const blink = ([x, y]) => `<path d="M${x - 14} ${y + 4} H${x + 14}" stroke="${K.face}" stroke-width="8" stroke-linecap="round"/>`;
+  const big = ([x, y]) => `<ellipse cx="${x}" cy="${y}" rx="17" ry="25" fill="${K.face}"/>`;
   const m = {
     normal: EYE.map(open), mutlu: EYE.map(closed), kirp: EYE.map(blink),
     gozkirp: [open(EYE[0]), closed(EYE[1])], sasirmis: EYE.map(big),
@@ -72,12 +73,12 @@ function eyes(kind = 'normal') {
 }
 function mouth(kind = 'gulumse') {
   const m = {
-    gulumse: `<path d="M302 197 Q320 210 338 197" fill="none" stroke="${K.line}" stroke-width="10" stroke-linecap="round"/>`,
-    acik: `<path d="M300 193 Q320 226 340 193 Z" fill="${K.line}" ${st(6)}/>`,
-    konus: `<ellipse cx="320" cy="203" rx="12" ry="10" fill="${K.line}"/>`,
-    o: `<ellipse cx="320" cy="205" rx="9" ry="12" fill="${K.line}"/>`,
-    duz: `<path d="M305 203 H335" stroke="${K.line}" stroke-width="10" stroke-linecap="round"/>`,
-    uzgun: `<path d="M302 209 Q320 195 338 209" fill="none" stroke="${K.line}" stroke-width="10" stroke-linecap="round"/>`,
+    gulumse: `<path d="M302 197 Q320 210 338 197" fill="none" stroke="${K.face}" stroke-width="10" stroke-linecap="round"/>`,
+    acik: `<path d="M300 193 Q320 226 340 193 Z" fill="${K.face}"/>`,
+    konus: `<ellipse cx="320" cy="203" rx="12" ry="10" fill="${K.face}"/>`,
+    o: `<ellipse cx="320" cy="205" rx="9" ry="12" fill="${K.face}"/>`,
+    duz: `<path d="M305 203 H335" stroke="${K.face}" stroke-width="10" stroke-linecap="round"/>`,
+    uzgun: `<path d="M302 209 Q320 195 338 209" fill="none" stroke="${K.face}" stroke-width="10" stroke-linecap="round"/>`,
   }[kind];
   return `<g id="mouth">${m}</g>`;
 }
@@ -92,15 +93,20 @@ const necktie = (c = '#D6322A') => `<g id="tie" transform="translate(320.5 244) 
 const bowtie = (c = '#D6322A') => `<g id="bowtie" transform="translate(320.5 268) scale(1.5) translate(-320.5 -252)">
   <path d="M320 252 L284 234 V272 Z M321 252 L357 234 V272 Z" fill="${c}" ${st(6)}/>
   <rect x="309" y="241" width="23" height="22" rx="6" fill="${c}" ${st(6)}/></g>`;
-const mustache = () => `<g id="mustache" transform="translate(320 176) scale(1.05 .9) translate(-320 -184)"><path d="M320 178 Q304 168 290 174 Q280 180 284 190 Q292 184 302 188 Q312 192 320 186 Q328 192 338 188 Q348 184 356 190 Q360 180 350 174 Q336 168 320 178 Z" fill="${K.line}"/></g>`;
+const mustache = () => `<g id="mustache" transform="translate(320 176) scale(1.05 .9) translate(-320 -184)"><path d="M320 178 Q304 168 290 174 Q280 180 284 190 Q292 184 302 188 Q312 192 320 186 Q328 192 338 188 Q348 184 356 190 Q360 180 350 174 Q336 168 320 178 Z" fill="${K.face}"/></g>`;
 
 function mascot({ arms = 'merhaba', brow = 'normal', eye = 'normal', mth = 'gulumse', extra = '', giyim = null, biyik = false, yanak = true } = {}) {
   const [L, R] = ARMS[arms];
   return [shadow(), legs(), handle(), arm('arm-l', ...shoulder('l', L[1]), ...L), arm('arm-r', ...shoulder('r', R[1]), ...R),
     giyim === 'kravat' ? collar() + necktie() : '', giyim === 'papyon' ? bowtie() : '',
-    head(), yanak ? cheeks() : '', brows(brow), eyes(eye), biyik ? mustache() : '', mouth(mth), extra].join('\n');
+    head(), yanak ? cheeks() : '', `<g id="face" filter="url(#kontur)">`, brows(brow), eyes(eye), biyik ? mustache() : '', mouth(mth), '</g>', extra].join('\n');
 }
-const wrap = (body, note) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="640" height="640">\n<!-- ${note} -->\n${body}\n</svg>\n`;
+// beyaz yüz organlarının çevresine ince siyah kontur
+const DEFS = `<defs><filter id="kontur" x="-20%" y="-20%" width="140%" height="140%">
+  <feMorphology in="SourceAlpha" operator="dilate" radius="3.5" result="d"/>
+  <feFlood flood-color="${K.line}"/><feComposite in2="d" operator="in" result="o"/>
+  <feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
+const wrap = (body, note) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="640" height="640">\n<!-- ${note} -->\n${DEFS}\n${body}\n</svg>\n`;
 
 // ---- set ----
 const SET = [
