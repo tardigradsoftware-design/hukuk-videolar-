@@ -189,7 +189,7 @@ def main():
     mix = np.tanh(mix * 1.0)  # yumuşak sınırlayıcı
     pcm = (np.clip(mix, -1, 1) * 32767).astype(np.int16).tobytes()
     subprocess.run(['ffmpeg', '-y', '-v', 'error', '-f', 's16le', '-ar', str(SR), '-ac', '1', '-i', '-',
-                    '-af', 'loudnorm=I=-14:TP=-1.5:LRA=11', '-ar', str(SR), cikti], input=pcm, check=True)
+                    '-af', f'loudnorm=I={next((a.split("=")[1] for a in sys.argv if a.startswith("--lufs=")), "-14")}:TP=-1.5:LRA=11', '-ar', str(SR), cikti], input=pcm, check=True)
 
 
 if __name__ == '__main__':

@@ -142,13 +142,20 @@
     if (pose === 'isaret') g = `<circle cx="0" cy="12" r="14" fill="${F}"/><rect x="-5" y="14" width="11" height="32" rx="5.5" fill="${F}"/><circle cx="${thumbX}" cy="7" r="6" fill="${F}"/>`;
     return `<g transform="${T}">${g}</g>`;
   }
-  function arm(side, a, aks) {
+  function tokmakElde(hx, hy, dir) {
+    return `<g transform="translate(${R(hx)} ${R(hy)}) rotate(${R(dir)})">
+      <rect x="-12" y="-7" width="74" height="14" rx="6" fill="#A8693E" ${ST(5)}/>
+      <rect x="52" y="-44" width="40" height="88" rx="11" fill="#A8693E" ${ST(6)}/>
+      <rect x="49" y="-50" width="46" height="15" rx="6" fill="${C.gold}" ${ST(5)}/><rect x="49" y="35" width="46" height="15" rx="6" fill="${C.gold}" ${ST(5)}/>
+      <path d="M60 -28 V24" stroke="#C98A55" stroke-width="5" stroke-linecap="round"/></g>`;
+  }
+  function arm(side, a, aks, tut) {
     const [sx, sy] = SH[side], sg = side === 'l' ? -1 : 1, st = a[3] || 1, L1 = 56 * st, L2 = 50 * st;
     const r1 = rad(a[0]), r2 = rad(a[0] + a[1]);
     const ex = sx + sg * Math.sin(r1) * L1, ey = sy + Math.cos(r1) * L1;
     const hx = ex + sg * Math.sin(r2) * L2, hy = ey + Math.cos(r2) * L2;
     const dir = deg(Math.atan2(hy - ey, hx - ex));
-    return `<path d="M${sx} ${sy} L${R(ex)} ${R(ey)} L${R(hx)} ${R(hy)}" fill="none" ${ST(10)}/>${elde(side, aks, hx, hy)}${hand(a[2], hx, hy, dir, sg)}`;
+    return `<path d="M${sx} ${sy} L${R(ex)} ${R(ey)} L${R(hx)} ${R(hy)}" fill="none" ${ST(10)}/>${elde(side, aks, hx, hy)}${tut === 'tokmak' && side === 'r' ? tokmakElde(hx, hy, dir) : ''}${hand(a[2], hx, hy, dir, sg)}`;
   }
 
   // ---------------- BACAKLAR (2 kemikli IK) ----------------
@@ -196,9 +203,9 @@
     return `<ellipse cx="300" cy="556" rx="${R(130 - jump * .5)}" ry="12" fill="#000" opacity="${R(.13 - jump * .0006)}"/>
     ${leg('l', hips.l, fL, lift[0])}${leg('r', hips.r, fR, lift[1])}
     <g transform="translate(0 ${R(40 + by - jump)}) rotate(${R(lean)} 300 430) translate(300 430) scale(${R(1 + sq * .5)} ${R(1 - sq)}) translate(-300 -430)">
-      ${(() => { const [bk, fr] = body(s.flap || 0).split('<!--ON-->'); return bk + (s.armBehind ? arm('r', s.armR, s.aks) : '') + fr; })()}${cubbe(s.aks)}
+      ${(() => { const [bk, fr] = body(s.flap || 0).split('<!--ON-->'); return bk + (s.armBehind ? arm('r', s.armR, s.aks, s.tut) : '') + fr; })()}${cubbe(s.aks)}
       <g id="face">${face}</g>
-      ${arm('l', s.armL, s.aks)}${s.armBehind ? '' : arm('r', s.armR, s.aks)}
+      ${arm('l', s.armL, s.aks)}${s.armBehind ? '' : arm('r', s.armR, s.aks, s.tut)}
     </g>
     <g transform="translate(0 ${R(40 + by - jump)})">${fx(s.fx, s.t || 0)}</g>`;
   }
@@ -209,6 +216,13 @@
     const [sx, sy] = SH[side], sg = side === 'l' ? -1 : 1, st = a[3] || 1;
     const r1 = rad(a[0]), r2 = rad(a[0] + a[1]);
     return [sx + sg * (Math.sin(r1) * 56 * st + Math.sin(r2) * 50 * st), sy + Math.cos(r1) * 56 * st + Math.cos(r2) * 50 * st];
+  }
+  function tokmakBas(a) {
+    const [sx, sy] = SH.r, st = a[3] || 1, r1 = rad(a[0]), r2 = rad(a[0] + a[1]);
+    const ex = sx + Math.sin(r1) * 56 * st, ey = sy + Math.cos(r1) * 56 * st;
+    const hx = ex + Math.sin(r2) * 50 * st, hy = ey + Math.cos(r2) * 50 * st;
+    const d = Math.atan2(hy - ey, hx - ex);
+    return [hx + Math.cos(d) * 72, hy + Math.sin(d) * 72];
   }
   // sağ kolu (tx,ty) noktasına uzat: [omuz açısı, dirsek, el, esneme]
   function kolIK(tx, ty, hand) {
@@ -377,6 +391,6 @@
     return s;
   }
 
-  const api = { C, draw, svg, poz, stateAt, elKonum, IFADE, VISEME, JEST };
+  const api = { C, draw, svg, poz, stateAt, elKonum, tokmakBas, kolIK, ifadeState, IFADE, VISEME, JEST };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.Dosya = api;
 })(this);
