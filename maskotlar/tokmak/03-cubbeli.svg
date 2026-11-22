@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+<!-- Cübbeli Tosun: Hakim cübbesi ve beyaz yakalı; elinde kanun kitabı. -->
+<ellipse cx="200" cy="374" rx="85" ry="11" fill="#000" opacity=".13"/><ellipse cx="172" cy="352" rx="24" ry="13" fill="#161616" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><ellipse cx="228" cy="352" rx="24" ry="13" fill="#161616" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M148 220 Q200 200 252 220 L276 350 H124 Z" fill="#161616" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M200 214 V350" stroke="#3a3a3a" stroke-width="4"/>
+<path d="M176 210 L200 254 L224 210" fill="#FFFFFF" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/><path d="M200 254 V230" stroke="#161616" stroke-width="3"/>
+<g transform="rotate(-8 264 280)"><rect x="230" y="240" width="68" height="84" rx="8" fill="#F0442C" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/><path d="M240 242 V322" stroke="#C2321D" stroke-width="6"/><rect x="248" y="256" width="40" height="14" rx="3" fill="#FFF4DA"/></g><circle cx="240" cy="296" r="15" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><circle cx="150" cy="290" r="15" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<g id="head">
+  <rect x="103" y="80" width="194" height="120" rx="33.6" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M246 173.60000000000002 Q270 164 275 173.60000000000002" fill="none" stroke="#161616" stroke-width="4" stroke-linecap="round" opacity=".18"/>
+  <rect x="75" y="70" width="34" height="140" rx="14" fill="#7E4A27" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="291" y="70" width="34" height="140" rx="14" fill="#7E4A27" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="99" y="76" width="12" height="128" rx="5" fill="#F6B92B" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="289" y="76" width="12" height="128" rx="5" fill="#F6B92B" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M83 84 V196" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" opacity=".35"/></g>
+<g id="eyes">
+  <circle cx="170" cy="132" r="13" fill="#161616"/><circle cx="230" cy="132" r="13" fill="#161616"/>
+  <circle cx="174.55" cy="127.45" r="4.29" fill="#FFFFFF"/><circle cx="234.55" cy="127.45" r="4.29" fill="#FFFFFF"/></g><path id="mouth" d="M186 162 Q200 178.8 214 162" fill="none" stroke="#161616" stroke-width="6" stroke-linecap="round"/><ellipse cx="142" cy="158" rx="10" ry="6" fill="#FF8A8A" opacity=".7"/><ellipse cx="258" cy="158" rx="10" ry="6" fill="#FF8A8A" opacity=".7"/>
+</svg>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+<!-- Bilge Tosun: Gözlüklü, papyonlu, bıyıklı; ağırbaşlı danışman havası. -->
+<ellipse cx="200" cy="374" rx="75" ry="11" fill="#000" opacity=".13"/><ellipse cx="172" cy="352" rx="24" ry="13" fill="#7E4A27" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><ellipse cx="228" cy="352" rx="24" ry="13" fill="#7E4A27" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="185" y="190" width="30" height="162" rx="13" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M200 214 L174 200 V228 Z M200 214 L226 200 V228 Z" fill="#F0442C" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="200" cy="214" r="7" fill="#F0442C" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M186 260 Q159 250 132 276" fill="none" stroke="#161616" stroke-width="13" stroke-linecap="round"/><path d="M186 260 Q159 250 132 276" fill="none" stroke="#A8693E" stroke-width="5" stroke-linecap="round"/><circle cx="132" cy="276" r="15" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><path d="M214 260 Q242 240 270 250" fill="none" stroke="#161616" stroke-width="13" stroke-linecap="round"/><path d="M214 260 Q242 240 270 250" fill="none" stroke="#A8693E" stroke-width="5" stroke-linecap="round"/><circle cx="270" cy="250" r="15" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+<g id="head">
+  <rect x="103" y="80" width="194" height="120" rx="33.6" fill="#C4844F" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M246 173.60000000000002 Q270 164 275 173.60000000000002" fill="none" stroke="#161616" stroke-width="4" stroke-linecap="round" opacity=".18"/>
+  <rect x="75" y="70" width="34" height="140" rx="14" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="291" y="70" width="34" height="140" rx="14" fill="#A8693E" stroke="#161616" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="99" y="76" width="12" height="128" rx="5" fill="#F6B92B" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="289" y="76" width="12" height="128" rx="5" fill="#F6B92B" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M83 84 V196" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" opacity=".35"/></g>
+<g id="eyes">
+  <circle cx="168" cy="134" r="11" fill="#161616"/><circle cx="232" cy="134" r="11" fill="#161616"/>
+  <circle cx="171.85" cy="130.15" r="3.6300000000000003" fill="#FFFFFF"/><circle cx="235.85" cy="130.15" r="3.6300000000000003" fill="#FFFFFF"/></g><g fill="none" stroke="#161616" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"><circle cx="168" cy="134" r="22"/><circle cx="232" cy="134" r="22"/><path d="M190 134 H210"/></g>
+<path d="M174 166 Q186 154 200 164 Q214 154 226 166 Q212 174 200 168 Q188 174 174 166 Z" fill="#161616"/>
+<ellipse cx="135" cy="162" rx="10" ry="6" fill="#FF8A8A" opacity=".7"/><ellipse cx="265" cy="162" rx="10" ry="6" fill="#FF8A8A" opacity=".7"/>
+</svg>
