@@ -35,7 +35,8 @@
 ## Üretim (token tasarruflu)
 ```
 node scripts/video/planla.js VID_XXX kisa|uzun     # otomatik plan → planlar/ (sahne, portal, ikon, damga, mimik, fırlatma)
-# yalnızca başlıkları (baslik) elle iyileştir; gerekirse küçük düzeltme
+# kısa: yalnızca başlıkları (baslik.js) iyileştir
+# UZUN: otomatik plan taslaktır; metindeki HER somut detay ekranda karşılık bulmalı (elle zenginleştir)
 node scripts/video/uret.js VID_XXX kisa|uzun       # render (+ tema: ID'ye göre bg/başlık/geçiş/altyazı)
 ```
 - Her render otomatik KONTROL raporu + `kontrol/<ID>.jpg` (2 fps) üretir; sorun varsa düzelt, yoksa geç.
@@ -45,5 +46,7 @@ node scripts/video/uret.js VID_XXX kisa|uzun       # render (+ tema: ID'ye göre
 - Her video yanında aynı adla `.txt`: başlık, açıklama, bölümler (uzun), etiketler, hashtagler. Render etmeden: `uret.js ... --sadece-meta`.
 - Kapak (uzun): kod tabanlı, 3 varyant (A koyu, B sarı, C açık) → `videolar/uzun/kapak/`. Metin: `kapak_yaz.js VID_XXX 'YAZI|VURGU|NESNE' x3` (3–4 kelime, merak boşluğu, başlığı tekrar etme, abartılı vaat yok), sonra `kapak.js VID_XXX`. YouTube'da "Test et ve karşılaştır" ile 3'ü birden yüklenir.
 - Para kazanma uyumu (YouTube "özgün olmayan içerik"): her video farklı plan+tema, özgün senaryo; şablon kopyası video üretme.
-- Plan öğeleri: edevlet, liste, damga, ikon, nesne (tokmak/belge/kitap), rozet, ok, yorum, adim, arama, portal, soru.
+- Uzun video önceliği: gerçek fayda > efekt. Platform adımları (e-Devlet, mobil uygulama, e-posta, şikâyet kanalları) temsili ekranla; koşullar `karsilastir`, gerekenler `kontrol` (söylendikçe ✓), başvuru metni `eposta` (alanlar söylendikçe dolar).
+- Daktilo en fazla 1,2 sn sürer, söylendiği an başlar; önemli detayı geciktirmez. Damga yalnızca gerçek uyarıda, videoda en fazla 2.
+- Plan öğeleri: edevlet, liste, damga, ikon, nesne (tokmak/belge/kitap), rozet, ok, yorum, adim, arama, portal (cihaz:'telefon', uygulama, ekran türleri: giris/arama/tablo/form/menu), not, kontrol, karsilastir, eposta, soru.
 - Mimik: notr, mutlu, bitkin, saskin, kizgin, dusunceli, korkmus, emin, uzgun. Jest: bekle, selam, anlat, isaret, yukari, omuz, basparmak, belde, dusun, eller_yukari, dur.

@@ -49,6 +49,25 @@ html,body{margin:0;width:${W}px;height:${H}px;overflow:hidden;background:#F4F4F2
 /* adım */
 .ad{display:flex;align-items:center;gap:16px}.ad .no{width:96px;height:96px;border-radius:24px;background:#E8402F;border:4px solid #151515;box-shadow:6px 6px 0 #151515;color:#fff;font-weight:900;font-size:58px;display:flex;align-items:center;justify-content:center}
 .ad b{font-weight:900;font-size:40px;color:#151515;line-height:1.05}
+/* kontrol listesi */
+.kl{padding:20px 26px;min-width:460px;max-width:640px}.kl h4{margin:0 0 10px;font-weight:900;font-size:22px;color:#8B8E95;letter-spacing:1px}
+.kl .m{display:flex;align-items:center;gap:14px;font-weight:800;font-size:26px;color:#151515;margin:10px 0;line-height:1.15}
+.kl .m i{flex:none;width:34px;height:34px;border:4px solid #151515;border-radius:9px;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:900;color:#fff;font-size:22px}
+.kl .m.ok i{background:#1E9E6A;border-color:#1E9E6A}.kl .m.ok i::after{content:'✓'}
+/* karşılaştırma */
+.kr{display:flex;gap:20px;align-items:stretch}.kr .sk{width:390px;padding:20px 24px}.kr .sk h4{margin:0 0 12px;font-weight:900;font-size:28px;padding:6px 14px;border-radius:10px;display:inline-block;color:#fff}
+.kr .sk.r-g h4{background:#1E9E6A}.kr .sk.r-k h4{background:#E8402F}.kr .sk.r-s h4{background:#151515}.kr .sk.r-y h4{background:#F6B92B;color:#151515}
+.kr .sk p{margin:10px 0;font-weight:800;font-size:26px;line-height:1.2;color:#151515}
+/* e-posta / dilekçe */
+.ep{width:620px;overflow:hidden}.ep .hd{background:#151515;color:#fff;font-weight:900;font-size:22px;padding:12px 20px;display:flex;gap:10px;align-items:center}
+.ep .f{display:flex;gap:10px;padding:10px 20px;border-bottom:2px solid #eee;font-size:19px;align-items:baseline}.ep .f b{flex:none;width:118px;color:#8B8E95;font-weight:800}
+.ep .f span{font-family:'JetBrains Mono',monospace;font-weight:700;color:#151515}.ep .f.on{background:#fff7d6}
+/* telefon */
+.pt.tel{border-radius:46px!important}.pt.tel .pt-bar{height:34px;background:#fff;border:0;justify-content:center}.pt.tel .pt-bar i{display:none}.pt.tel .pt-bar .pt-url{display:none}
+.pt.tel .pt-bar::after{content:'';width:110px;height:22px;background:#151515;border-radius:12px}
+.pt.tel .pt-hd .lg{background:#2F5BFF}.pt.tel .pt-body{top:92px}
+.pt .mn .r{display:flex;justify-content:space-between;align-items:center;padding:16px 16px;margin:8px 0;background:#fff;border-radius:12px;font-weight:800;font-size:19px;color:#22304a;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.pt .mn .r::after{content:'›';font-size:26px;color:#8B8E95}.pt .mn .r.hv{background:#eef4ff;outline:3px solid #2F5BFF}
 /* bilgi kartı */
 .nt{display:flex;align-items:center;gap:18px;padding:20px 26px;max-width:540px}.nt .em{font-size:56px}.nt small{display:block;font-weight:900;font-size:16px;letter-spacing:1px;color:#8B8E95;margin-bottom:4px}.nt b{display:block;font-weight:900;font-size:30px;line-height:1.15;color:#151515}
 /* form: onay kutuları */
@@ -110,6 +129,7 @@ function ekranHTML(id, e) {
   if (e.tur === 'giris') h = `<div class="lgn"><h3>${esc(e.baslik || 'Giriş Yap')}</h3>${e.alanlar.map(fld).join('')}<div class="bt" data-id="${e.buton.id}">${esc(e.buton.t)}</div></div>`;
   if (e.tur === 'arama') h = `<h3>${esc(e.baslik || 'Hizmet Ara')}</h3><div class="in ara" data-id="${e.alan}"><span class="em" style="font-size:20px;margin-right:10px">🔍</span><span data-val></span><span class="ph">${esc(e.ph || 'Hizmet veya kurum ara…')}</span></div>
     <div class="rs" data-rs="${e.alan}">${e.sonuclar.map((r, i) => `<div class="r" data-id="${r.id || 'r' + i}"><b>${esc(r.t)}</b>${r.s ? `<span>${esc(r.s)}</span>` : ''}</div>`).join('')}</div>`;
+  if (e.tur === 'menu') h = `<h3>${esc(e.baslik)}</h3><div class="mn">${e.satirlar.map((r, i) => `<div class="r" data-id="m${i}">${esc(r)}</div>`).join('')}</div>`;
   if (e.tur === 'tablo') h = `<h3>${esc(e.baslik)}</h3><table><tr>${e.kolonlar.map(k => `<th>${esc(k)}</th>`).join('')}</tr>${e.satirlar.map((r, i) => `<tr data-id="row${i}">${r.map((c, j) => `<td>${j === r.length - 1 && e.durum ? `<span class="ch ${e.durumRenk || ''}">${esc(c)}</span>` : esc(c)}</td>`).join('')}</tr>`).join('')}</table>`;
   if (e.tur === 'form') h = `<h3>${esc(e.baslik)}</h3>${(e.kutular || []).map((k, i) => `<div class="cb" data-id="cb${i}"><i></i>${esc(k)}</div>`).join('')}${(e.ust || []).map(b => `<div class="bt ik" data-id="${b.id}" style="margin-bottom:16px">${esc(b.t)}</div>`).join('')}${e.alanlar.map(fld).join('')}${e.butonlar.map(b => `<div class="bt" data-id="${b.id}">${esc(b.t)}</div>`).join(' ')}${e.toast ? `<div class="tst" data-id="${e.toast.id}">${esc(e.toast.t)}</div>` : ''}`;
   return `<div class="sc" data-sc="${id}">${h}</div>`;
@@ -124,12 +144,15 @@ const NESNE = {
 
 const TIPLER = {
   nesne: p => `<div class="ik">${NESNE[p.ad] || `<span class="em" style="font-size:120px">${p.ad}</span>`}${p.yazi ? `<b>${esc(p.yazi)}</b>` : ''}</div>`,
-  portal: p => `<div class="pt" style="width:${p.w}px;height:${p.h}px"><div class="pt-bar"><i></i><i></i><i></i><div class="pt-url"><span class="em">🔒</span><span data-url></span></div></div>
-    <div class="pt-hd"><span class="lg">e</span>e-Devlet Kapısı<span class="us">${esc(p.kullanici || '')}</span></div>
+  portal: p => `<div class="pt${p.cihaz === 'telefon' ? ' tel' : ''}" style="width:${p.w}px;height:${p.h}px"><div class="pt-bar"><i></i><i></i><i></i><div class="pt-url"><span class="em">🔒</span><span data-url></span></div></div>
+    <div class="pt-hd"><span class="lg">${esc((p.uygulama || 'e').slice(0, 1))}</span>${esc(p.uygulama || 'e-Devlet Kapısı')}<span class="us">${esc(p.kullanici || '')}</span></div>
     <div class="pt-body">${Object.entries(p.ekranlar).map(([id, e]) => ekranHTML(id, e)).join('')}</div>
     <div class="pt-rip"></div><svg class="pt-cur" viewBox="0 0 34 34"><path d="M5 3 L5 27 L11 21 L15 31 L20 29 L16 19 L25 19 Z" fill="#fff" stroke="#151515" stroke-width="2.5" stroke-linejoin="round"/></svg>
     <div class="pt-tag">TEMSİLİ GÖRÜNTÜ</div></div>`,
   not: p => `<div class="kart nt"><span class="em">${p.e || '📌'}</span><div><small>${esc(p.ust || '')}</small><b>${esc(p.yazi)}</b></div></div>`,
+  kontrol: p => `<div class="kart kl">${p.baslik ? `<h4>${esc(p.baslik)}</h4>` : ''}${p.maddeler.map((m, i) => `<div class="m" data-kl="${i}"><i></i>${esc(m)}</div>`).join('')}</div>`,
+  karsilastir: p => `<div class="kr">${p.sutunlar.map((c, i) => `<div class="kart sk r-${c.renk || 's'}" data-sub="${i}"><h4>${esc(c.baslik)}</h4>${c.satirlar.map(r => `<p>${esc(r)}</p>`).join('')}</div>`).join('')}</div>`,
+  eposta: p => `<div class="kart ep"><div class="hd"><span class="em">✉️</span>${esc(p.baslik || 'Yeni e-posta')}</div>${p.alanlar.map((a, i) => `<div class="f" data-ep="${i}"><b>${esc(a.etiket)}</b><span data-v="${esc(a.deger)}"></span></div>`).join('')}</div>`,
   soru: p => `<div class="kart sr"><span class="em ic">${p.e || '💬'}</span><div class="tx"><small>${esc(p.ust || 'YORUMLARA YAZ 👇')}</small>${esc(p.yazi)}</div></div>`,
   edevlet: p => `<div class="kart ed"><div class="hd"><span class="em">🇹🇷</span>${esc(p.baslik || 'e-Devlet Kapısı')}</div>${(p.satirlar || []).map((r, i) => `<div class="row" data-sub="${i}"><span>${esc(r.t)}</span>${r.rozet ? `<span class="rz" data-rz="${i}">${esc(r.rozet)}</span>` : `<span class="muted">${esc(r.sag || '')}</span>`}</div>`).join('')}</div>`,
   liste: p => `<div class="kart ls">${p.ogeler.map((r, i) => `<div class="it" data-sub="${i}"><span class="em">${r.e}</span>${esc(r.t)}</div>`).join('')}</div>`,
@@ -206,7 +229,7 @@ function portal(o, i, el, t){
   el.querySelectorAll('.sc').forEach(sc=>{ const on = sc.dataset.sc===scr, k=cl((t-scrT)/.25,0,1); sc.style.opacity = on ? k : 0; sc.style.transform = on ? 'translateX('+((1-easeIO(k))*40)+'px)' : 'none'; });
   // yazı alanları, adres
   const typed = {};
-  acts.forEach(a=>{ if (a.yap==='yaz' || a.yap==='url') { const n = Math.floor(cl((t-a.T)*(a.hiz||14),0,a.yazi.length)); if (t>=a.T) typed[a.yap==='url'?'__url':a.alan] = { s:a.yazi.slice(0,n), done:n>=a.yazi.length, act: t < a.T + a.yazi.length/(a.hiz||14) + .4 }; } });
+  acts.forEach(a=>{ if (a.yap==='yaz' || a.yap==='url') { const hz = Math.max(a.hiz||14, a.yazi.length/1.2); const n = Math.floor(cl((t-a.T)*hz,0,a.yazi.length)); if (t>=a.T) typed[a.yap==='url'?'__url':a.alan] = { s:a.yazi.slice(0,n), done:n>=a.yazi.length, act: t < a.T + a.yazi.length/hz + .4 }; } });
   el.querySelector('[data-url]').textContent = typed.__url ? typed.__url.s : '';
   el.querySelectorAll('.in[data-id]').forEach(n=>{ const v = typed[n.dataset.id]; n.querySelector('[data-val]').textContent = v ? v.s : ''; n.querySelector('.ph').style.display = v && v.s ? 'none':'inline'; n.classList.toggle('fo', !!(v && v.act)); });
   el.querySelectorAll('[data-rs]').forEach(n=>{ const v = typed[n.dataset.rs]; n.style.opacity = v && v.s.length >= 4 ? 1 : 0; });
@@ -286,7 +309,9 @@ function frame(t){
     el.querySelectorAll('[data-sub]').forEach(sub => { const st = (o.altT||[])[+sub.dataset.sub]; const k = st==null ? 1 : cl((t-st)/.3,0,1); sub.style.opacity = k; sub.style.transform = 'translateX('+((1-backOut(k))*30)+'px)'; });
     el.querySelectorAll('[data-rz]').forEach(rz => { const st = (o.rozetT||[])[+rz.dataset.rz]; const k = st==null ? 1 : cl((t-st)/.3,0,1); rz.style.opacity = k; rz.style.transform = 'scale('+(st==null?1:.4+.6*backOut(k))+')'; });
     if (o.tip === 'portal') portal(o, i, el, t);
-    el.querySelectorAll('[data-yaz]').forEach(y => { const txt = y.dataset.yaz, st = o.yazT ?? o.t0 + .3, n = Math.floor(cl((t-st)*(o.hiz||9),0,txt.length)); y.textContent = txt.slice(0,n); });
+    el.querySelectorAll('[data-yaz]').forEach(y => { const txt = y.dataset.yaz, st = o.yazT ?? o.t0 + .3, hz = Math.max(o.hiz||9, txt.length/1.2), n = Math.floor(cl((t-st)*hz,0,txt.length)); y.textContent = txt.slice(0,n); });
+    el.querySelectorAll('[data-kl]').forEach(m => { const st = (o.altT||[])[+m.dataset.kl]; const k = st==null ? 1 : cl((t-st)/.25,0,1); m.style.opacity = .35 + .65*k; m.classList.toggle('ok', st!=null && t >= st + .1); });
+    el.querySelectorAll('[data-ep]').forEach(f => { const st = (o.altT||[])[+f.dataset.ep]; const v = f.querySelector('[data-v]'), txt = v.dataset.v; if (st==null) { v.textContent = txt; return; } const hz = Math.max(18, txt.length/.9), n = Math.floor(cl((t-st)*hz,0,txt.length)); v.textContent = txt.slice(0,n); f.classList.toggle('on', t>=st && t<st+txt.length/hz+.5); });
   });
   // altyazı: iki kelimelik pencere, konuşulan kelime vurgulu
   const W = TL.kelimeler, sub = document.getElementById('sub');

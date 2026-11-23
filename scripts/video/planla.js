@@ -39,7 +39,7 @@ const IKON = [
 ];
 const NESNE = [['dilekçe', 'belge', 'DİLEKÇE'], ['başvuru', 'belge', 'BAŞVURU'], ['ihtarname', 'belge', 'İHTARNAME'], ['dava', 'tokmak', 'DAVA'],
   ['karar', 'tokmak', 'KARAR'], ['hakim', 'tokmak', 'HAKİM'], ['kanun', 'kitap', 'KANUN'], ['yasa', 'kitap', 'YASA'], ['madde', 'kitap', 'MADDE']];
-const DAMGA = [['zamanaşımı', '✗ ZAMANAŞIMI'], ['iptal', '✗ İPTAL'], ['geçersiz', '✗ GEÇERSİZ'], ['yasak', '✗ YASAK'], ['sakın', 'SAKIN!'],
+const DAMGA = [['zamanaşımı', '✗ ZAMANAŞIMI'], ['geçersiz', '✗ GEÇERSİZ'], ['yasak', '✗ YASAK'], ['sakın', 'SAKIN!'],
   ['kaybeder', '✗ KAYBEDERSİN'], ['dolandırıcı', '✗ DOLANDIRICILIK'], ['haksız', '✗ HAKSIZ'], ['usulsüz', '✗ USULSÜZ'], ['devlete geç', '✗ DEVLETE GEÇER']];
 const OLUMLU = /(ücretsiz|bedava|geri al|alabilirsin|kazan|hakkın var|hakkındır|iade|hesabına|çözüm|korur|koruyan)/;
 const UYARI = /(sakın|dikkat|ceza|kaybeder|zamanaşımı|yasak|iptal|haciz|icra|tehlike|risk|mağdur)/;
@@ -108,7 +108,7 @@ function planla(ID, TUR) {
   // --- yerleşim yuvaları
   const Y0 = KISA ? { A: [360, 425], B: [540, 688], C: [190, 688], soru: [360, 440] } : { A: [480, 560], B: [1030, 360], C: [1030, 700], soru: [560, 845], portal: [620, 590] };
   const MIMIK_DONGU = [['emin', 'isaret'], ['notr', 'anlat'], ['emin', 'anlat'], ['notr', 'isaret']];
-  let firlatSay = 0, mi = 0, Y, portalVar = false;
+  let firlatSay = 0, mi = 0, Y, portalVar = false, damgaSay = 0;
 
   const sahneler = gruplar.map((g, gi) => {
     const i0 = g.cs[0].i0, i1 = g.cs[g.cs.length - 1].i1;
@@ -200,7 +200,7 @@ function planla(ID, TUR) {
     // --- sayılar (süre, tutar) ve damga
     sayilar(words, i0, i1).slice(0, 1).forEach(n => ekle({ tip: 'rozet', k: n.k, e: n.e, yazi: n.yazi, renk: 'y', rot: -3 }, ['C', 'B']));
     const dm = DAMGA.map(([kok, yazi]) => ({ k: bulKok(words, i0, i1, kok), yazi })).filter(d => d.k >= 0).sort((a, b) => a.k - b.k)[0];
-    if (dm) { const A = s.ogeler.find(o => o.tip === 'portal') ? Y.portal : Y.A; s.ogeler.push({ tip: 'damga', k: dm.k, x: A[0], y: A[1] + (KISA ? 10 : 60), yazi: dm.yazi, rot: -8 }); }
+    if (dm && damgaSay++ < 2) { const A = s.ogeler.find(o => o.tip === 'portal') ? Y.portal : Y.A; s.ogeler.push({ tip: 'damga', k: dm.k, x: A[0], y: A[1] + (KISA ? 10 : 60), yazi: dm.yazi, rot: -8 }); }
     // --- mimikler: cümle başlarında döngü + duyguya göre
     g.cs.forEach((c, ci) => {
       const t = low(c.t);

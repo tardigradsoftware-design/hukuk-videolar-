@@ -114,12 +114,12 @@ tl.ogeler.forEach(o => {
   else if (o.tip === 'soru') ev(o.t0, 'bildirim');
   else if (o.tip === 'rozet' && o.renk === 'g') { ev(o.t0, 'pop'); ev(o.t0 + .12, 'ding', .7); }
   else ev(o.t0, 'pop');
-  (o.altT || []).forEach(t => ev(t, 'tik'));
+  (o.altT || []).forEach(t => ev(t, o.tip === 'kontrol' ? 'ding' : 'tik', o.tip === 'kontrol' ? .5 : 1));
   (o.rozetT || []).forEach(t => t != null && ev(t, 'ding', .6));
   const yazTxt = o.tip === 'yorum' || o.tip === 'arama' ? o.yazi : null;
-  if (yazTxt) { const st = o.yazT ?? o.t0 + .3, hz = o.hiz || 9; for (let c = 0; c < yazTxt.length; c++) if (yazTxt[c] !== ' ') ev(st + c / hz, 'key'); }
+  if (yazTxt) { const st = o.yazT ?? o.t0 + .3, hz = Math.max(o.hiz || 9, yazTxt.length / 1.2); for (let c = 0; c < yazTxt.length; c++) if (yazTxt[c] !== ' ') ev(st + c / hz, 'key'); }
   (o.akis || []).forEach(a => {
-    if (a.yap === 'yaz' || a.yap === 'url') { const hz = a.hiz || 14; for (let c = 0; c < a.yazi.length; c++) if (a.yazi[c] !== ' ') ev(a.T + c / hz, 'key'); }
+    if (a.yap === 'yaz' || a.yap === 'url') { const hz = Math.max(a.hiz || 14, a.yazi.length / 1.2); for (let c = 0; c < a.yazi.length; c++) if (a.yazi[c] !== ' ') ev(a.T + c / hz, 'key'); }
     if (a.yap === 'tikla') ev(a.T, 'click');
     if (a.yap === 'ekran') ev(a.T, 'swish', .6);
     if (a.yap === 'goster') ev(a.T, 'ding', .7);
