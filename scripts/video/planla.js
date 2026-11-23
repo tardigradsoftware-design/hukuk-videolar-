@@ -106,7 +106,7 @@ function planla(ID, TUR) {
   const adimSayisi = gruplar.filter(g => g.tip === 'adim').length;
 
   // --- yerleşim yuvaları
-  const Y0 = KISA ? { A: [360, 425], B: [540, 688], C: [190, 688], soru: [360, 440] } : { A: [480, 560], B: [1030, 360], C: [1030, 700], soru: [560, 845], portal: [620, 590] };
+  const Y0 = KISA ? { A: [360, 425], B: [540, 688], C: [190, 688], soru: [360, 440] } : { A: [480, 560], B: [1080, 360], C: [1080, 700], soru: [560, 845], portal: [620, 590] };
   const MIMIK_DONGU = [['emin', 'isaret'], ['notr', 'anlat'], ['emin', 'anlat'], ['notr', 'isaret']];
   let firlatSay = 0, mi = 0, Y, portalVar = false, damgaSay = 0;
 
@@ -247,13 +247,14 @@ function planla(ID, TUR) {
         ['savcılı', '⚖️', 'Savcılık'], ['noter', '✒️', 'Noter'], ['kep', '📧', 'KEP'], ['alo 175', '☎️', 'ALO 175'], ['ticaret bakanlığı', '🏛️', 'Ticaret Bakanlığı'], ['btk', '📡', 'BTK'],
         ['bilgi teknolojileri', '📡', 'BTK'], ['kvkk', '🔐', 'KVKK'], ['kişisel verileri koruma', '🔐', 'KVKK'], ['icra dairesi', '🏛️', 'İcra Dairesi'], ['emniyet', '🚓', 'Emniyet'], ['karakol', '🚓', 'Karakol'], ['baro', '⚖️', 'Baro']];
       const kanallar = []; KANAL.forEach(([kok, e, ad]) => { const k = bulKok(words, i0, i1, kok); if (k >= 0 && !kanallar.some(x => x.ad === ad || (ad.includes('Tahkim') && x.ad.includes('Tahkim')))) kanallar.push({ k, e, ad }); });
-      kanallar.sort((a, b) => a.k - b.k).slice(0, 2).forEach((x, j) => s.ogeler.push({ tip: 'rozet', k: x.k, x: 600, y: j ? 855 : 745, e: x.e, yazi: x.ad, renk: j ? 'b' : 's', rot: j ? 2 : -2 }));
+      kanallar.sort((a, b) => a.k - b.k).slice(0, 2).forEach((x, j) => s.ogeler.push({ tip: 'rozet', k: x.k, x: 600, y: j ? 875 : 775, e: x.e, yazi: x.ad, renk: j ? 'b' : 's', rot: j ? 2 : -2 }));
       // büyük öğeleri yerleştir: aynı anda tek büyük öğe, sırayla
       if (buyuk.length) {
         s.ogeler.forEach(o => { if (['liste', 'edevlet'].includes(o.tip)) buyuk.push(o); });
         s.ogeler = s.ogeler.filter(o => !['liste', 'edevlet'].includes(o.tip));
         const eskiPortal = s.ogeler.find(o => o.tip === 'portal'); if (eskiPortal) { buyuk.push(eskiPortal); s.ogeler = s.ogeler.filter(o => o !== eskiPortal); }
         buyuk.sort((a, b) => a.k - b.k);
+        for (let j = buyuk.length - 1; j >= 0; j--) { const b = buyuk[j]; if (['liste', 'edevlet', 'not'].includes(b.tip) && buyuk.some(o => o !== b && !['liste', 'edevlet', 'not'].includes(o.tip) && Math.abs(o.k - b.k) <= 3)) buyuk.splice(j, 1); }
         buyuk.forEach((b, j) => {
           if (b.tip === 'portal' && b.cihaz === 'telefon') { b.x = 430; b.y = 590; }
           else if (b.tip === 'portal') { b.x = b.x || Y0.portal[0]; b.y = b.y || Y0.portal[1]; }
@@ -262,6 +263,12 @@ function planla(ID, TUR) {
           s.ogeler.push(b);
         });
         bos.delete('A');
+        const ilkB = Math.min(...buyuk.map(b => b.k));
+        if (ilkB - i0 > 8) {   // ilk büyük öğeye kadar ana alan boş kalmasın: adım özeti
+          const c0 = g.cs[0], w = c0.w.slice(g.tip === 'adim' ? 2 : 0).map(temiz).filter(Boolean).join(' ');
+          const ks = w.length > 46 ? w.slice(0, w.lastIndexOf(' ', 46)) + '…' : w; const ik = IKON.find(([k]) => low(w).includes(k));
+          s.ogeler.push({ tip: 'not', k: c0.i0 + (g.tip === 'adim' ? 2 : 0), k1: ilkB, x: 480, y: 560, e: ik ? ik[1] : '✅', ust: g.tip === 'adim' ? `${g.adim}. ADIM` : 'BİLMEN GEREKEN', yazi: ks.charAt(0).toLocaleUpperCase('tr') + ks.slice(1) });
+        }
         if (s.ogeler.some(o => o.tip === 'portal' || o.tip === 'karsilastir' || o.tip === 'eposta')) { bos.delete('C'); }
       }
       if (kanallar.length) { bos.delete('C'); }
@@ -275,6 +282,17 @@ function planla(ID, TUR) {
       ekle({ tip: 'not', k: c0.i0 + (g.tip === 'adim' ? 2 : 0), e: ik ? ik[1] : (g.tip === 'adim' ? '✅' : '📌'), ust: g.tip === 'adim' ? `${g.adim}. ADIM` : 'BİLMEN GEREKEN', yazi: kisa.charAt(0).toLocaleUpperCase('tr') + kisa.slice(1) }, ['A']);
     }
     if (dm) s.mimik.push([dm.k, 'korkmus', 'eller_yukari']);
+    // --- çakışma önleme
+    if (!KISA) {
+      const genis = s.ogeler.filter(o => ['karsilastir', 'eposta'].includes(o.tip) || (o.tip === 'portal' && o.cihaz !== 'telefon'));
+      s.ogeler = s.ogeler.filter(o => {
+        if (!['ikon', 'nesne'].includes(o.tip)) return true;
+        for (const w of genis) { const w1 = w.k1 ?? 1e9;
+          if (o.k < w.k) { o.k1 = Math.min(o.k1 ?? 1e9, w.k); if (o.k1 === 1e9) delete o.k1; }
+          else if (o.k < w1) return false; }
+        return true; });
+      if (s.ogeler.some(o => o.tip === 'rozet' && o.y >= 775)) s.ogeler.forEach(o => { if (['edevlet', 'liste', 'not', 'kontrol'].includes(o.tip)) o.y = 520; });
+    } else s.ogeler.forEach(o => { if (o.tip === 'nesne') o.y -= 18; });
     s.mimik.sort((a, b) => a[0] - b[0]);
     return s;
   });
