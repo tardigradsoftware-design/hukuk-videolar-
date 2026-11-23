@@ -601,5 +601,22 @@ module.exports = {
   "ifade": "mutlu",
   "jest": "selam",
   "uzat": 2.5
- }
+ },
+ "kapak": [
+  {
+   "yazi": "ADINA ŞİRKET AÇILMIŞ!",
+   "vurgu": "ŞİRKET",
+   "nesne": "🏢"
+  },
+  {
+   "yazi": "HACİZ GELMEDEN KİLİTLE",
+   "vurgu": "KİLİTLE",
+   "nesne": "🔒"
+  },
+  {
+   "yazi": "TEK AYARLA KORUN",
+   "vurgu": "KORUN",
+   "nesne": "🪪"
+  }
+ ]
 };

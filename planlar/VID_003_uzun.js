@@ -539,5 +539,22 @@ module.exports = {
   "ifade": "mutlu",
   "jest": "selam",
   "uzat": 2.5
- }
+ },
+ "kapak": [
+  {
+   "yazi": "BANKA BUNU SÖYLEMEZ!",
+   "vurgu": "SÖYLEMEZ",
+   "nesne": "🏦"
+  },
+  {
+   "yazi": "SİGORTA ZORUNLU DEĞİL",
+   "vurgu": "DEĞİL",
+   "nesne": "🛡️"
+  },
+  {
+   "yazi": "PARANI GERİ AL",
+   "vurgu": "GERİ",
+   "nesne": "💸"
+  }
+ ]
 };
