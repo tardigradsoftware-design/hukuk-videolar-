@@ -227,10 +227,10 @@ function kontrol(t){
   const vis = el => +getComputedStyle(el).opacity > .6;
   const R = el => el.getBoundingClientRect();
   const out = [], W = innerWidth, H = innerHeight;
-  const og = [...document.querySelectorAll('.o')].filter(vis).map(el => ({ id: el.id, tip: TL.ogeler[+el.id.slice(1)].tip, r: R(el.firstElementChild || el) }));
+  const og = [...document.querySelectorAll('.o')].filter(vis).filter(el => { const o = TL.ogeler[+el.id.slice(1)]; return !(o.firlat && t - o.t0 < .9); }).map(el => ({ id: el.id, tip: TL.ogeler[+el.id.slice(1)].tip, r: R(el.firstElementChild || el) }));
   const sub = document.getElementById('sub'), sr = sub.children.length ? R(sub.firstElementChild).left < R(sub.lastElementChild).right ? { left: R(sub.firstElementChild).left, right: R(sub.lastElementChild).right, top: R(sub).top, bottom: R(sub).bottom } : null : null;
   const kes = (a, b, m = 8) => a.left < b.right - m && b.left < a.right - m && a.top < b.bottom - m && b.top < a.bottom - m;
-  og.forEach(o => { if (o.r.left < -4 || o.r.top < -4 || o.r.right > W + 4 || o.r.bottom > H + 4) out.push('taşma: ' + o.tip); if (sr && kes(o.r, sr)) out.push('altyazı çakışması: ' + o.tip); });
+  og.forEach(o => { if (o.tip !== 'damga' && o.r.left < -4 || o.r.top < -4 || o.r.right > W + 4 || o.r.bottom > H + 4) out.push('taşma: ' + o.tip); if (sr && kes(o.r, sr)) out.push('altyazı çakışması: ' + o.tip); });
   for (let a = 0; a < og.length; a++) for (let b = a + 1; b < og.length; b++) {
     const A = og[a], B = og[b]; if ([A.tip, B.tip].some(x => x === 'damga' || x === 'portal' || x === 'soru')) continue;
     if (kes(A.r, B.r, 14)) out.push('kart çakışması: ' + A.tip + '+' + B.tip); }

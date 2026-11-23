@@ -12,8 +12,8 @@ module.exports = {
       ogeler: [
         { tip: 'edevlet', k: 0, x: 420, y: 520, satirlar: [{ t: 'Şahıs ödemeleri', sag: 'sorgulanıyor…' }, { t: 'Adına bekleyen ödeme', rozet: 'VAR ✓' }], alt: [0, 8], rozetK: [9] },
         { tip: 'damga', k: 15, x: 420, y: 540, yazi: '✗ ZAMANAŞIMI', rot: -8 },
-        { tip: 'rozet', k: 20, x: 900, y: 420, e: '📅', yazi: 'YILDA EN AZ 1 KEZ', renk: 'y', rot: -3 },
-        { tip: 'rozet', k: 40, x: 900, y: 590, e: '✅', yazi: '5 NET ADIM', renk: 'k', rot: 2, firlat: true },
+        { tip: 'rozet', k: 20, x: 1000, y: 400, e: '📅', yazi: 'YILDA EN AZ 1 KEZ', renk: 'y', rot: -3 },
+        { tip: 'rozet', k: 40, x: 1000, y: 600, e: '✅', yazi: '5 NET ADIM', renk: 'k', rot: 2, firlat: true },
       ],
     },
     { // 1. ADIM — giriş + arama + ödeme tablosu
@@ -64,7 +64,7 @@ module.exports = {
           ],
         }),
         { tip: 'rozet', k: 152, x: 980, y: 330, e: '📞', yazi: 'ÇIKIŞ / BİRLEŞTİRME', renk: 'y', rot: -3 },
-        { tip: 'rozet', k: 160, x: 300, y: 830, e: '💳', yazi: "IBAN'INA ÇEK", renk: 'g', rot: 2 },
+        { tip: 'rozet', k: 160, x: 440, y: 840, e: '💳', yazi: "IBAN'INA ÇEK", renk: 'g', rot: 2 },
       ],
     },
     { // 3. ADIM — zamanaşımı hesaplar
@@ -88,7 +88,7 @@ module.exports = {
         }),
         { tip: 'damga', k: 199, x: 620, y: 660, yazi: "HAZİRAN'DAN ÖNCE!", rot: -7 },
         { tip: 'rozet', k: 202, x: 980, y: 330, e: '🪪', yazi: 'KİMLİKLE ŞUBEYE', renk: 'g', rot: 3 },
-        { tip: 'soru', k: 205, x: 360, y: 845, e: '💬', yazi: "Buraya kadar izlediysen 'TAMAM' yaz", ust: 'YORUMLARA YAZ 👇' },
+        { tip: 'soru', k: 205, x: 560, y: 845, e: '💬', yazi: "Buraya kadar izlediysen 'TAMAM' yaz", ust: 'YORUMLARA YAZ 👇' },
       ],
     },
     { // 4. ADIM — IBAN tanımlama formu
@@ -115,17 +115,17 @@ module.exports = {
           ],
         }),
         { tip: 'rozet', k: 242, x: 980, y: 330, e: '🚫', yazi: 'PTT SIRASI YOK', renk: 'k', rot: -3 },
-        { tip: 'rozet', k: 248, x: 300, y: 830, e: '💸', yazi: 'DOĞRUDAN HESABINA', renk: 'g', rot: 2 },
+        { tip: 'rozet', k: 248, x: 440, y: 840, e: '💸', yazi: 'DOĞRUDAN HESABINA', renk: 'g', rot: 2 },
       ],
     },
     { // 5. ADIM — B planı
       k: 252, adim: 5, baslik: ['5. ADIM', 'B PLANI'],
       mimik: [[252, 'dusunceli', 'dusun'], [256, 'notr', 'anlat'], [271, 'notr', 'isaret'], [279, 'mutlu', 'basparmak']],
       ogeler: [
-        { tip: 'liste', k: 256, x: 560, y: 480, ogeler: [{ e: '📮', t: "PTT'ye aktarıldı → kimlikle PTT şubesi" }, { e: '📝', t: "Kuruma döndü → SGK'ya dilekçe" }], alt: [256, 271] },
-        { tip: 'ikon', k: 265, x: 380, y: 720, e: '🪪', yazi: 'Nüfus cüzdanı' },
-        { tip: 'nesne', k: 276, x: 760, y: 700, ad: 'belge', yazi: 'DİLEKÇE', rot: 6, firlat: 'el' },
-        { tip: 'rozet', k: 279, x: 560, y: 860, e: '✅', yazi: 'YENİDEN HESABINA', renk: 'g', rot: -2 },
+        { tip: 'liste', k: 256, x: 560, y: 420, ogeler: [{ e: '📮', t: "PTT'ye aktarıldı → kimlikle PTT şubesi" }, { e: '📝', t: "Kuruma döndü → SGK'ya dilekçe" }], alt: [256, 271] },
+        { tip: 'ikon', k: 265, x: 300, y: 700, e: '🪪', yazi: 'Nüfus cüzdanı' },
+        { tip: 'nesne', k: 276, x: 900, y: 700, ad: 'belge', yazi: 'DİLEKÇE', rot: 6, firlat: 'el' },
+        { tip: 'rozet', k: 279, x: 540, y: 880, e: '✅', yazi: 'YENİDEN HESABINA', renk: 'g', rot: -2 },
       ],
     },
     { // KAPANIŞ
