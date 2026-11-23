@@ -50,7 +50,7 @@ module.exports = {
      ]
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "ikon",
      "k": 0,
@@ -60,7 +60,7 @@ module.exports = {
      "firlat": "el"
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 15,
@@ -94,15 +94,6 @@ module.exports = {
     ]
    ],
    "ogeler": [
-    {
-     "x": 980,
-     "y": 330,
-     "tip": "ikon",
-     "k": 50,
-     "e": "🪪",
-     "yazi": "KİMLİK",
-     "rot": 5
-    },
     {
      "tip": "portal",
      "k": 43,
@@ -274,7 +265,7 @@ module.exports = {
      "tip": "rozet",
      "k": 77,
      "x": 600,
-     "y": 745,
+     "y": 775,
      "e": "🏛️",
      "yazi": "Ticaret Bakanlığı",
      "renk": "s",
@@ -385,16 +376,6 @@ module.exports = {
        "hedef": "cb1"
       }
      ]
-    },
-    {
-     "x": 980,
-     "y": 330,
-     "tip": "nesne",
-     "k": 111,
-     "ad": "belge",
-     "yazi": "BAŞVURU",
-     "rot": 6,
-     "firlat": "el"
     }
    ],
    "adim": 3
@@ -502,15 +483,6 @@ module.exports = {
        "hedef": "cb1"
       }
      ]
-    },
-    {
-     "x": 980,
-     "y": 330,
-     "tip": "nesne",
-     "k": 176,
-     "ad": "belge",
-     "yazi": "BAŞVURU",
-     "rot": 6
     }
    ],
    "adim": 4
@@ -539,15 +511,6 @@ module.exports = {
     ]
    ],
    "ogeler": [
-    {
-     "x": 980,
-     "y": 330,
-     "tip": "ikon",
-     "k": 207,
-     "e": "🏢",
-     "yazi": "ŞİRKET",
-     "rot": 5
-    },
     {
      "tip": "portal",
      "k": 205,
