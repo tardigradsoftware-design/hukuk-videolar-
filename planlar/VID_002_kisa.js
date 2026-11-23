@@ -5,8 +5,8 @@ module.exports = {
   {
    "k": 0,
    "baslik": [
-    "ADINA ŞİRKET AÇILMASINI",
-    "1 DAKİKADA ENGELLE"
+    "KİMLİĞİN SIZDIYSA",
+    "ADINA ŞİRKET AÇILIR"
    ],
    "mimik": [
     [
@@ -23,7 +23,7 @@ module.exports = {
    "ogeler": [
     {
      "x": 360,
-     "y": 470,
+     "y": 425,
      "tip": "ikon",
      "k": 0,
      "e": "🪪",
@@ -33,7 +33,7 @@ module.exports = {
     },
     {
      "x": 540,
-     "y": 690,
+     "y": 688,
      "tip": "ikon",
      "k": 7,
      "e": "🏢",
@@ -45,8 +45,8 @@ module.exports = {
   {
    "k": 16,
    "baslik": [
-    "ÇOĞU KİŞİ",
-    "BUNU KAPISINA"
+    "HACİZ KAĞIDI",
+    "GELİNCE ÖĞRENME"
    ],
    "mimik": [
     [
@@ -63,7 +63,7 @@ module.exports = {
    "ogeler": [
     {
      "x": 360,
-     "y": 470,
+     "y": 425,
      "tip": "ikon",
      "k": 20,
      "e": "🔒",
@@ -75,8 +75,8 @@ module.exports = {
   {
    "k": 24,
    "baslik": [
-    "AMA E-DEVLETTE",
-    "TEK BİR"
+    "E-DEVLET'TE",
+    "TEK BİR KİLİT"
    ],
    "mimik": [
     [
@@ -88,7 +88,7 @@ module.exports = {
    "ogeler": [
     {
      "x": 360,
-     "y": 470,
+     "y": 425,
      "tip": "edevlet",
      "k": 25,
      "satirlar": [
@@ -111,7 +111,7 @@ module.exports = {
     },
     {
      "x": 540,
-     "y": 690,
+     "y": 688,
      "tip": "ikon",
      "k": 35,
      "e": "🏢",
@@ -141,7 +141,7 @@ module.exports = {
    "ogeler": [
     {
      "x": 360,
-     "y": 470,
+     "y": 425,
      "tip": "yorum",
      "k": 37,
      "k1": 48,

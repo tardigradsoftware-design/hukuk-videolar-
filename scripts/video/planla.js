@@ -106,7 +106,7 @@ function planla(ID, TUR) {
   const adimSayisi = gruplar.filter(g => g.tip === 'adim').length;
 
   // --- yerleşim yuvaları
-  const Y0 = KISA ? { A: [360, 470], B: [540, 690], C: [190, 690], soru: [360, 440] } : { A: [520, 560], B: [980, 360], C: [980, 700], soru: [360, 845], portal: [620, 590] };
+  const Y0 = KISA ? { A: [360, 425], B: [540, 688], C: [190, 688], soru: [360, 440] } : { A: [520, 560], B: [980, 360], C: [980, 700], soru: [360, 845], portal: [620, 590] };
   const MIMIK_DONGU = [['emin', 'isaret'], ['notr', 'anlat'], ['emin', 'anlat'], ['notr', 'isaret']];
   let firlatSay = 0, mi = 0, Y;
 
