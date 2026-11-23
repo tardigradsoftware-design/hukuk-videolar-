@@ -108,7 +108,7 @@ function planla(ID, TUR) {
   // --- yerleşim yuvaları
   const Y0 = KISA ? { A: [360, 425], B: [540, 688], C: [190, 688], soru: [360, 440] } : { A: [520, 560], B: [980, 360], C: [980, 700], soru: [360, 845], portal: [620, 590] };
   const MIMIK_DONGU = [['emin', 'isaret'], ['notr', 'anlat'], ['emin', 'anlat'], ['notr', 'isaret']];
-  let firlatSay = 0, mi = 0, Y;
+  let firlatSay = 0, mi = 0, Y, portalVar = false;
 
   const sahneler = gruplar.map((g, gi) => {
     const i0 = g.cs[0].i0, i1 = g.cs[g.cs.length - 1].i1;
@@ -127,7 +127,8 @@ function planla(ID, TUR) {
     // --- portal (uzun, e-Devlet işlemi anlatılıyorsa)
     const gt = low(g.cs.map(c => c.t).join(' '));
     const aramaM = [...g.cs.map(c => c.t).join(' ').matchAll(/(?:arama çubuğuna|arama kısmına)\s+(.+?)\s+yaz/gi)];
-    if (!KISA && (aramaM.length || /e-devlet.{0,40}(giriş|gir)/.test(gt))) {
+    const ISLEM = /(işaretle|kutucu|butonuna|onayla|kaydet|seç|tıkla)/;
+    if (!KISA && (aramaM.length || /e-devlet.{0,40}(giriş|gir)/.test(gt) || (portalVar && ISLEM.test(gt)))) {
       const ekr = {}, akis = [];
       const gk = bul(words, i0, i1, /(giriş yap|giriş|şifren)/);
       if (/e-devlet.{0,60}(giriş|şifre)/.test(gt) && gk >= 0) {
@@ -149,18 +150,22 @@ function planla(ID, TUR) {
       if (ak >= 0 && ls) { ekr.tablo = { tur: 'tablo', baslik: 'Sonuçlar', kolonlar: ['Kalem', 'Tutar', 'Durum'], durum: true, satirlar: ls.map(o => [o.t.replace(/^[a-zçğıöşü]/, x => x.toLocaleUpperCase('tr')), '₺ •••,••', 'Bekliyor']) }; akis.push({ k: ak, yap: 'ekran', ad: 'tablo' }); ls.forEach((o, j) => akis.push({ k: o.k, yap: 'vurgula', hedef: 'row' + j })); }
       const bk = [...g.cs.map(c => c.t).join(' ').matchAll(/([A-ZÇĞİÖŞÜ][\wçğıöşü]+(?:\s+[A-ZÇĞİÖŞÜ][\wçğıöşü]+){0,3})\s+butonuna\s+(bas|tıkla)/g)];
       const ibanK = bulKok(words, i0, i1, 'iban');
-      if (bk.length || ibanK >= 0) {
-        ekr.form = { tur: 'form', baslik: 'İşlem', ust: bk.length ? [{ id: 'b0', t: '+ ' + bk[0][1] }] : [], alanlar: ibanK >= 0 ? [{ id: 'iban', label: 'IBAN', ph: 'TR__ ____ ____ ____ ____ ____ __' }] : [], butonlar: [{ id: 'kaydet', t: 'Kaydet' }], toast: { id: 'ok', t: '✓ İşleminiz kaydedildi' } };
-        const fk = bk.length ? bulKok(words, i0, i1, low(bk[0][1].split(' ')[0])) : ibanK;
+      const kutuK = bul(words, i0, i1, /(kutucu|işaretle)/), onayK = bul(words, i0, i1, /(onayla|onay ver)/);
+      if (bk.length || ibanK >= 0 || kutuK >= 0 || onayK >= 0) {
+        const kutular = kutuK >= 0 ? ['Seçenek 1 (onaylıyorum)', 'Seçenek 2 (onaylıyorum)'] : [];
+        ekr.form = { tur: 'form', baslik: 'İşlem Ekranı', kutular, ust: bk.length ? [{ id: 'b0', t: bk[0][1] }] : [], alanlar: ibanK >= 0 ? [{ id: 'iban', label: 'IBAN', ph: 'TR__ ____ ____ ____ ____ ____ __' }] : [], butonlar: [{ id: 'kaydet', t: onayK >= 0 ? 'Onayla' : 'Kaydet' }], toast: { id: 'ok', t: '✓ İşleminiz tamamlandı' } };
+        const fk = Math.min(...[bk.length ? bulKok(words, i0, i1, low(bk[0][1].split(' ')[0])) : 1e9, ibanK >= 0 ? ibanK : 1e9, kutuK >= 0 ? kutuK : 1e9, onayK >= 0 ? onayK : 1e9]);
         akis.push({ k: Math.max(i0, fk - 1), yap: 'ekran', ad: 'form', dt: .2 });
         if (bk.length) akis.push({ k: fk + 1, yap: 'tikla', hedef: 'b0' });
+        if (kutuK >= 0) akis.push({ k: kutuK, yap: 'vurgula', hedef: 'cb0' }, { k: kutuK + 1, yap: 'vurgula', hedef: 'cb1' }, { k: kutuK, yap: 'tikla', hedef: 'cb0' }, { k: kutuK + 1, yap: 'tikla', hedef: 'cb1' });
         if (ibanK >= 0) akis.push({ k: ibanK, yap: 'yaz', alan: 'iban', yazi: 'TR•• •••• •••• •••• •••• •••• ••', hiz: 18 });
+        if (onayK >= 0 && bul(words, i0, i1, /kaydet/) < 0) akis.push({ k: onayK, yap: 'tikla', hedef: 'kaydet' }, { k: onayK, yap: 'goster', hedef: 'ok', dt: .3 });
         const kk = bul(words, i0, i1, /kaydet/); if (kk >= 0) akis.push({ k: kk, yap: 'tikla', hedef: 'kaydet' }, { k: kk, yap: 'goster', hedef: 'ok', dt: .3 });
       }
       if (Object.keys(ekr).length && akis.length) {
         akis.sort((a, b) => a.k - b.k);
         s.ogeler.push({ tip: 'portal', k: Math.min(akis[0].k, i0 + 2), x: Y.portal[0], y: Y.portal[1], w: 760, h: 455, kullanici: ekr.giris ? '' : 'Hoş geldiniz', ekranlar: ekr, akis });
-        bos.delete('A'); bos.delete('C'); Y.B = [980, 330];
+        bos.delete('A'); bos.delete('C'); Y.B = [980, 330]; portalVar = true;
       }
     }
     // --- CTA
@@ -168,7 +173,7 @@ function planla(ID, TUR) {
       const m = /yorumlara\s+(\S+)\s+yaz/i.exec(g.cs.map(c => c.t).join(' '));
       const yk = bulKok(words, i0, i1, 'yorum');
       if (m && KISA) ekle({ tip: 'yorum', k: Math.max(i0, yk), k1: i1, yazi: UP(temiz(m[1])), yazK: yk + 1, hiz: 8 }, ['A']);
-      s.ogeler.push({ tip: 'soru', k: i1, firlat: true, x: KISA ? Y.soru[0] : 560, y: KISA ? Y.soru[1] : 450, e: '💬', yazi: m ? `'${UP(temiz(m[1]))}' yaz, rehber gelsin!` : 'Sende de oldu mu? Yorumlara yaz', ust: 'YORUMLARA YAZ 👇' });
+      s.ogeler.push({ tip: 'soru', k: KISA ? i1 : Math.min(i1, i0 + 1), firlat: true, x: KISA ? Y.soru[0] : 560, y: KISA ? Y.soru[1] : 450, e: '💬', yazi: m ? `'${UP(temiz(m[1]))}' yaz, rehber gelsin!` : 'Sende de oldu mu? Yorumlara yaz', ust: 'YORUMLARA YAZ 👇' });
       if (!KISA) s.ogeler.push({ tip: 'rozet', k: bulKok(words, i0, i1, 'abone') >= 0 ? bulKok(words, i0, i1, 'abone') : i1, x: 560, y: 650, e: '🔔', yazi: 'ABONE OL', renk: 'k', rot: -3 });
       s.mimik.push([i0, 'mutlu', 'yukari'], [Math.max(i0, i1 - 2), 'mutlu', 'basparmak']);
       s.zipla = [Math.min(i1, i0 + 1)];
@@ -205,6 +210,14 @@ function planla(ID, TUR) {
       else { const [f, j] = MIMIK_DONGU[mi++ % MIMIK_DONGU.length]; s.mimik.push([c.i0, f, j]); }
       if (gi === 0 && ci === 0) s.mimik[s.mimik.length - 1] = [c.i0, 'saskin', 'isaret'];
     });
+    if (bos.has('A')) {
+      const c0 = g.tip === 'adim' ? g.cs[0] : g.cs[0];
+      let w = c0.w.slice(g.tip === 'adim' ? 2 : 0).map(temiz).filter(Boolean);
+      const cumle = w.join(' ');
+      const kisa = cumle.length > 46 ? cumle.slice(0, cumle.lastIndexOf(' ', 46)) + '…' : cumle;
+      const ik = IKON.find(([k]) => low(cumle).includes(k));
+      ekle({ tip: 'not', k: c0.i0 + (g.tip === 'adim' ? 2 : 0), e: ik ? ik[1] : (g.tip === 'adim' ? '✅' : '📌'), ust: g.tip === 'adim' ? `${g.adim}. ADIM` : 'BİLMEN GEREKEN', yazi: kisa.charAt(0).toLocaleUpperCase('tr') + kisa.slice(1) }, ['A']);
+    }
     if (dm) s.mimik.push([dm.k, 'korkmus', 'eller_yukari']);
     s.mimik.sort((a, b) => a[0] - b[0]);
     return s;

@@ -273,33 +273,83 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 520,
-     "y": 560,
+     "tip": "portal",
+     "k": 101,
+     "x": 620,
+     "y": 590,
+     "w": 760,
+     "h": 455,
+     "kullanici": "Hoş geldiniz",
+     "ekranlar": {
+      "form": {
+       "tur": "form",
+       "baslik": "İşlem Ekranı",
+       "kutular": [
+        "Seçenek 1 (onaylıyorum)",
+        "Seçenek 2 (onaylıyorum)"
+       ],
+       "ust": [
+        {
+         "id": "b0",
+         "t": "Yeni Başvuru"
+        }
+       ],
+       "alanlar": [],
+       "butonlar": [
+        {
+         "id": "kaydet",
+         "t": "Kaydet"
+        }
+       ],
+       "toast": {
+        "id": "ok",
+        "t": "✓ İşleminiz tamamlandı"
+       }
+      }
+     },
+     "akis": [
+      {
+       "k": 101,
+       "yap": "ekran",
+       "ad": "form",
+       "dt": 0.2
+      },
+      {
+       "k": 102,
+       "yap": "vurgula",
+       "hedef": "cb0"
+      },
+      {
+       "k": 102,
+       "yap": "tikla",
+       "hedef": "cb0"
+      },
+      {
+       "k": 103,
+       "yap": "tikla",
+       "hedef": "b0"
+      },
+      {
+       "k": 103,
+       "yap": "vurgula",
+       "hedef": "cb1"
+      },
+      {
+       "k": 103,
+       "yap": "tikla",
+       "hedef": "cb1"
+      }
+     ]
+    },
+    {
+     "x": 980,
+     "y": 330,
      "tip": "nesne",
      "k": 111,
      "ad": "belge",
      "yazi": "BAŞVURU",
      "rot": 6,
      "firlat": "el"
-    },
-    {
-     "x": 980,
-     "y": 360,
-     "tip": "ikon",
-     "k": 138,
-     "e": "🏢",
-     "yazi": "ŞİRKET",
-     "rot": 5
-    },
-    {
-     "x": 980,
-     "y": 700,
-     "tip": "rozet",
-     "k": 122,
-     "e": "📅",
-     "yazi": "2 AY",
-     "renk": "y",
-     "rot": -3
     }
    ],
    "adim": 3
@@ -329,8 +379,88 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 520,
-     "y": 560,
+     "tip": "portal",
+     "k": 159,
+     "x": 620,
+     "y": 590,
+     "w": 760,
+     "h": 455,
+     "kullanici": "Hoş geldiniz",
+     "ekranlar": {
+      "form": {
+       "tur": "form",
+       "baslik": "İşlem Ekranı",
+       "kutular": [
+        "Seçenek 1 (onaylıyorum)",
+        "Seçenek 2 (onaylıyorum)"
+       ],
+       "ust": [
+        {
+         "id": "b0",
+         "t": "Başvuruyu Tamamla"
+        }
+       ],
+       "alanlar": [],
+       "butonlar": [
+        {
+         "id": "kaydet",
+         "t": "Onayla"
+        }
+       ],
+       "toast": {
+        "id": "ok",
+        "t": "✓ İşleminiz tamamlandı"
+       }
+      }
+     },
+     "akis": [
+      {
+       "k": 159,
+       "yap": "ekran",
+       "ad": "form",
+       "dt": 0.2
+      },
+      {
+       "k": 160,
+       "yap": "tikla",
+       "hedef": "kaydet"
+      },
+      {
+       "k": 160,
+       "yap": "goster",
+       "hedef": "ok",
+       "dt": 0.3
+      },
+      {
+       "k": 161,
+       "yap": "tikla",
+       "hedef": "b0"
+      },
+      {
+       "k": 172,
+       "yap": "vurgula",
+       "hedef": "cb0"
+      },
+      {
+       "k": 172,
+       "yap": "tikla",
+       "hedef": "cb0"
+      },
+      {
+       "k": 173,
+       "yap": "vurgula",
+       "hedef": "cb1"
+      },
+      {
+       "k": 173,
+       "yap": "tikla",
+       "hedef": "cb1"
+      }
+     ]
+    },
+    {
+     "x": 980,
+     "y": 330,
      "tip": "nesne",
      "k": 176,
      "ad": "belge",
@@ -365,31 +495,54 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 520,
-     "y": 560,
-     "tip": "edevlet",
-     "k": 241,
-     "satirlar": [
+     "tip": "portal",
+     "k": 205,
+     "x": 620,
+     "y": 590,
+     "w": 760,
+     "h": 455,
+     "kullanici": "Hoş geldiniz",
+     "ekranlar": {
+      "form": {
+       "tur": "form",
+       "baslik": "İşlem Ekranı",
+       "kutular": [],
+       "ust": [
+        {
+         "id": "b0",
+         "t": "Kısıtlamayı Kaldır"
+        }
+       ],
+       "alanlar": [],
+       "butonlar": [
+        {
+         "id": "kaydet",
+         "t": "Kaydet"
+        }
+       ],
+       "toast": {
+        "id": "ok",
+        "t": "✓ İşleminiz tamamlandı"
+       }
+      }
+     },
+     "akis": [
       {
-       "t": "Giriş",
-       "sag": "yapıldı"
+       "k": 224,
+       "yap": "ekran",
+       "ad": "form",
+       "dt": 0.2
       },
       {
-       "t": "İşlem durumu",
-       "rozet": "HAZIR ✓"
+       "k": 226,
+       "yap": "tikla",
+       "hedef": "b0"
       }
-     ],
-     "alt": [
-      241,
-      244
-     ],
-     "rozetK": [
-      245
      ]
     },
     {
      "x": 980,
-     "y": 360,
+     "y": 330,
      "tip": "ikon",
      "k": 207,
      "e": "🏢",
@@ -420,7 +573,7 @@ module.exports = {
    "ogeler": [
     {
      "tip": "soru",
-     "k": 262,
+     "k": 256,
      "firlat": true,
      "x": 560,
      "y": 450,

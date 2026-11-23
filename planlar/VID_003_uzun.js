@@ -502,7 +502,7 @@ module.exports = {
    "ogeler": [
     {
      "tip": "soru",
-     "k": 292,
+     "k": 286,
      "firlat": true,
      "x": 560,
      "y": 450,

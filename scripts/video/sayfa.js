@@ -49,6 +49,10 @@ html,body{margin:0;width:${W}px;height:${H}px;overflow:hidden;background:#F4F4F2
 /* adım */
 .ad{display:flex;align-items:center;gap:16px}.ad .no{width:96px;height:96px;border-radius:24px;background:#E8402F;border:4px solid #151515;box-shadow:6px 6px 0 #151515;color:#fff;font-weight:900;font-size:58px;display:flex;align-items:center;justify-content:center}
 .ad b{font-weight:900;font-size:40px;color:#151515;line-height:1.05}
+/* bilgi kartı */
+.nt{display:flex;align-items:center;gap:18px;padding:20px 26px;max-width:640px}.nt .em{font-size:56px}.nt small{display:block;font-weight:900;font-size:16px;letter-spacing:1px;color:#8B8E95;margin-bottom:4px}.nt b{display:block;font-weight:900;font-size:30px;line-height:1.15;color:#151515}
+/* form: onay kutuları */
+.pt .cb{display:flex;align-items:center;gap:12px;font-size:19px;font-weight:700;color:#283449;margin:10px 0}.pt .cb i{width:28px;height:28px;border:3px solid #22304a;border-radius:7px;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:900;color:#fff}.pt .cb.hl i{background:#1E9E6A;border-color:#1E9E6A}.pt .cb.hl i::after{content:'✓'}
 /* soru / yorum çağrısı */
 .sr{display:flex;align-items:center;gap:14px;padding:16px 22px 16px 16px;max-width:620px}
 .sr .ic{font-size:46px}.sr .tx{font-weight:900;font-size:28px;line-height:1.15;color:#151515}.sr .tx small{display:block;font-size:20px;color:#E8402F;font-weight:900;letter-spacing:.5px}
@@ -107,7 +111,7 @@ function ekranHTML(id, e) {
   if (e.tur === 'arama') h = `<h3>${esc(e.baslik || 'Hizmet Ara')}</h3><div class="in ara" data-id="${e.alan}"><span class="em" style="font-size:20px;margin-right:10px">🔍</span><span data-val></span><span class="ph">${esc(e.ph || 'Hizmet veya kurum ara…')}</span></div>
     <div class="rs" data-rs="${e.alan}">${e.sonuclar.map((r, i) => `<div class="r" data-id="${r.id || 'r' + i}"><b>${esc(r.t)}</b>${r.s ? `<span>${esc(r.s)}</span>` : ''}</div>`).join('')}</div>`;
   if (e.tur === 'tablo') h = `<h3>${esc(e.baslik)}</h3><table><tr>${e.kolonlar.map(k => `<th>${esc(k)}</th>`).join('')}</tr>${e.satirlar.map((r, i) => `<tr data-id="row${i}">${r.map((c, j) => `<td>${j === r.length - 1 && e.durum ? `<span class="ch ${e.durumRenk || ''}">${esc(c)}</span>` : esc(c)}</td>`).join('')}</tr>`).join('')}</table>`;
-  if (e.tur === 'form') h = `<h3>${esc(e.baslik)}</h3>${(e.ust || []).map(b => `<div class="bt ik" data-id="${b.id}" style="margin-bottom:16px">${esc(b.t)}</div>`).join('')}${e.alanlar.map(fld).join('')}${e.butonlar.map(b => `<div class="bt" data-id="${b.id}">${esc(b.t)}</div>`).join(' ')}${e.toast ? `<div class="tst" data-id="${e.toast.id}">${esc(e.toast.t)}</div>` : ''}`;
+  if (e.tur === 'form') h = `<h3>${esc(e.baslik)}</h3>${(e.kutular || []).map((k, i) => `<div class="cb" data-id="cb${i}"><i></i>${esc(k)}</div>`).join('')}${(e.ust || []).map(b => `<div class="bt ik" data-id="${b.id}" style="margin-bottom:16px">${esc(b.t)}</div>`).join('')}${e.alanlar.map(fld).join('')}${e.butonlar.map(b => `<div class="bt" data-id="${b.id}">${esc(b.t)}</div>`).join(' ')}${e.toast ? `<div class="tst" data-id="${e.toast.id}">${esc(e.toast.t)}</div>` : ''}`;
   return `<div class="sc" data-sc="${id}">${h}</div>`;
 }
 
@@ -125,6 +129,7 @@ const TIPLER = {
     <div class="pt-body">${Object.entries(p.ekranlar).map(([id, e]) => ekranHTML(id, e)).join('')}</div>
     <div class="pt-rip"></div><svg class="pt-cur" viewBox="0 0 34 34"><path d="M5 3 L5 27 L11 21 L15 31 L20 29 L16 19 L25 19 Z" fill="#fff" stroke="#151515" stroke-width="2.5" stroke-linejoin="round"/></svg>
     <div class="pt-tag">TEMSİLİ GÖRÜNTÜ</div></div>`,
+  not: p => `<div class="kart nt"><span class="em">${p.e || '📌'}</span><div><small>${esc(p.ust || '')}</small><b>${esc(p.yazi)}</b></div></div>`,
   soru: p => `<div class="kart sr"><span class="em ic">${p.e || '💬'}</span><div class="tx"><small>${esc(p.ust || 'YORUMLARA YAZ 👇')}</small>${esc(p.yazi)}</div></div>`,
   edevlet: p => `<div class="kart ed"><div class="hd"><span class="em">🇹🇷</span>${esc(p.baslik || 'e-Devlet Kapısı')}</div>${(p.satirlar || []).map((r, i) => `<div class="row" data-sub="${i}"><span>${esc(r.t)}</span>${r.rozet ? `<span class="rz" data-rz="${i}">${esc(r.rozet)}</span>` : `<span class="muted">${esc(r.sag || '')}</span>`}</div>`).join('')}</div>`,
   liste: p => `<div class="kart ls">${p.ogeler.map((r, i) => `<div class="it" data-sub="${i}"><span class="em">${r.e}</span>${esc(r.t)}</div>`).join('')}</div>`,
@@ -206,7 +211,7 @@ function portal(o, i, el, t){
   el.querySelectorAll('.in[data-id]').forEach(n=>{ const v = typed[n.dataset.id]; n.querySelector('[data-val]').textContent = v ? v.s : ''; n.querySelector('.ph').style.display = v && v.s ? 'none':'inline'; n.classList.toggle('fo', !!(v && v.act)); });
   el.querySelectorAll('[data-rs]').forEach(n=>{ const v = typed[n.dataset.rs]; n.style.opacity = v && v.s.length >= 4 ? 1 : 0; });
   // vurgula / göster / hover
-  el.querySelectorAll('tr[data-id],.r[data-id]').forEach(n=>n.classList.remove('hl','hv'));
+  el.querySelectorAll('tr[data-id],.r[data-id],.cb[data-id]').forEach(n=>n.classList.remove('hl','hv'));
   acts.forEach(a=>{ if (t<a.T) return; const n = el.querySelector('[data-id="'+a.hedef+'"]'); if (!n) return;
     if (a.yap==='vurgula') n.classList.add('hl');
     if (a.yap==='tikla' && n.classList.contains('r')) n.classList.add('hv'); });
