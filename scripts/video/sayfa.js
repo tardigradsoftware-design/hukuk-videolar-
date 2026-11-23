@@ -28,7 +28,7 @@ html,body{margin:0;width:${W}px;height:${H}px;overflow:hidden;background:#F4F4F2
 .ed .row:last-child{border-bottom:0}.ed .muted{color:#9a9a9a;font-weight:700}
 .rz{display:inline-block;padding:5px 14px;border-radius:9px;border:3px solid #151515;font-weight:900;font-size:22px;color:#fff;background:#1E9E6A;box-shadow:3px 3px 0 #151515}
 /* liste */
-.ls{min-width:520px;padding:10px 10px 10px 0;white-space:nowrap}.ls .it{display:flex;align-items:center;gap:16px;padding:12px 22px;font-weight:900;font-size:28px;color:#151515}
+.ls{min-width:420px;max-width:600px;padding:10px 10px 10px 0}.ls .it{white-space:normal;line-height:1.15}.ls .it{display:flex;align-items:center;gap:16px;padding:12px 22px;font-weight:900;font-size:28px;color:#151515}
 .ls .it .em{font-size:44px}
 /* damga */
 .dm{padding:10px 26px;border:7px solid #E8402F;border-radius:14px;color:#E8402F;font-weight:900;font-size:58px;background:rgba(255,255,255,.92);letter-spacing:1px}
@@ -50,7 +50,7 @@ html,body{margin:0;width:${W}px;height:${H}px;overflow:hidden;background:#F4F4F2
 .ad{display:flex;align-items:center;gap:16px}.ad .no{width:96px;height:96px;border-radius:24px;background:#E8402F;border:4px solid #151515;box-shadow:6px 6px 0 #151515;color:#fff;font-weight:900;font-size:58px;display:flex;align-items:center;justify-content:center}
 .ad b{font-weight:900;font-size:40px;color:#151515;line-height:1.05}
 /* bilgi kartı */
-.nt{display:flex;align-items:center;gap:18px;padding:20px 26px;max-width:640px}.nt .em{font-size:56px}.nt small{display:block;font-weight:900;font-size:16px;letter-spacing:1px;color:#8B8E95;margin-bottom:4px}.nt b{display:block;font-weight:900;font-size:30px;line-height:1.15;color:#151515}
+.nt{display:flex;align-items:center;gap:18px;padding:20px 26px;max-width:540px}.nt .em{font-size:56px}.nt small{display:block;font-weight:900;font-size:16px;letter-spacing:1px;color:#8B8E95;margin-bottom:4px}.nt b{display:block;font-weight:900;font-size:30px;line-height:1.15;color:#151515}
 /* form: onay kutuları */
 .pt .cb{display:flex;align-items:center;gap:12px;font-size:19px;font-weight:700;color:#283449;margin:10px 0}.pt .cb i{width:28px;height:28px;border:3px solid #22304a;border-radius:7px;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:900;color:#fff}.pt .cb.hl i{background:#1E9E6A;border-color:#1E9E6A}.pt .cb.hl i::after{content:'✓'}
 /* soru / yorum çağrısı */

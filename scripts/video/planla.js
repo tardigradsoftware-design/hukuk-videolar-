@@ -70,7 +70,7 @@ function listeBul(c, words) {
   // virgülle ayrılmış en az 3 öğe → liste
   const parcalar = []; let cur = [];
   for (let i = c.i0; i <= c.i1; i++) { cur.push(i); if (/,$/.test(words[i]) || i === c.i1 || /^(veya|ve)$/.test(low(words[i + 1] || ''))) { parcalar.push(cur); cur = []; if (/^(veya|ve)$/.test(low(words[i + 1] || ''))) i++; } }
-  const adaylar = parcalar.filter(p => p.length <= 4);
+  const adaylar = parcalar.filter(p => p.length <= 4 && !p.some(i => SIRA.includes(low(temiz(words[i]))) || /^adım/.test(low(words[i])) || /^(bu|şu|o|ve|veya|ama|ya|da|de)$/.test(low(temiz(words[p[0]])))));
   if (adaylar.length < 3) return null;
   const ogeler = adaylar.slice(0, 5).map(p => {
     const t = p.map(i => temiz(words[i])).join(' ');
@@ -106,7 +106,7 @@ function planla(ID, TUR) {
   const adimSayisi = gruplar.filter(g => g.tip === 'adim').length;
 
   // --- yerleşim yuvaları
-  const Y0 = KISA ? { A: [360, 425], B: [540, 688], C: [190, 688], soru: [360, 440] } : { A: [520, 560], B: [980, 360], C: [980, 700], soru: [360, 845], portal: [620, 590] };
+  const Y0 = KISA ? { A: [360, 425], B: [540, 688], C: [190, 688], soru: [360, 440] } : { A: [480, 560], B: [1030, 360], C: [1030, 700], soru: [560, 845], portal: [620, 590] };
   const MIMIK_DONGU = [['emin', 'isaret'], ['notr', 'anlat'], ['emin', 'anlat'], ['notr', 'isaret']];
   let firlatSay = 0, mi = 0, Y, portalVar = false;
 
@@ -190,12 +190,12 @@ function planla(ID, TUR) {
     }
     // --- nesne (dilekçe, dava, kanun) ve ikonlar
     const nes = NESNE.map(([kok, ad, yazi]) => ({ k: bulKok(words, i0, i1, kok), ad, yazi })).filter(n => n.k >= 0).sort((a, b) => a.k - b.k)[0];
-    if (nes) ekle({ tip: 'nesne', k: nes.k, ad: nes.ad, yazi: nes.yazi, rot: 6, firlat: firlatSay < 2 ? 'el' : undefined }, ['A', 'B', 'C']) && firlatSay++;
+    if (nes) ekle({ tip: 'nesne', k: nes.k, ad: nes.ad, yazi: nes.yazi, rot: 6, firlat: firlatSay < 2 ? 'el' : undefined }, KISA ? ['A', 'B', 'C'] : ['B', 'C']) && firlatSay++;
     const ikonlar = IKON.map(([kok, e, yazi]) => ({ k: bulKok(words, i0, i1, kok), e, yazi })).filter(n => n.k >= 0)
       .sort((a, b) => a.k - b.k).filter((n, j, arr) => arr.findIndex(m => m.yazi === n.yazi) === j).slice(0, 2);
     ikonlar.forEach((n, j) => {
       const fl = gi === 0 && j === 0 && firlatSay < 3 ? 'el' : undefined; if (fl) firlatSay++;
-      ekle({ tip: 'ikon', k: n.k, e: n.e, yazi: n.yazi, rot: j ? -4 : 5, firlat: fl }, ['A', 'B', 'C']);
+      ekle({ tip: 'ikon', k: n.k, e: n.e, yazi: n.yazi, rot: j ? -4 : 5, firlat: fl }, KISA ? ['A', 'B', 'C'] : ['B', 'C']);
     });
     // --- sayılar (süre, tutar) ve damga
     sayilar(words, i0, i1).slice(0, 1).forEach(n => ekle({ tip: 'rozet', k: n.k, e: n.e, yazi: n.yazi, renk: 'y', rot: -3 }, ['C', 'B']));

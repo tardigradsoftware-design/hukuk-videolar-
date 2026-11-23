@@ -37,8 +37,8 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 520,
-     "y": 560,
+     "x": 1030,
+     "y": 360,
      "tip": "nesne",
      "k": 23,
      "ad": "kitap",
@@ -47,8 +47,8 @@ module.exports = {
      "firlat": "el"
     },
     {
-     "x": 980,
-     "y": 360,
+     "x": 1030,
+     "y": 700,
      "tip": "ikon",
      "k": 0,
      "e": "🏦",
@@ -57,21 +57,21 @@ module.exports = {
      "firlat": "el"
     },
     {
-     "x": 980,
-     "y": 700,
-     "tip": "ikon",
-     "k": 4,
-     "e": "🏠",
-     "yazi": "KONUT",
-     "rot": -4
-    },
-    {
      "tip": "damga",
      "k": 30,
-     "x": 520,
+     "x": 480,
      "y": 620,
      "yazi": "✗ İPTAL",
      "rot": -8
+    },
+    {
+     "x": 480,
+     "y": 560,
+     "tip": "not",
+     "k": 0,
+     "e": "🏠",
+     "ust": "BİLMEN GEREKEN",
+     "yazi": "Bankadan ihtiyaç taşıt veya konut kredisi…"
     }
    ]
   },
@@ -115,8 +115,8 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 520,
-     "y": 560,
+     "x": 1030,
+     "y": 360,
      "tip": "nesne",
      "k": 63,
      "ad": "belge",
@@ -124,8 +124,8 @@ module.exports = {
      "rot": 6
     },
     {
-     "x": 980,
-     "y": 360,
+     "x": 1030,
+     "y": 700,
      "tip": "ikon",
      "k": 51,
      "e": "💳",
@@ -133,21 +133,21 @@ module.exports = {
      "rot": 5
     },
     {
-     "x": 980,
-     "y": 700,
-     "tip": "ikon",
-     "k": 70,
-     "e": "🛡️",
-     "yazi": "SİGORTA",
-     "rot": -4
-    },
-    {
      "tip": "damga",
      "k": 62,
-     "x": 520,
+     "x": 480,
      "y": 620,
      "yazi": "✗ İPTAL",
      "rot": -8
+    },
+    {
+     "x": 480,
+     "y": 560,
+     "tip": "not",
+     "k": 45,
+     "e": "✅",
+     "ust": "1. ADIM",
+     "yazi": "30 gün cayma hakkını kontrol etmek"
     }
    ],
    "adim": 1
@@ -279,32 +279,32 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 520,
+     "x": 480,
      "y": 560,
      "tip": "liste",
-     "k": 133,
+     "k": 167,
      "ogeler": [
       {
-       "e": "•",
-       "t": "Üçüncü adım"
+       "e": "🪪",
+       "t": "Kimlik numaranı"
       },
       {
        "e": "•",
-       "t": "Yazılı iptal"
+       "t": "Poliçe numaranı"
       },
       {
-       "e": "↩️",
-       "t": "İade talebi göndermek"
+       "e": "•",
+       "t": "30 gün cayma hakkın"
       }
      ],
      "alt": [
-      133,
-      135,
-      138
+      167,
+      169,
+      171
      ]
     },
     {
-     "x": 980,
+     "x": 1030,
      "y": 360,
      "tip": "nesne",
      "k": 163,
@@ -313,7 +313,7 @@ module.exports = {
      "rot": 6
     },
     {
-     "x": 980,
+     "x": 1030,
      "y": 700,
      "tip": "ikon",
      "k": 138,
@@ -324,7 +324,7 @@ module.exports = {
     {
      "tip": "damga",
      "k": 136,
-     "x": 520,
+     "x": 480,
      "y": 620,
      "yazi": "✗ İPTAL",
      "rot": -8
@@ -372,8 +372,8 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 520,
-     "y": 560,
+     "x": 1030,
+     "y": 360,
      "tip": "ikon",
      "k": 197,
      "e": "🏦",
@@ -381,8 +381,8 @@ module.exports = {
      "rot": 5
     },
     {
-     "x": 980,
-     "y": 360,
+     "x": 1030,
+     "y": 700,
      "tip": "ikon",
      "k": 207,
      "e": "💳",
@@ -392,10 +392,19 @@ module.exports = {
     {
      "tip": "damga",
      "k": 205,
-     "x": 520,
+     "x": 480,
      "y": 620,
      "yazi": "✗ İPTAL",
      "rot": -8
+    },
+    {
+     "x": 480,
+     "y": 560,
+     "tip": "not",
+     "k": 197,
+     "e": "🏦",
+     "ust": "4. ADIM",
+     "yazi": "Bankanın faiz artışı blöfüne karşı önlem almak"
     }
    ],
    "adim": 4
@@ -430,7 +439,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 520,
+     "x": 480,
      "y": 560,
      "tip": "edevlet",
      "k": 269,
@@ -453,7 +462,7 @@ module.exports = {
      ]
     },
     {
-     "x": 980,
+     "x": 1030,
      "y": 360,
      "tip": "ikon",
      "k": 252,
@@ -462,7 +471,7 @@ module.exports = {
      "rot": 5
     },
     {
-     "x": 980,
+     "x": 1030,
      "y": 700,
      "tip": "ikon",
      "k": 253,
@@ -473,7 +482,7 @@ module.exports = {
     {
      "tip": "damga",
      "k": 264,
-     "x": 520,
+     "x": 480,
      "y": 620,
      "yazi": "✗ İPTAL",
      "rot": -8
