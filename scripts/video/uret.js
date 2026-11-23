@@ -127,12 +127,12 @@ const W = KISA ? 720 : 1920, H = KISA ? 1280 : 1080;
 const L = KISA
   ? { title: [52, 96, 616], titleSize: 62, sub: [0, 812, 720], subSize: 42, mascot: [170, 840, 400], ogeScale: 1.15 }
   : { title: [90, 70, 1100], titleSize: 76, sub: [0, 940, 1920], subSize: 50, mascot: [1190, 190, 700], ogeScale: 1.35 };
-if (tl.stil === 'yapaytu') L.mascot = KISA ? [370, 900, 330] : [1310, 440, 580];   // karakter sağ altta
+if (tl.stil === 'yapaytu' || tl.stil === 'v3') L.mascot = KISA ? [370, 900, 330] : [1310, 440, 580];   // karakter sağ altta
 const html = sayfa({ W, H, L, tl });
 
 (async () => {
   const outDir = path.join(KOK, 'videolar', TUR); fs.mkdirSync(outDir, { recursive: true });
-  const ad = `${ID} - ${baslik.replace(/[\/\\:*?"<>|]/g, '').trim()}${tl.stil === 'yapaytu' ? ' (v2)' : ''}.mp4`;
+  const ad = `${ID} - ${baslik.replace(/[\/\\:*?"<>|]/g, '').trim()}${tl.stil === 'yapaytu' ? ' (v2)' : tl.stil === 'v3' ? ' (v3)' : ''}.mp4`;
   const outPath = path.join(outDir, ad);
   const tmp = path.join(outDir, `.${ID}.html`); fs.writeFileSync(tmp, html);
   const browser = await chromium.launch();
@@ -142,13 +142,22 @@ const html = sayfa({ W, H, L, tl });
   const ff = spawn('ffmpeg', ['-y', '-v', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-', '-i', tl.audio,
     '-map', '0:v', '-map', '1:a',
     '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '24', '-preset', 'slow', '-tune', 'animation', '-c:a', 'aac', '-b:a', '192k', '-t', String(tl.duration), '-movflags', '+faststart', outPath], { stdio: ['pipe', 'inherit', 'inherit'] });
+  const rapor = {}, kareler = [];
   for (let i = 0; i < n; i++) {
     await p.evaluate(t => frame(t), i / FPS);
+    if (i % 15 === 0) { const r = await p.evaluate(t => kontrol(t), i / FPS); r.forEach(m => { (rapor[m] = rapor[m] || []).push((i / FPS).toFixed(1)); }); }
     const buf = await p.screenshot({ type: 'jpeg', quality: 93 });
     if (!ff.stdin.write(buf)) await new Promise(r => ff.stdin.once('drain', r));
     if (i % 90 === 0) process.stderr.write(`\r${ID} ${TUR}: ${i}/${n}`);
   }
   ff.stdin.end(); await new Promise(r => ff.on('close', r)); await browser.close(); fs.unlinkSync(tmp);
+  // --- KONTROL: görsel sorunlar, sessizlik, 2 fps kontrol görseli
+  const kdir = path.join(KOK, 'kontrol'); fs.mkdirSync(kdir, { recursive: true });
+  const kad = `${ID}_${TUR}${tl.stil ? '_' + tl.stil : ''}`;
+  execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', outPath, '-vf', `fps=2,scale=${KISA ? 160 : 320}:-1,tile=${KISA ? 12 : 8}x${Math.ceil(tl.duration * 2 / (KISA ? 12 : 8))}`, '-frames:v', '1', path.join(kdir, kad + '.jpg')]);
+  const sil = (require('child_process').spawnSync('ffmpeg', ['-i', ses, '-af', 'silencedetect=n=-38dB:d=0.25', '-f', 'null', '-'], { encoding: 'utf8' }).stderr.match(/silence_duration: [\d.]+/g) || []).length;
+  const satir = Object.entries(rapor).map(([m, ts]) => `  - ${m} @ ${ts.slice(0, 6).join(', ')}${ts.length > 6 ? ' …' : ''}`);
+  console.error(`KONTROL ${kad}: ${satir.length ? '\n' + satir.join('\n') : 'görsel sorun yok'}\n  sessizlik (>0.25 sn, seslendirmenin kendi duraklamaları): ${sil}\n  kontrol görseli: kontrol/${kad}.jpg`);
   fs.writeFileSync(path.join(outDir, `.${ID}.json`), JSON.stringify({ dosya: ad, baslik, sure: tl.duration }));
   console.error(`\n✔ ${outPath}`);
 })();

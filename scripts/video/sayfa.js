@@ -158,18 +158,30 @@ html,body{background:#FFFFFF}
 #adimlar i{border:5px solid #0E0E10;box-shadow:6px 6px 0 #0E0E10;font-family:'Unbounded'}#adimlar i.on{background:#FF4D2E}#adimlar i.ok{background:#0E0E10}
 `;
 
+const STIL_V3 = () => `
+.kart,.pt,.ad .no{border:6px solid #151515!important;border-radius:24px!important;box-shadow:10px 10px 0 #151515!important}
+.pl{border:5px solid #151515;border-radius:18px;box-shadow:8px 8px 0 #151515}
+#title,#sub span,.pl,.ik b,.ad b,.dm{letter-spacing:-.02em}
+#sub .on{background:#151515;color:#fff;box-shadow:4px 4px 0 #E8402F}#sub .off{color:#8B8E95}
+#sub.cizgi .on{background:none;color:#151515;border-bottom-color:#151515}
+.pl.k{background:#151515;color:#fff}.ad .no{background:#151515}.ed .hd{background:#151515}.ed .muted{color:#8B8E95}
+.yr .av{background:#151515}.sr .tx small{color:#8B8E95}
+.ar .tx,.pt .in{font-family:'JetBrains Mono',monospace}
+#adimlar i.on{background:#151515;color:#fff}
+`;
+
 function sayfa({ W, H, L, tl }) {
   const dosya = fs.readFileSync(path.join(__dirname, '..', 'dosya', 'dosya.js'), 'utf8');
   const ogeler = tl.ogeler.map((o, i) => `<div class="o" id="o${i}" style="left:${o.x}px;top:${o.y}px;opacity:0">${TIPLER[o.tip](o)}</div>`).join('\n');
   const yt = tl.stil === 'yapaytu';
-  return `<!DOCTYPE html><html lang="tr"><head><meta charset="utf-8"><style>${CSS(W, H, L)}${yt ? STIL_YAPAYTU() : ''}:root{--ts:${L.titleSize}px;--ss:${L.subSize}px}</style></head><body>
+  return `<!DOCTYPE html><html lang="tr"><head><meta charset="utf-8"><style>${CSS(W, H, L)}${yt ? STIL_YAPAYTU() : ''}${tl.stil === 'v3' ? STIL_V3() : ''}:root{--ts:${L.titleSize}px;--ss:${L.subSize}px}</style></head><body>
 <div id="bg" class="${(tl.tema || {}).bg || ''}"></div><div id="flas"></div><div id="cam"><div id="title"></div>${ogeler}<div id="sub" class="${(tl.tema || {}).altyazi || ''}"></div><div id="stage"></div></div>${tl.adimSayisi ? `<div id="adimlar">${Array.from({ length: tl.adimSayisi }, (_, i) => `<i>${i + 1}</i>`).join('')}</div>` : ''}
 <script>${dosya}</script>
 <script>
 const TL = ${JSON.stringify(tl)};
 const MS = ${L.mascot[2]}, OS = ${L.ogeScale || 1}, MX = ${L.mascot[0]}, MY = ${L.mascot[1]};
 const backOut = k => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(k - 1, 3) + c1 * Math.pow(k - 1, 2); };
-const YT = TL.stil === 'yapaytu';
+const YT = TL.stil === 'yapaytu' || TL.stil === 'v3';
 const yay = s => 1 - Math.exp(-s * 9) * Math.cos(s * 21);   // yaylı (spring) giriş, s = saniye
 const cl = (v,a,b) => Math.max(a, Math.min(b, v));
 document.querySelectorAll('.o').forEach((el,i)=>{ const r = el.getBoundingClientRect(); el.dataset.w = r.width; el.dataset.h = r.height; });
@@ -209,6 +221,20 @@ function portal(o, i, el, t){
 }
 let lastTitle = -1;
 let MST = null;
+function kontrol(t){
+  const vis = el => +getComputedStyle(el).opacity > .6;
+  const R = el => el.getBoundingClientRect();
+  const out = [], W = innerWidth, H = innerHeight;
+  const og = [...document.querySelectorAll('.o')].filter(vis).map(el => ({ id: el.id, tip: TL.ogeler[+el.id.slice(1)].tip, r: R(el.firstElementChild || el) }));
+  const sub = document.getElementById('sub'), sr = sub.children.length ? R(sub.firstElementChild).left < R(sub.lastElementChild).right ? { left: R(sub.firstElementChild).left, right: R(sub.lastElementChild).right, top: R(sub).top, bottom: R(sub).bottom } : null : null;
+  const kes = (a, b, m = 8) => a.left < b.right - m && b.left < a.right - m && a.top < b.bottom - m && b.top < a.bottom - m;
+  og.forEach(o => { if (o.r.left < -4 || o.r.top < -4 || o.r.right > W + 4 || o.r.bottom > H + 4) out.push('taşma: ' + o.tip); if (sr && kes(o.r, sr)) out.push('altyazı çakışması: ' + o.tip); });
+  for (let a = 0; a < og.length; a++) for (let b = a + 1; b < og.length; b++) {
+    const A = og[a], B = og[b]; if ([A.tip, B.tip].some(x => x === 'damga' || x === 'portal' || x === 'soru')) continue;
+    if (kes(A.r, B.r, 14)) out.push('kart çakışması: ' + A.tip + '+' + B.tip); }
+  const T = document.getElementById('title').getBoundingClientRect(); if (T.right > W + 4) out.push('başlık taşması');
+  return out;
+}
 function frame(t){
   MST = Dosya.stateAt(TL, t);
   // başlık
