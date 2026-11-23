@@ -142,11 +142,13 @@ const L = KISA
   : { title: [90, 70, 1100], titleSize: 76, sub: [0, 940, 1920], subSize: 50, mascot: [1190, 190, 700], ogeScale: 1.35 };
 if (tl.stil === 'yapaytu' || tl.stil === 'v3') L.mascot = KISA ? [370, 900, 330] : [1310, 440, 580];   // karakter sağ altta
 const html = sayfa({ W, H, L, tl });
+const META_TXT = (outDir, ad) => fs.writeFileSync(path.join(outDir, ad.replace(/\.mp4$/, '.txt')), require('./meta').yaz({ satir, kisa: KISA, basliklar: tl.basliklar, sure: tl.duration }));
 
 (async () => {
   const outDir = path.join(KOK, 'videolar', TUR); fs.mkdirSync(outDir, { recursive: true });
   const ad = `${ID} - ${baslik.replace(/[\/\\:*?"<>|]/g, '').trim()}${tl.stil === 'yapaytu' ? ' (v2)' : ''}.mp4`;
   const outPath = path.join(outDir, ad);
+  if (process.argv.includes('--sadece-meta')) { META_TXT(outDir, ad); console.error('✔ meta: ' + ad.replace(/\.mp4$/, '.txt')); return; }
   const tmp = path.join(outDir, `.${ID}.html`); fs.writeFileSync(tmp, html);
   const browser = await chromium.launch();
   const p = await browser.newPage({ viewport: { width: W, height: H } });
@@ -172,5 +174,6 @@ const html = sayfa({ W, H, L, tl });
   const satir = Object.entries(rapor).map(([m, ts]) => `  - ${m} @ ${ts.slice(0, 6).join(', ')}${ts.length > 6 ? ' …' : ''}`);
   console.error(`KONTROL ${kad}: ${satir.length ? '\n' + satir.join('\n') : 'görsel sorun yok'}\n  sessizlik (>0.25 sn, seslendirmenin kendi duraklamaları): ${sil}\n  kontrol görseli: kontrol/${kad}.jpg`);
   fs.writeFileSync(path.join(outDir, `.${ID}.json`), JSON.stringify({ dosya: ad, baslik, sure: tl.duration }));
+  META_TXT(outDir, ad);
   console.error(`\n✔ ${outPath}`);
 })();
