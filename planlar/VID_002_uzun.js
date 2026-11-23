@@ -27,7 +27,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 520,
+     "x": 480,
      "y": 560,
      "tip": "edevlet",
      "k": 29,
@@ -50,7 +50,7 @@ module.exports = {
      ]
     },
     {
-     "x": 980,
+     "x": 1030,
      "y": 360,
      "tip": "ikon",
      "k": 0,
@@ -60,7 +60,7 @@ module.exports = {
      "firlat": "el"
     },
     {
-     "x": 980,
+     "x": 1030,
      "y": 700,
      "tip": "ikon",
      "k": 15,
@@ -94,6 +94,15 @@ module.exports = {
     ]
    ],
    "ogeler": [
+    {
+     "x": 980,
+     "y": 330,
+     "tip": "ikon",
+     "k": 50,
+     "e": "🪪",
+     "yazi": "KİMLİK",
+     "rot": 5
+    },
     {
      "tip": "portal",
      "k": 43,
@@ -151,16 +160,42 @@ module.exports = {
        "hedef": "giris",
        "dt": 0.25
       }
-     ]
+     ],
+     "k1": 56
     },
     {
-     "x": 980,
-     "y": 330,
-     "tip": "ikon",
-     "k": 50,
-     "e": "🪪",
-     "yazi": "KİMLİK",
-     "rot": 5
+     "tip": "portal",
+     "cihaz": "telefon",
+     "uygulama": "Turkiyegovtr veya",
+     "k": 56,
+     "w": 340,
+     "h": 480,
+     "ekranlar": {
+      "menu": {
+       "tur": "menu",
+       "baslik": "Menü",
+       "satirlar": [
+        "Hesabım",
+        "İşlemlerim",
+        "Bildirimler",
+        "Destek"
+       ]
+      }
+     },
+     "akis": [
+      {
+       "k": 56,
+       "yap": "ekran",
+       "ad": "menu"
+      },
+      {
+       "k": 58,
+       "yap": "tikla",
+       "hedef": "m1"
+      }
+     ],
+     "x": 430,
+     "y": 590
     }
    ],
    "adim": 1
@@ -234,6 +269,16 @@ module.exports = {
        "dt": 0.2
       }
      ]
+    },
+    {
+     "tip": "rozet",
+     "k": 77,
+     "x": 600,
+     "y": 745,
+     "e": "🏛️",
+     "yazi": "Ticaret Bakanlığı",
+     "renk": "s",
+     "rot": -2
     }
    ],
    "adim": 2
@@ -495,6 +540,15 @@ module.exports = {
    ],
    "ogeler": [
     {
+     "x": 980,
+     "y": 330,
+     "tip": "ikon",
+     "k": 207,
+     "e": "🏢",
+     "yazi": "ŞİRKET",
+     "rot": 5
+    },
+    {
      "tip": "portal",
      "k": 205,
      "x": 620,
@@ -538,16 +592,34 @@ module.exports = {
        "yap": "tikla",
        "hedef": "b0"
       }
-     ]
+     ],
+     "k1": 208
     },
     {
-     "x": 980,
-     "y": 330,
-     "tip": "ikon",
-     "k": 207,
-     "e": "🏢",
-     "yazi": "ŞİRKET",
-     "rot": 5
+     "tip": "karsilastir",
+     "k": 208,
+     "sutunlar": [
+      {
+       "baslik": "KENDİ ŞİRKETİNİ KURARSAN",
+       "renk": "g",
+       "satirlar": [
+        "Veya zaten bir şirkette adın çıktıysa"
+       ]
+      },
+      {
+       "baslik": "BİR ŞİRKET GÖRÜRSEN",
+       "renk": "y",
+       "satirlar": [
+        "E-Devletten MERSİS Şirket Bilgileri ekranını indirip"
+       ]
+      }
+     ],
+     "alt": [
+      208,
+      240
+     ],
+     "x": 600,
+     "y": 560
     }
    ],
    "adim": 5
@@ -601,22 +673,5 @@ module.exports = {
   "ifade": "mutlu",
   "jest": "selam",
   "uzat": 2.5
- },
- "kapak": [
-  {
-   "yazi": "ADINA ŞİRKET AÇILMIŞ!",
-   "vurgu": "ŞİRKET",
-   "nesne": "🏢"
-  },
-  {
-   "yazi": "HACİZ GELMEDEN KİLİTLE",
-   "vurgu": "KİLİTLE",
-   "nesne": "🔒"
-  },
-  {
-   "yazi": "TEK AYARLA KORUN",
-   "vurgu": "KORUN",
-   "nesne": "🪪"
-  }
- ]
+ }
 };

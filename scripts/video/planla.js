@@ -210,6 +210,62 @@ function planla(ID, TUR) {
       else { const [f, j] = MIMIK_DONGU[mi++ % MIMIK_DONGU.length]; s.mimik.push([c.i0, f, j]); }
       if (gi === 0 && ci === 0) s.mimik[s.mimik.length - 1] = [c.i0, 'saskin', 'isaret'];
     });
+
+    // ===== UZUN: zengin bileşenler (VID_003 kalıpları) =====
+    if (!KISA) {
+      const gtam = g.cs.map(c => c.t).join(' ');
+      const buyuk = [];
+      // koşullu cümleler → karşılaştırma
+      const kos = [];
+      g.cs.forEach(c => { const j = c.w.findIndex(w => /(ysa|yse|ysan|ysen|rsa|rse|rsan|rsen|zsa|zse|zsan|zsen)[,;]?$/.test(low(w)) && low(temiz(w)).length > 4);
+        if (j >= 1) { const kosul = c.w.slice(Math.max(0, j - 2), j + 1).map(temiz).join(' '); const sonuc = c.w.slice(j + 1, j + 8).map(temiz).filter((w, q) => !(q === 0 && /^(de|da|bile|ise|o zaman)$/i.test(w))).slice(0, 6).join(' '); if (sonuc.split(' ').length >= 2) kos.push({ k: c.i0 + j, kosul, sonuc }); } });
+      if (kos.length >= 2) buyuk.push({ tip: 'karsilastir', k: kos[0].k, sutunlar: kos.slice(0, 2).map((x, i) => ({ baslik: UP(x.kosul), renk: i ? 'y' : 'g', satirlar: [x.sonuc.charAt(0).toLocaleUpperCase('tr') + x.sonuc.slice(1)] })), alt: kos.slice(0, 2).map(x => x.k) });
+      // metne/dilekçeye yaz + liste → e-posta/dilekçe şablonu
+      g.cs.forEach(c => {
+        if (!/(metne|dilekçe|e-posta|mail|başvuru metn)/.test(low(c.t))) return;
+        const ls = listeBul(c, words); if (!ls) return;
+        buyuk.push({ tip: 'eposta', k: c.i0, baslik: /dilekçe/.test(low(c.t)) ? 'Dilekçe' : 'Yazılı başvuru', alanlar: ls.map(o => ({ etiket: o.t.split(' ').slice(0, 2).join(' '), deger: /(numara|no\b|iban|kimlik|t\.c)/i.test(o.t) ? '•••••••••' : o.t })), alt: ls.map(o => o.k) });
+      });
+      // not et / hazırla / yanına al + liste → kontrol listesi
+      g.cs.forEach(c => {
+        if (!/(not et|not al|hazırla|yanına al|gerekli|sakla|kaydet|fotoğrafını çek|ekle)/.test(low(c.t))) return;
+        if (buyuk.some(b => b.tip === 'eposta' && b.k === c.i0)) return;
+        const ls = listeBul(c, words); if (!ls) return;
+        buyuk.push({ tip: 'kontrol', k: ls[0].k, baslik: /not/.test(low(c.t)) ? 'NOT AL' : 'HAZIRLA', maddeler: ls.map(o => o.t), alt: ls.map(o => o.k) });
+      });
+      // mobil uygulama → telefon ekranı
+      const mk = bul(words, i0, i1, /mobil uygulama/);
+      if (mk >= 0) {
+        const bm = /((?:[A-ZÇĞİÖŞÜ][\wçğıöşü]+\s+){0,2}[A-ZÇĞİÖŞÜ][\wçğıöşü]+)\s+(?:bölüm|menü|sekme)/.exec(gtam);
+        const sec = bm ? bm[1] : 'İşlemlerim';
+        const sk = bm ? bulKok(words, i0, i1, low(bm[1].split(' ')[0])) : mk + 2;
+        const sahip = words.slice(Math.max(i0, mk - 2), mk).map(temiz).join(' ').replace(/(nın|nin|nun|nün|ın|in|un|ün)$/i, '');
+        buyuk.push({ tip: 'portal', cihaz: 'telefon', uygulama: sahip ? sahip.charAt(0).toLocaleUpperCase('tr') + sahip.slice(1) : 'Uygulama', k: mk, w: 340, h: 480, ekranlar: { menu: { tur: 'menu', baslik: 'Menü', satirlar: ['Hesabım', sec, 'Bildirimler', 'Destek'] } }, akis: [{ k: mk, yap: 'ekran', ad: 'menu' }, { k: Math.max(mk + 1, sk), yap: 'tikla', hedef: 'm1' }] });
+      }
+      // başvuru / şikâyet kanalları → rozetler (alt satırlar)
+      const KANAL = [['cimer', '📨', 'CİMER'], ['bddk', '🏛️', 'BDDK e-Şikayet'], ['tüketici hakem', '⚖️', 'Tüketici Hakem Heyeti'], ['sigorta tahkim', '⚖️', 'Sigorta Tahkim Komisyonu'], ['tahkim', '⚖️', 'Tahkim Komisyonu'],
+        ['savcılı', '⚖️', 'Savcılık'], ['noter', '✒️', 'Noter'], ['kep', '📧', 'KEP'], ['alo 175', '☎️', 'ALO 175'], ['ticaret bakanlığı', '🏛️', 'Ticaret Bakanlığı'], ['btk', '📡', 'BTK'],
+        ['bilgi teknolojileri', '📡', 'BTK'], ['kvkk', '🔐', 'KVKK'], ['kişisel verileri koruma', '🔐', 'KVKK'], ['icra dairesi', '🏛️', 'İcra Dairesi'], ['emniyet', '🚓', 'Emniyet'], ['karakol', '🚓', 'Karakol'], ['baro', '⚖️', 'Baro']];
+      const kanallar = []; KANAL.forEach(([kok, e, ad]) => { const k = bulKok(words, i0, i1, kok); if (k >= 0 && !kanallar.some(x => x.ad === ad || (ad.includes('Tahkim') && x.ad.includes('Tahkim')))) kanallar.push({ k, e, ad }); });
+      kanallar.sort((a, b) => a.k - b.k).slice(0, 2).forEach((x, j) => s.ogeler.push({ tip: 'rozet', k: x.k, x: 600, y: j ? 855 : 745, e: x.e, yazi: x.ad, renk: j ? 'b' : 's', rot: j ? 2 : -2 }));
+      // büyük öğeleri yerleştir: aynı anda tek büyük öğe, sırayla
+      if (buyuk.length) {
+        s.ogeler.forEach(o => { if (['liste', 'edevlet'].includes(o.tip)) buyuk.push(o); });
+        s.ogeler = s.ogeler.filter(o => !['liste', 'edevlet'].includes(o.tip));
+        const eskiPortal = s.ogeler.find(o => o.tip === 'portal'); if (eskiPortal) { buyuk.push(eskiPortal); s.ogeler = s.ogeler.filter(o => o !== eskiPortal); }
+        buyuk.sort((a, b) => a.k - b.k);
+        buyuk.forEach((b, j) => {
+          if (b.tip === 'portal' && b.cihaz === 'telefon') { b.x = 430; b.y = 590; }
+          else if (b.tip === 'portal') { b.x = b.x || Y0.portal[0]; b.y = b.y || Y0.portal[1]; }
+          else { b.x = ['karsilastir', 'eposta'].includes(b.tip) ? 600 : 520; b.y = kanallar.length ? 520 : 560; }
+          if (buyuk[j + 1]) b.k1 = buyuk[j + 1].k;
+          s.ogeler.push(b);
+        });
+        bos.delete('A');
+        if (s.ogeler.some(o => o.tip === 'portal' || o.tip === 'karsilastir' || o.tip === 'eposta')) { bos.delete('C'); }
+      }
+      if (kanallar.length) { bos.delete('C'); }
+    }
     if (bos.has('A')) {
       const c0 = g.tip === 'adim' ? g.cs[0] : g.cs[0];
       let w = c0.w.slice(g.tip === 'adim' ? 2 : 0).map(temiz).filter(Boolean);
