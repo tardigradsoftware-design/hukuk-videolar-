@@ -50,7 +50,7 @@ module.exports = {
      ]
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 18,
@@ -60,7 +60,7 @@ module.exports = {
      "firlat": "el"
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 20,
@@ -216,19 +216,10 @@ module.exports = {
      ]
     },
     {
-     "x": 980,
-     "y": 330,
-     "tip": "ikon",
-     "k": 55,
-     "e": "📱",
-     "yazi": "UYGULAMA",
-     "rot": 5
-    },
-    {
      "tip": "rozet",
      "k": 48,
      "x": 600,
-     "y": 745,
+     "y": 775,
      "e": "🏛️",
      "yazi": "Ticaret Bakanlığı",
      "renk": "s",
@@ -306,15 +297,6 @@ module.exports = {
        "hedef": "b0"
       }
      ]
-    },
-    {
-     "x": 980,
-     "y": 330,
-     "tip": "ikon",
-     "k": 70,
-     "e": "🏖️",
-     "yazi": "İZİN",
-     "rot": 5
     }
    ],
    "adim": 2
@@ -422,15 +404,6 @@ module.exports = {
        "dt": 0.3
       }
      ]
-    },
-    {
-     "x": 980,
-     "y": 330,
-     "tip": "nesne",
-     "k": 123,
-     "ad": "kitap",
-     "yazi": "YASA",
-     "rot": 6
     }
    ],
    "adim": 3
@@ -504,15 +477,6 @@ module.exports = {
        "dt": 0.2
       }
      ]
-    },
-    {
-     "x": 980,
-     "y": 330,
-     "tip": "ikon",
-     "k": 148,
-     "e": "📢",
-     "yazi": "ŞİKAYET",
-     "rot": 5
     }
    ],
    "adim": 4
@@ -537,7 +501,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 197,
@@ -546,7 +510,7 @@ module.exports = {
      "rot": 6
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 213,
@@ -558,7 +522,7 @@ module.exports = {
      "tip": "rozet",
      "k": 219,
      "x": 600,
-     "y": 745,
+     "y": 775,
      "e": "📡",
      "yazi": "BTK",
      "renk": "s",
@@ -566,7 +530,7 @@ module.exports = {
     },
     {
      "x": 480,
-     "y": 560,
+     "y": 520,
      "tip": "not",
      "k": 197,
      "e": "✅",

@@ -27,7 +27,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 16,
@@ -37,7 +37,7 @@ module.exports = {
      "firlat": "el"
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 0,
@@ -182,19 +182,10 @@ module.exports = {
      ]
     },
     {
-     "x": 980,
-     "y": 330,
-     "tip": "ikon",
-     "k": 68,
-     "e": "🪪",
-     "yazi": "KİMLİK",
-     "rot": 5
-    },
-    {
      "tip": "rozet",
      "k": 60,
      "x": 600,
-     "y": 745,
+     "y": 775,
      "e": "📡",
      "yazi": "BTK",
      "renk": "s",
@@ -262,15 +253,6 @@ module.exports = {
        "dt": 0.2
       }
      ]
-    },
-    {
-     "x": 980,
-     "y": 330,
-     "tip": "ikon",
-     "k": 84,
-     "e": "🌐",
-     "yazi": "İNTERNET",
-     "rot": 5
     }
    ],
    "adim": 2
@@ -304,24 +286,6 @@ module.exports = {
     ]
    ],
    "ogeler": [
-    {
-     "x": 1030,
-     "y": 360,
-     "tip": "ikon",
-     "k": 131,
-     "e": "🪪",
-     "yazi": "KİMLİK",
-     "rot": 5
-    },
-    {
-     "x": 1030,
-     "y": 700,
-     "tip": "ikon",
-     "k": 152,
-     "e": "✍️",
-     "yazi": "İMZA",
-     "rot": -4
-    },
     {
      "tip": "karsilastir",
      "k": 111,
@@ -377,7 +341,7 @@ module.exports = {
    "ogeler": [
     {
      "x": 480,
-     "y": 560,
+     "y": 520,
      "tip": "edevlet",
      "k": 166,
      "satirlar": [
@@ -399,7 +363,7 @@ module.exports = {
      ]
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "ikon",
      "k": 163,
@@ -408,7 +372,7 @@ module.exports = {
      "rot": 5
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 174,
@@ -420,7 +384,7 @@ module.exports = {
      "tip": "rozet",
      "k": 161,
      "x": 600,
-     "y": 745,
+     "y": 775,
      "e": "📡",
      "yazi": "BTK",
      "renk": "s",
@@ -449,7 +413,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "ikon",
      "k": 220,
@@ -461,7 +425,7 @@ module.exports = {
      "tip": "rozet",
      "k": 199,
      "x": 600,
-     "y": 745,
+     "y": 775,
      "e": "⚖️",
      "yazi": "Savcılık",
      "renk": "s",
@@ -469,7 +433,7 @@ module.exports = {
     },
     {
      "x": 480,
-     "y": 560,
+     "y": 520,
      "tip": "not",
      "k": 195,
      "e": "✅",

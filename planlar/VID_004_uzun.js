@@ -37,7 +37,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "ikon",
      "k": 1,
@@ -47,7 +47,7 @@ module.exports = {
      "firlat": "el"
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 13,
@@ -96,23 +96,14 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
-     "y": 360,
-     "tip": "nesne",
-     "k": 115,
-     "ad": "kitap",
-     "yazi": "YASA",
-     "rot": 6,
-     "firlat": "el"
-    },
-    {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 58,
      "e": "🏥",
      "yazi": "HASTANE",
-     "rot": 5
+     "rot": 5,
+     "k1": 70
     },
     {
      "tip": "karsilastir",
@@ -139,6 +130,16 @@ module.exports = {
      ],
      "x": 600,
      "y": 560
+    },
+    {
+     "tip": "not",
+     "k": 58,
+     "k1": 70,
+     "x": 480,
+     "y": 560,
+     "e": "🏥",
+     "ust": "1. ADIM",
+     "yazi": "Hastaneden çıkarken üç belgeyi eksiksiz almak"
     }
    ],
    "adim": 1
@@ -178,7 +179,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "ikon",
      "k": 129,
@@ -187,7 +188,7 @@ module.exports = {
      "rot": 5
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 130,
@@ -255,7 +256,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 192,
@@ -264,7 +265,7 @@ module.exports = {
      "rot": 6
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 184,
@@ -284,7 +285,7 @@ module.exports = {
      "tip": "rozet",
      "k": 188,
      "x": 600,
-     "y": 745,
+     "y": 775,
      "e": "📨",
      "yazi": "CİMER",
      "renk": "s",
@@ -305,33 +306,17 @@ module.exports = {
       234
      ],
      "x": 520,
-     "y": 520,
-     "k1": 229
+     "y": 520
     },
     {
-     "x": 520,
+     "tip": "not",
+     "k": 182,
+     "k1": 229,
+     "x": 480,
      "y": 520,
-     "tip": "liste",
-     "k": 229,
-     "ogeler": [
-      {
-       "e": "🧾",
-       "t": "Dosya Ekle bölümünden fatura"
-      },
-      {
-       "e": "•",
-       "t": "Dekont"
-      },
-      {
-       "e": "•",
-       "t": "Epikriz"
-      }
-     ],
-     "alt": [
-      229,
-      233,
-      234
-     ]
+     "e": "🏥",
+     "ust": "3. ADIM",
+     "yazi": "E-Devlet üzerinden SGK şikayeti oluşturmak"
     }
    ],
    "adim": 3
@@ -366,7 +351,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "ikon",
      "k": 250,
@@ -375,7 +360,7 @@ module.exports = {
      "rot": 5
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 256,
@@ -421,7 +406,7 @@ module.exports = {
    "ogeler": [
     {
      "x": 480,
-     "y": 560,
+     "y": 520,
      "tip": "edevlet",
      "k": 286,
      "satirlar": [
@@ -443,7 +428,7 @@ module.exports = {
      ]
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 290,
@@ -452,7 +437,7 @@ module.exports = {
      "rot": 6
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 281,
@@ -464,7 +449,7 @@ module.exports = {
      "tip": "rozet",
      "k": 287,
      "x": 600,
-     "y": 745,
+     "y": 775,
      "e": "⚖️",
      "yazi": "Tüketici Hakem Heyeti",
      "renk": "s",

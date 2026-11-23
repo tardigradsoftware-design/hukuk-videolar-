@@ -27,7 +27,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 14,
@@ -37,7 +37,7 @@ module.exports = {
      "firlat": "el"
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 0,
@@ -127,7 +127,7 @@ module.exports = {
      ]
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "ikon",
      "k": 39,
@@ -136,7 +136,7 @@ module.exports = {
      "rot": 5
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 50,
@@ -177,7 +177,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "ikon",
      "k": 94,
@@ -186,7 +186,7 @@ module.exports = {
      "rot": 5
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 100,
@@ -225,15 +225,6 @@ module.exports = {
     ]
    ],
    "ogeler": [
-    {
-     "x": 1030,
-     "y": 360,
-     "tip": "ikon",
-     "k": 134,
-     "e": "📦",
-     "yazi": "ÜRÜN",
-     "rot": 5
-    },
     {
      "tip": "karsilastir",
      "k": 127,
@@ -339,19 +330,10 @@ module.exports = {
      ]
     },
     {
-     "x": 980,
-     "y": 330,
-     "tip": "nesne",
-     "k": 155,
-     "ad": "belge",
-     "yazi": "BAŞVURU",
-     "rot": 6
-    },
-    {
      "tip": "rozet",
      "k": 152,
      "x": 600,
-     "y": 745,
+     "y": 775,
      "e": "⚖️",
      "yazi": "Tüketici Hakem Heyeti",
      "renk": "s",
@@ -385,7 +367,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 210,
@@ -394,7 +376,7 @@ module.exports = {
      "rot": 6
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 215,

@@ -45,7 +45,7 @@ module.exports = {
      ]
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 5,
@@ -55,7 +55,7 @@ module.exports = {
      "firlat": "el"
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 8,
@@ -135,15 +135,6 @@ module.exports = {
        "dt": 0.2
       }
      ]
-    },
-    {
-     "x": 980,
-     "y": 330,
-     "tip": "nesne",
-     "k": 35,
-     "ad": "tokmak",
-     "yazi": "DAVA",
-     "rot": 6
     }
    ],
    "adim": 1
@@ -227,15 +218,6 @@ module.exports = {
        "dt": 0.2
       }
      ]
-    },
-    {
-     "x": 980,
-     "y": 330,
-     "tip": "ikon",
-     "k": 82,
-     "e": "⚠️",
-     "yazi": "İCRA",
-     "rot": 5
     }
    ],
    "adim": 2
@@ -309,15 +291,6 @@ module.exports = {
        "dt": 0.2
       }
      ]
-    },
-    {
-     "x": 980,
-     "y": 330,
-     "tip": "ikon",
-     "k": 115,
-     "e": "🧾",
-     "yazi": "VERGİ",
-     "rot": 5
     }
    ],
    "adim": 3
@@ -342,7 +315,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 168,
@@ -410,7 +383,7 @@ module.exports = {
      ]
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "ikon",
      "k": 184,
@@ -419,7 +392,7 @@ module.exports = {
      "rot": 5
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 189,

@@ -27,7 +27,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "ikon",
      "k": 0,
@@ -37,7 +37,7 @@ module.exports = {
      "firlat": "el"
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 1,
@@ -81,7 +81,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "ikon",
      "k": 35,
@@ -90,7 +90,7 @@ module.exports = {
      "rot": 5
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 47,
@@ -135,7 +135,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 105,
@@ -145,7 +145,7 @@ module.exports = {
      "firlat": "el"
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 94,
@@ -185,7 +185,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 135,
@@ -194,7 +194,7 @@ module.exports = {
      "rot": 6
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 138,
@@ -234,7 +234,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 170,
@@ -243,7 +243,7 @@ module.exports = {
      "rot": 6
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 175,
@@ -288,16 +288,17 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "ikon",
      "k": 194,
      "e": "🏦",
      "yazi": "BANKA",
-     "rot": 5
+     "rot": 5,
+     "k1": 195
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 218,
@@ -309,7 +310,7 @@ module.exports = {
      "tip": "rozet",
      "k": 208,
      "x": 600,
-     "y": 745,
+     "y": 775,
      "e": "⚖️",
      "yazi": "Savcılık",
      "renk": "s",

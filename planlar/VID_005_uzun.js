@@ -27,7 +27,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 22,
@@ -37,7 +37,7 @@ module.exports = {
      "firlat": "el"
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 0,
@@ -82,7 +82,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 40,
@@ -91,7 +91,7 @@ module.exports = {
      "rot": 6
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 35,
@@ -169,7 +169,7 @@ module.exports = {
      ]
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "ikon",
      "k": 83,
@@ -355,19 +355,10 @@ module.exports = {
      ]
     },
     {
-     "x": 980,
-     "y": 330,
-     "tip": "nesne",
-     "k": 142,
-     "ad": "belge",
-     "yazi": "BAŞVURU",
-     "rot": 6
-    },
-    {
      "tip": "rozet",
      "k": 145,
      "x": 600,
-     "y": 745,
+     "y": 775,
      "e": "📡",
      "yazi": "BTK",
      "renk": "s",
@@ -401,7 +392,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "ikon",
      "k": 184,
@@ -410,7 +401,7 @@ module.exports = {
      "rot": 5
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 187,
@@ -461,7 +452,7 @@ module.exports = {
    "ogeler": [
     {
      "x": 480,
-     "y": 560,
+     "y": 520,
      "tip": "edevlet",
      "k": 236,
      "satirlar": [
@@ -483,7 +474,7 @@ module.exports = {
      ]
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 240,
@@ -492,7 +483,7 @@ module.exports = {
      "rot": 6
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 222,
@@ -512,7 +503,7 @@ module.exports = {
      "tip": "rozet",
      "k": 237,
      "x": 600,
-     "y": 745,
+     "y": 775,
      "e": "⚖️",
      "yazi": "Tüketici Hakem Heyeti",
      "renk": "s",

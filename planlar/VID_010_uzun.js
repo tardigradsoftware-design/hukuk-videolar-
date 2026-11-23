@@ -47,7 +47,7 @@ module.exports = {
      ]
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "ikon",
      "k": 9,
@@ -57,7 +57,7 @@ module.exports = {
      "firlat": "el"
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 19,
@@ -187,15 +187,6 @@ module.exports = {
        "hiz": 16
       }
      ]
-    },
-    {
-     "x": 980,
-     "y": 330,
-     "tip": "ikon",
-     "k": 39,
-     "e": "📜",
-     "yazi": "TAPU",
-     "rot": 5
     }
    ],
    "adim": 1
@@ -328,15 +319,6 @@ module.exports = {
        "hedef": "cb1"
       }
      ]
-    },
-    {
-     "x": 980,
-     "y": 330,
-     "tip": "ikon",
-     "k": 113,
-     "e": "📜",
-     "yazi": "TAPU",
-     "rot": 5
     }
    ],
    "adim": 3
@@ -426,15 +408,6 @@ module.exports = {
        "hedef": "b0"
       }
      ]
-    },
-    {
-     "x": 980,
-     "y": 330,
-     "tip": "ikon",
-     "k": 146,
-     "e": "📱",
-     "yazi": "TELEFON",
-     "rot": 5
     }
    ],
    "adim": 4
@@ -464,7 +437,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "ikon",
      "k": 181,
@@ -473,7 +446,7 @@ module.exports = {
      "rot": 5
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 198,
@@ -485,7 +458,7 @@ module.exports = {
      "tip": "rozet",
      "k": 181,
      "x": 600,
-     "y": 745,
+     "y": 775,
      "e": "✒️",
      "yazi": "Noter",
      "renk": "s",
@@ -493,7 +466,7 @@ module.exports = {
     },
     {
      "x": 480,
-     "y": 560,
+     "y": 520,
      "tip": "not",
      "k": 171,
      "e": "✅",

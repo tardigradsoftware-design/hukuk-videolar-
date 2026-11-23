@@ -27,24 +27,15 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
-     "y": 360,
-     "tip": "nesne",
-     "k": 26,
-     "ad": "kitap",
-     "yazi": "KANUN",
-     "rot": 6,
-     "firlat": "el"
-    },
-    {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 4,
      "e": "🏷️",
      "yazi": "FİYAT",
      "rot": 5,
-     "firlat": "el"
+     "firlat": "el",
+     "k1": 9
     },
     {
      "tip": "karsilastir",
@@ -71,6 +62,16 @@ module.exports = {
      ],
      "x": 600,
      "y": 560
+    },
+    {
+     "tip": "not",
+     "k": 0,
+     "k1": 9,
+     "x": 480,
+     "y": 560,
+     "e": "🏷️",
+     "ust": "BİLMEN GEREKEN",
+     "yazi": "Markette veya mağazada raftaki fiyat…"
     }
    ]
   },
@@ -94,7 +95,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "ikon",
      "k": 57,
@@ -103,7 +104,7 @@ module.exports = {
      "rot": 5
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 64,
@@ -148,22 +149,14 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 76,
      "ad": "kitap",
      "yazi": "KANUN",
-     "rot": 6
-    },
-    {
-     "x": 1030,
-     "y": 700,
-     "tip": "ikon",
-     "k": 94,
-     "e": "🏷️",
-     "yazi": "FİYAT",
-     "rot": 5
+     "rot": 6,
+     "k1": 92
     },
     {
      "tip": "karsilastir",
@@ -190,6 +183,16 @@ module.exports = {
      ],
      "x": 600,
      "y": 560
+    },
+    {
+     "tip": "not",
+     "k": 74,
+     "k1": 92,
+     "x": 480,
+     "y": 560,
+     "e": "✅",
+     "ust": "2. ADIM",
+     "yazi": "Mağaza sorumlusuna kanunu hatırlatmak ve fişi…"
     }
    ],
    "adim": 2
@@ -234,7 +237,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "ikon",
      "k": 126,
@@ -243,7 +246,7 @@ module.exports = {
      "rot": 5
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 128,
@@ -263,7 +266,7 @@ module.exports = {
      "tip": "rozet",
      "k": 120,
      "x": 600,
-     "y": 745,
+     "y": 775,
      "e": "🏛️",
      "yazi": "Ticaret Bakanlığı",
      "renk": "s",
@@ -361,7 +364,7 @@ module.exports = {
    "ogeler": [
     {
      "x": 480,
-     "y": 560,
+     "y": 520,
      "tip": "edevlet",
      "k": 203,
      "satirlar": [
@@ -383,7 +386,7 @@ module.exports = {
      ]
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 207,
@@ -392,7 +395,7 @@ module.exports = {
      "rot": 6
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 190,
@@ -404,7 +407,7 @@ module.exports = {
      "tip": "rozet",
      "k": 204,
      "x": 600,
-     "y": 745,
+     "y": 775,
      "e": "⚖️",
      "yazi": "Tüketici Hakem Heyeti",
      "renk": "s",
@@ -433,7 +436,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "ikon",
      "k": 220,
@@ -442,7 +445,7 @@ module.exports = {
      "rot": 5
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 224,

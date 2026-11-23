@@ -23,7 +23,7 @@ module.exports = {
    "ogeler": [
     {
      "x": 360,
-     "y": 425,
+     "y": 407,
      "tip": "nesne",
      "k": 10,
      "ad": "kitap",
@@ -73,7 +73,7 @@ module.exports = {
    "ogeler": [
     {
      "x": 360,
-     "y": 425,
+     "y": 407,
      "tip": "nesne",
      "k": 14,
      "ad": "kitap",

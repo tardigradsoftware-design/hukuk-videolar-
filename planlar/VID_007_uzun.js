@@ -32,7 +32,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 11,
@@ -42,7 +42,7 @@ module.exports = {
      "firlat": "el"
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 2,
@@ -87,7 +87,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "ikon",
      "k": 44,
@@ -96,7 +96,7 @@ module.exports = {
      "rot": 5
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 45,
@@ -141,22 +141,14 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "ikon",
      "k": 91,
      "e": "🏥",
      "yazi": "SGK",
-     "rot": 5
-    },
-    {
-     "x": 1030,
-     "y": 700,
-     "tip": "ikon",
-     "k": 97,
-     "e": "🏦",
-     "yazi": "BANKA",
-     "rot": -4
+     "rot": 5,
+     "k1": 97
     },
     {
      "tip": "eposta",
@@ -192,43 +184,17 @@ module.exports = {
       118
      ],
      "x": 600,
-     "y": 560,
-     "k1": 97
+     "y": 560
     },
     {
-     "x": 520,
+     "tip": "not",
+     "k": 83,
+     "k1": 97,
+     "x": 480,
      "y": 560,
-     "tip": "liste",
-     "k": 97,
-     "ogeler": [
-      {
-       "e": "💼",
-       "t": "Banka maaş dekontlarını"
-      },
-      {
-       "e": "💼",
-       "t": "Maaş bordrolarını"
-      },
-      {
-       "e": "•",
-       "t": "Vardiya çizelgelerini"
-      },
-      {
-       "e": "•",
-       "t": "İş e-postalarını"
-      },
-      {
-       "e": "•",
-       "t": "Diskine yedekle"
-      }
-     ],
-     "alt": [
-      97,
-      100,
-      102,
-      104,
-      118
-     ]
+     "e": "✅",
+     "ust": "2. ADIM",
+     "yazi": "İşten ayrılmadan önce eksiksiz delil toplamak"
     }
    ],
    "adim": 2
@@ -263,7 +229,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 141,
@@ -272,7 +238,7 @@ module.exports = {
      "rot": 6
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 143,
@@ -325,7 +291,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 156,
@@ -334,7 +300,7 @@ module.exports = {
      "rot": 6
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 153,
@@ -346,7 +312,7 @@ module.exports = {
      "tip": "rozet",
      "k": 153,
      "x": 600,
-     "y": 745,
+     "y": 775,
      "e": "✒️",
      "yazi": "Noter",
      "renk": "s",
@@ -354,7 +320,7 @@ module.exports = {
     },
     {
      "x": 480,
-     "y": 560,
+     "y": 520,
      "tip": "not",
      "k": 153,
      "e": "✒️",
@@ -394,22 +360,14 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
-     "y": 360,
-     "tip": "nesne",
-     "k": 218,
-     "ad": "belge",
-     "yazi": "İHTARNAME",
-     "rot": 6
-    },
-    {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 205,
      "e": "⚖️",
      "yazi": "MAHKEME",
-     "rot": 5
+     "rot": 5,
+     "k1": 208
     },
     {
      "tip": "karsilastir",

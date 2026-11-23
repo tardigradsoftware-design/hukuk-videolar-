@@ -22,7 +22,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 10,
@@ -32,7 +32,7 @@ module.exports = {
      "firlat": "el"
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 0,
@@ -77,7 +77,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 38,
@@ -86,7 +86,7 @@ module.exports = {
      "rot": 6
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 43,
@@ -126,7 +126,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 84,
@@ -135,7 +135,7 @@ module.exports = {
      "rot": 6
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 90,
@@ -185,7 +185,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 131,
@@ -194,7 +194,7 @@ module.exports = {
      "rot": 6
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 114,
@@ -249,22 +249,14 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
-     "y": 360,
-     "tip": "nesne",
-     "k": 207,
-     "ad": "belge",
-     "yazi": "BAŞVURU",
-     "rot": 6
-    },
-    {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 167,
      "e": "🏠",
      "yazi": "EV SAHİBİ",
-     "rot": 5
+     "rot": 5,
+     "k1": 170
     },
     {
      "tip": "karsilastir",
@@ -315,7 +307,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 234,
@@ -324,7 +316,7 @@ module.exports = {
      "rot": 6
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 225,

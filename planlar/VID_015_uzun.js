@@ -27,7 +27,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "ikon",
      "k": 14,
@@ -37,7 +37,7 @@ module.exports = {
      "firlat": "el"
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 26,
@@ -90,7 +90,7 @@ module.exports = {
    "ogeler": [
     {
      "x": 480,
-     "y": 560,
+     "y": 520,
      "tip": "liste",
      "k": 52,
      "ogeler": [
@@ -114,7 +114,7 @@ module.exports = {
      ]
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "ikon",
      "k": 55,
@@ -123,7 +123,7 @@ module.exports = {
      "rot": 5
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 65,
@@ -135,7 +135,7 @@ module.exports = {
      "tip": "rozet",
      "k": 78,
      "x": 600,
-     "y": 745,
+     "y": 775,
      "e": "🚓",
      "yazi": "Karakol",
      "renk": "s",
@@ -301,28 +301,10 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
-     "y": 360,
-     "tip": "ikon",
-     "k": 201,
-     "e": "💰",
-     "yazi": "PARA",
-     "rot": 5
-    },
-    {
-     "x": 1030,
-     "y": 700,
-     "tip": "ikon",
-     "k": 206,
-     "e": "🏦",
-     "yazi": "BANKA",
-     "rot": -4
-    },
-    {
      "tip": "rozet",
      "k": 218,
      "x": 600,
-     "y": 745,
+     "y": 775,
      "e": "⚖️",
      "yazi": "Savcılık",
      "renk": "s",

@@ -27,7 +27,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 23,
@@ -37,7 +37,7 @@ module.exports = {
      "firlat": "el"
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 1,
@@ -82,7 +82,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 63,
@@ -91,7 +91,7 @@ module.exports = {
      "rot": 6
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 51,
@@ -136,7 +136,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 109,
@@ -145,7 +145,7 @@ module.exports = {
      "rot": 6
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 86,
@@ -168,33 +168,17 @@ module.exports = {
       123
      ],
      "x": 520,
-     "y": 560,
-     "k1": 109
+     "y": 560
     },
     {
-     "x": 520,
+     "tip": "not",
+     "k": 86,
+     "k1": 109,
+     "x": 480,
      "y": 560,
-     "tip": "liste",
-     "k": 109,
-     "ogeler": [
-      {
-       "e": "•",
-       "t": "Başvuru tarihi"
-      },
-      {
-       "e": "•",
-       "t": "Arıza açıklaması"
-      },
-      {
-       "e": "🧾",
-       "t": "Alış faturanı mutlaka sakla"
-      }
-     ],
-     "alt": [
-      109,
-      111,
-      123
-     ]
+     "e": "💵",
+     "ust": "2. ADIM",
+     "yazi": "Ücret onayı vermeden servis belgesini teslim…"
     }
    ],
    "adim": 2
@@ -224,7 +208,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 135,
@@ -233,7 +217,7 @@ module.exports = {
      "rot": 6
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 138,
@@ -289,7 +273,7 @@ module.exports = {
    "ogeler": [
     {
      "x": 480,
-     "y": 560,
+     "y": 520,
      "tip": "edevlet",
      "k": 161,
      "satirlar": [
@@ -311,7 +295,7 @@ module.exports = {
      ]
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 165,
@@ -320,7 +304,7 @@ module.exports = {
      "rot": 6
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 173,
@@ -332,7 +316,7 @@ module.exports = {
      "tip": "rozet",
      "k": 162,
      "x": 600,
-     "y": 745,
+     "y": 775,
      "e": "⚖️",
      "yazi": "Tüketici Hakem Heyeti",
      "renk": "s",
@@ -371,7 +355,7 @@ module.exports = {
    ],
    "ogeler": [
     {
-     "x": 1030,
+     "x": 1080,
      "y": 360,
      "tip": "nesne",
      "k": 236,
@@ -380,7 +364,7 @@ module.exports = {
      "rot": 6
     },
     {
-     "x": 1030,
+     "x": 1080,
      "y": 700,
      "tip": "ikon",
      "k": 224,
