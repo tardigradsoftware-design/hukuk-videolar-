@@ -7,7 +7,7 @@ const { sayfa } = require('./sayfa');
 
 const KOK = path.join(__dirname, '..', '..');
 const [, , ID, TUR = 'kisa'] = process.argv;
-const STIL = (process.argv.find(a => a.startsWith('--stil=')) || '').slice(7) || null;   // örn. --stil=yapaytu
+const STIL = (process.argv.find(a => a.startsWith('--stil=')) || '').slice(7) || 'v3';   // varsayılan v3 (STIL.md); --stil=klasik | yapaytu
 const KISA = TUR === 'kisa';
 
 // --- CSV (tırnaklı alanlar destekli)
@@ -79,11 +79,24 @@ const son = plan.son || {};
 tl.ifade.push({ t: d.duration - .2, ad: son.ifade || 'mutlu' }); tl.jest.push({ t: d.duration - .2, ad: son.jest || 'selam' });
 tl.duration = d.duration + (son.uzat ?? 1.2);
 tl.adimSayisi = plan.adimSayisi || 0;
-tl.stil = STIL || plan.stil || null;
+tl.parcalar = (() => {
+  const P = []; let cur = null;
+  kel.forEach((k, i) => {
+    const w = k.w.replace(/[,.!?;:"“”()…]/g, '');
+    if (!cur) cur = { i0: i, i1: i, n: w.length, t0: k.t0 };
+    else if (cur.i1 - cur.i0 + 1 >= 3 || cur.n + 1 + w.length > 18) { P.push(cur); cur = { i0: i, i1: i, n: w.length, t0: k.t0 }; }
+    else { cur.i1 = i; cur.n += 1 + w.length; }
+    if (/[,.!?;:…]["”']?$/.test(k.w)) { P.push(cur); cur = null; }
+  });
+  if (cur) P.push(cur);
+  P.forEach((p, j) => { const son = kel[p.i1].t1, nx = P[j + 1]; p.t1 = nx && nx.t0 - son < .6 ? nx.t0 : son + .25; });
+  return P;
+})();
+tl.stil = STIL === 'klasik' ? null : STIL;
 // çeşitlilik: video ID'sine göre sabit (deterministik) tema — her video farklı görünür
 const hs = str => { let h = 2166136261; for (const c of str) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } h ^= h >>> 13; h = Math.imul(h, 0x5bd1e995); return (h ^ (h >>> 15)) >>> 0; };
 const sec = (arr, ad) => arr[hs(ID + ':' + ad) % arr.length];
-tl.tema = Object.assign({ bg: sec(['', 'izgara', 'cizgi', 'leke'], 'bg'), baslik: sec(['kay', 'yaz', 'zoom'], 'baslik'), gecis: sec(['zoom', 'kaydir', 'flas'], 'gecis'), altyazi: sec(['', 'cizgi'], 'altyazi') }, plan.tema || {});
+tl.tema = Object.assign({ bg: sec(['', 'izgara', 'cizgi', 'leke'], 'bg'), baslik: sec(['kay', 'yaz', 'zoom'], 'baslik'), gecis: sec(['zoom', 'kaydir', 'flas'], 'gecis'), altyazi: '' }, plan.tema || {});
 console.error('tema:', JSON.stringify(tl.tema));
 tl.aks = plan.aks || null;   // kostüm yok (yalnızca planda aks verilirse)
 tl.firlat = tl.ogeler.filter(o => o.firlat === true).map(o => o.t0);
@@ -132,7 +145,7 @@ const html = sayfa({ W, H, L, tl });
 
 (async () => {
   const outDir = path.join(KOK, 'videolar', TUR); fs.mkdirSync(outDir, { recursive: true });
-  const ad = `${ID} - ${baslik.replace(/[\/\\:*?"<>|]/g, '').trim()}${tl.stil === 'yapaytu' ? ' (v2)' : tl.stil === 'v3' ? ' (v3)' : ''}.mp4`;
+  const ad = `${ID} - ${baslik.replace(/[\/\\:*?"<>|]/g, '').trim()}${tl.stil === 'yapaytu' ? ' (v2)' : ''}.mp4`;
   const outPath = path.join(outDir, ad);
   const tmp = path.join(outDir, `.${ID}.html`); fs.writeFileSync(tmp, html);
   const browser = await chromium.launch();
@@ -153,7 +166,7 @@ const html = sayfa({ W, H, L, tl });
   ff.stdin.end(); await new Promise(r => ff.on('close', r)); await browser.close(); fs.unlinkSync(tmp);
   // --- KONTROL: görsel sorunlar, sessizlik, 2 fps kontrol görseli
   const kdir = path.join(KOK, 'kontrol'); fs.mkdirSync(kdir, { recursive: true });
-  const kad = `${ID}_${TUR}${tl.stil ? '_' + tl.stil : ''}`;
+  const kad = `${ID}_${TUR}`;
   execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', outPath, '-vf', `fps=2,scale=${KISA ? 160 : 320}:-1,tile=${KISA ? 12 : 8}x${Math.ceil(tl.duration * 2 / (KISA ? 12 : 8))}`, '-frames:v', '1', path.join(kdir, kad + '.jpg')]);
   const sil = (require('child_process').spawnSync('ffmpeg', ['-i', ses, '-af', 'silencedetect=n=-38dB:d=0.25', '-f', 'null', '-'], { encoding: 'utf8' }).stderr.match(/silence_duration: [\d.]+/g) || []).length;
   const satir = Object.entries(rapor).map(([m, ts]) => `  - ${m} @ ${ts.slice(0, 6).join(', ')}${ts.length > 6 ? ' …' : ''}`);

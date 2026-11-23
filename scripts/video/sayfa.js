@@ -162,8 +162,10 @@ const STIL_V3 = () => `
 .kart,.pt,.ad .no{border:6px solid #151515!important;border-radius:24px!important;box-shadow:10px 10px 0 #151515!important}
 .pl{border:5px solid #151515;border-radius:18px;box-shadow:8px 8px 0 #151515}
 #title,#sub span,.pl,.ik b,.ad b,.dm{letter-spacing:-.02em}
-#sub .on{background:#151515;color:#fff;box-shadow:4px 4px 0 #E8402F}#sub .off{color:#8B8E95}
-#sub.cizgi .on{background:none;color:#151515;border-bottom-color:#151515}
+#sub{white-space:normal}
+#sub span{display:inline-block;margin:0 3px;padding:4px 14px 7px;border-radius:14px;background:transparent!important;box-shadow:none!important;color:#151515!important;transform-origin:50% 70%;
+  text-shadow:0 3px 0 #fff,0 -3px 0 #fff,3px 0 0 #fff,-3px 0 0 #fff,2px 2px 0 #fff,-2px -2px 0 #fff,2px -2px 0 #fff,-2px 2px 0 #fff}
+#sub span.on{background:#151515!important;color:#fff!important;text-shadow:none;box-shadow:5px 5px 0 #E8402F!important}
 .pl.k{background:#151515;color:#fff}.ad .no{background:#151515}.ed .hd{background:#151515}.ed .muted{color:#8B8E95}
 .yr .av{background:#151515}.sr .tx small{color:#8B8E95}
 .ar .tx,.pt .in{font-family:'JetBrains Mono',monospace}
@@ -233,6 +235,7 @@ function kontrol(t){
     const A = og[a], B = og[b]; if ([A.tip, B.tip].some(x => x === 'damga' || x === 'portal' || x === 'soru')) continue;
     if (kes(A.r, B.r, 14)) out.push('kart çakışması: ' + A.tip + '+' + B.tip); }
   const T = document.getElementById('title').getBoundingClientRect(); if (T.right > W + 4) out.push('başlık taşması');
+  if (sub.children.length && R(sub).height > R(sub.firstElementChild).height * 1.6) out.push('altyazı 2 satıra taştı');
   return out;
 }
 function frame(t){
@@ -282,10 +285,22 @@ function frame(t){
   });
   // altyazı: iki kelimelik pencere, konuşulan kelime vurgulu
   const W = TL.kelimeler, sub = document.getElementById('sub');
+  if (TL.parcalar) {
+    const P = TL.parcalar.find(p => t >= p.t0 && t < p.t1);
+    if (!P) { sub.innerHTML = ''; sub.dataset.p = ''; }
+    else {
+      if (sub.dataset.p !== String(P.i0)) { sub.dataset.p = P.i0; sub.innerHTML = W.slice(P.i0, P.i1 + 1).map(k => '<span>' + k.w.replace(/[,.!?;:"“”()…]/g,'').toLocaleUpperCase('tr') + '</span>').join(''); }
+      const kk = cl((t - P.t0) / .14, 0, 1); sub.style.opacity = kk; sub.style.transform = 'translateY(' + ((1 - kk) * 14) + 'px)';
+      let aw = -1; for (let i = P.i0; i <= P.i1; i++) if (t >= W[i].t0 - .02) aw = i;
+      [...sub.children].forEach((sp, j) => { const i = P.i0 + j, on = i === aw; sp.classList.toggle('on', on);
+        const d = t - W[i].t0; sp.style.transform = on && YT ? 'scale(' + (1 + .07 * Math.exp(-d * 7) * Math.cos(d * 18) + .03) + ')' : 'none'; });
+    }
+  } else {
   let w = W.findIndex(k => t>=k.t0 && t<k.t1);
   if (w < 0) { const p = W.findIndex(k => k.t0 > t); w = (p>0 && t - W[p-1].t1 < .35) ? p-1 : -1; }
   if (w < 0) sub.innerHTML = '';
   else { const pair = w % 2 === 0 ? [w, w+1] : [w-1, w]; sub.innerHTML = pair.filter(i=>W[i]).map(i=>'<span class="'+(i===w?'on':'off')+'">'+W[i].w.replace(/[,.!?;:"]/g,'').toLocaleUpperCase('tr')+'</span>').join(''); }
+  }
   // kamera
   let zs = 1, sx = 0, sy = 0;
   const GC = (TL.tema||{}).gecis || 'zoom';

@@ -39,7 +39,8 @@ node scripts/video/planla.js VID_XXX kisa|uzun     # otomatik plan → planlar/ 
 node scripts/video/uret.js VID_XXX kisa|uzun       # render (+ tema: ID'ye göre bg/başlık/geçiş/altyazı)
 ```
 - Her render otomatik KONTROL raporu + `kontrol/<ID>.jpg` (2 fps) üretir; sorun varsa düzelt, yoksa geç.
-- Stil denemeleri: `--stil=v3` (STIL.md, onay bekliyor), `--stil=yapaytu` (v2). Varsayılan: mevcut stil.
+- **Varsayılan stil: v3 (`STIL.md`)**. Eski stiller: `--stil=klasik`, `--stil=yapaytu`.
+- Altyazı: anlamlı 2–3 kelimelik parçalar (≤18 karakter), titremesiz, konuşulan kelime siyah kutu; stil videodan videoya değişmez.
 - Yayın temposu: YouTube günde 1 shorts + 1 uzun; diğer platformlar günde 1 shorts.
 - Para kazanma uyumu (YouTube "özgün olmayan içerik"): her video farklı plan+tema, özgün senaryo; şablon kopyası video üretme.
 - Plan öğeleri: edevlet, liste, damga, ikon, nesne (tokmak/belge/kitap), rozet, ok, yorum, adim, arama, portal, soru.
