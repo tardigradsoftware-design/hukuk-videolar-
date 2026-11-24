@@ -130,35 +130,37 @@
   const SH = { l: [124, 318], r: [476, 318] };
   // Belirgin uzuv modu (yalnızca istenirse): kalın kol/bacak, büyük el ve ayakkabı
   let UZ = { kol: 10, el: 1, ayak: 1 };
-  function belirgin(on = true) { UZ = on ? { kol: 15, el: 1.5, ayak: 1.45, parmak: true, ayakkabi: true, kravat: true } : { kol: 10, el: 1, ayak: 1 }; }
-  const SEAM = 'stroke="#5a4a4a" stroke-width="1.8"';
+  const C0 = Object.assign({}, C);
+  function belirgin(on = true) {
+    UZ = on ? { kol: 11, el: 1.75, ayak: 1.7, bacak: 40.5, parmak: true, ayakkabi: true, kravat: true } : { kol: 10, el: 1, ayak: 1 };
+    Object.assign(C, on ? { red: '#C62D1C', redDark: '#A52418', redBack: '#8E1E14', redHi: '#DE5641' } : C0);
+  }
+  // Referans karakter: dolgu siyah eldiven eller (dikiş yok), yuvarlak siyah ayakkabı, uzun kahverengi kravat
   function parmakliEl(pose, sg, F) {
-    const thumbX = -13 * sg, th = `<ellipse cx="${thumbX}" cy="9" rx="6.5" ry="11" fill="${F}" ${SEAM} transform="rotate(${-38 * sg} ${thumbX} 9)"/>`;
-    if (pose === 'acik') return [-1.5, -.5, .5, 1.5].map(i => `<rect x="-4.6" y="0" width="9.2" height="${i * i > 1 ? 18 : 22}" rx="4.6" fill="${F}" ${SEAM} transform="translate(${R(i * 7.2)} 15) rotate(${R(-i * 9)})"/>`).join('') + `<circle cx="0" cy="12" r="14" fill="${F}"/>` + th;
-    const bumps = xs => xs.map(x => `<circle cx="${x}" cy="23" r="5.6" fill="${F}" ${SEAM}/>`).join('');
-    if (pose === 'yumruk') return `${bumps([-9, -3, 3, 9])}<circle cx="0" cy="13" r="14.5" fill="${F}"/><path d="M-9 19 Q0 23 9 19" stroke="#5a4a4a" stroke-width="1.8" fill="none"/>${th}`;
-    if (pose === 'isaret') return `<rect x="-4.6" y="14" width="9.2" height="34" rx="4.6" fill="${F}" ${SEAM}/>${bumps([-7 * sg, -1 * sg, 5 * sg].map(x => x + 3 * sg))}<circle cx="0" cy="12" r="14" fill="${F}"/>${th}`;
+    const hi = `<path d="M${-7 * sg} 6 Q${-2 * sg} 1 ${5 * sg} 3" stroke="#3a3a3a" stroke-width="2.5" fill="none" stroke-linecap="round"/>`;
+    const thumb = (y, r) => `<ellipse cx="${-14 * sg}" cy="${y}" rx="6.5" ry="11" fill="${F}" transform="rotate(${-40 * sg} ${-14 * sg} ${y})"/>`;
+    if (pose === 'acik') return [-1.5, -.5, .5, 1.5].map(i => `<rect x="-5.6" y="0" width="11.2" height="${Math.abs(i) > 1 ? 19 : 23}" rx="5.6" fill="${F}" transform="translate(${R(i * 7.6)} 15) rotate(${R(-i * 8)})"/>`).join('') + `<ellipse cx="0" cy="13" rx="17" ry="15" fill="${F}"/>` + thumb(8) + hi;
+    if (pose === 'yumruk') return `<ellipse cx="0" cy="14" rx="16" ry="15.5" fill="${F}"/>${thumb(8)}${hi}`;
+    if (pose === 'isaret') return `<rect x="-4.8" y="14" width="9.6" height="32" rx="4.8" fill="${F}"/><ellipse cx="0" cy="13" rx="15" ry="14" fill="${F}"/>${thumb(8)}${hi}`;
     return '';
   }
   function ayakkabi(sg) {
-    return `<g transform="scale(${sg} 1)"><path d="M-20 8 Q-22 -9 -8 -12 Q8 -15 20 -6 Q34 0 33 8 Q32 13 24 13 H-15 Q-21 13 -20 8 Z" fill="#17171B" stroke="${C.line}" stroke-width="2.5"/>
-      <path d="M-20 10 H33" stroke="#4a4a52" stroke-width="3.5" stroke-linecap="round"/>
-      <path d="M-2 -11 L4 -5 M3 -13 L9 -7 M-2 -5 Q4 -10 10 -8" stroke="#9a9aa4" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <path d="M17 -3 Q26 0 29 5" stroke="#7a7a86" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M-14 -6 Q-12 -10 -7 -11" stroke="#55555f" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>`;
+    return `<g transform="scale(${sg} 1)"><path d="M-19 6 Q-21 -11 -5 -12 Q12 -13 24 -3 Q34 5 29 11 Q27 13 22 13 H-13 Q-19 13 -19 6 Z" fill="#0E0F10"/>
+      <path d="M10 -6 Q20 -3 24 3" stroke="#45474a" stroke-width="3" fill="none" stroke-linecap="round"/></g>`;
   }
   function kravat() {
     if (!UZ.kravat) return '';
     const L = C.line;
-    return `<g id="kravat" transform="translate(0 12) translate(300 400) scale(1.1) translate(-300 -400)"><path d="M266 400 L300 412 L284 428 Z" fill="#fff" stroke="${L}" stroke-width="4" stroke-linejoin="round"/><path d="M334 400 L300 412 L316 428 Z" fill="#fff" stroke="${L}" stroke-width="4" stroke-linejoin="round"/>
-      <path d="M293 420 L307 420 L317 448 L300 464 L283 448 Z" fill="#1F2230" stroke="${L}" stroke-width="4" stroke-linejoin="round"/>
-      <path d="M296 432 L313 446 M289 442 L306 457" stroke="#3A3F55" stroke-width="4" stroke-linecap="round"/>
-      <path d="M289 406 L311 406 L307 422 L293 422 Z" fill="#2A2E40" stroke="${L}" stroke-width="4" stroke-linejoin="round"/></g>`;
+    return `<g id="kravat"><path d="M266 406 L300 420 L282 440 Z" fill="#fff" stroke="${L}" stroke-width="3.5" stroke-linejoin="round"/><path d="M334 406 L300 420 L318 440 Z" fill="#fff" stroke="${L}" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M291 428 L309 428 L321 494 L300 514 L279 494 Z" fill="#4A3324" stroke="${L}" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M305 436 L314 492" stroke="#6E4E38" stroke-width="3" stroke-linecap="round"/>
+      <path d="M288 412 L312 412 L308 432 L292 432 Z" fill="#3B281C" stroke="${L}" stroke-width="3.5" stroke-linejoin="round"/></g>`;
   }
   function hand(pose, hx, hy, dirDeg, sg) {
     const T = `translate(${R(hx)} ${R(hy)}) rotate(${R(dirDeg - 90)})`;
     const F = C.line, hi = `<path d="M-6 4 Q-2 -1 4 1" stroke="#5a4a4a" stroke-width="3" fill="none" stroke-linecap="round"/>`;
     if (pose === 'basparmak') {
-      return `<g transform="translate(${R(hx)} ${R(hy)}) scale(${UZ.el})"><rect x="-6" y="-34" width="13" height="30" rx="6.5" fill="${F}" ${UZ.parmak ? SEAM : ''}/><circle cx="0" cy="0" r="16" fill="${F}"/>
+      return `<g transform="translate(${R(hx)} ${R(hy)}) scale(${UZ.el})"><rect x="-6" y="-34" width="13" height="30" rx="6.5" fill="${F}"/><circle cx="0" cy="0" r="16" fill="${F}"/>
         <path d="M-9 -4 H9 M-9 4 H9" stroke="#4a3a3a" stroke-width="2.5" stroke-linecap="round"/></g>`;
     }
     const thumbX = -12 * sg;
@@ -195,7 +197,7 @@
   }
   function leg(side, hip, foot, lift) {
     const sg = side === 'l' ? -1 : 1;
-    const knee = ik(hip, foot, 44, 44, side === 'l' ? 1 : -1);
+    const knee = ik(hip, foot, UZ.bacak || 44, UZ.bacak || 44, side === 'l' ? 1 : -1);
     return `<path d="M${R(hip[0])} ${R(hip[1])} L${R(knee[0])} ${R(knee[1])} L${R(foot[0])} ${R(foot[1])}" fill="none" ${ST(UZ.kol)}/>
     <g transform="translate(${R(foot[0])} ${R(foot[1])}) rotate(${R(-lift * sg)}) scale(${UZ.ayak})">${UZ.ayakkabi ? ayakkabi(sg) : `<ellipse cx="${8 * sg}" cy="2" rx="24" ry="12" fill="${C.line}"/>
     <path d="M${-2 * sg} -5 Q${10 * sg} -9 ${20 * sg} -4" stroke="#6a5a5a" stroke-width="3.5" fill="none" stroke-linecap="round"/>`}</g>`;
