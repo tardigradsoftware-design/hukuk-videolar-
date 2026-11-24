@@ -128,11 +128,14 @@
 
   // ---------------- KOLLAR / ELLER ----------------
   const SH = { l: [124, 318], r: [476, 318] };
+  // Belirgin uzuv modu (yalnızca istenirse): kalın kol/bacak, büyük el ve ayakkabı
+  let UZ = { kol: 10, el: 1, ayak: 1 };
+  function belirgin(on = true) { UZ = on ? { kol: 15, el: 1.5, ayak: 1.45 } : { kol: 10, el: 1, ayak: 1 }; }
   function hand(pose, hx, hy, dirDeg, sg) {
     const T = `translate(${R(hx)} ${R(hy)}) rotate(${R(dirDeg - 90)})`;
     const F = C.line, hi = `<path d="M-6 4 Q-2 -1 4 1" stroke="#5a4a4a" stroke-width="3" fill="none" stroke-linecap="round"/>`;
     if (pose === 'basparmak') {
-      return `<g transform="translate(${R(hx)} ${R(hy)})"><rect x="-6" y="-34" width="13" height="30" rx="6.5" fill="${F}"/><circle cx="0" cy="0" r="16" fill="${F}"/>
+      return `<g transform="translate(${R(hx)} ${R(hy)}) scale(${UZ.el})"><rect x="-6" y="-34" width="13" height="30" rx="6.5" fill="${F}"/><circle cx="0" cy="0" r="16" fill="${F}"/>
         <path d="M-9 -4 H9 M-9 4 H9" stroke="#4a3a3a" stroke-width="2.5" stroke-linecap="round"/></g>`;
     }
     const thumbX = -12 * sg;
@@ -140,7 +143,7 @@
     if (pose === 'acik') g = `<ellipse cx="0" cy="15" rx="14" ry="18" fill="${F}"/><ellipse cx="${thumbX}" cy="8" rx="6" ry="10" fill="${F}" transform="rotate(${-35 * sg} ${thumbX} 8)"/>`;
     if (pose === 'yumruk') g = `<circle cx="0" cy="13" r="15" fill="${F}"/><circle cx="${thumbX}" cy="8" r="6.5" fill="${F}"/>`;
     if (pose === 'isaret') g = `<circle cx="0" cy="12" r="14" fill="${F}"/><rect x="-5" y="14" width="11" height="32" rx="5.5" fill="${F}"/><circle cx="${thumbX}" cy="7" r="6" fill="${F}"/>`;
-    return `<g transform="${T}">${g}</g>`;
+    return `<g transform="${T} scale(${UZ.el})">${g}</g>`;
   }
   function tokmakElde(hx, hy, dir) {
     return `<g transform="translate(${R(hx)} ${R(hy)}) rotate(${R(dir)})">
@@ -155,7 +158,7 @@
     const ex = sx + sg * Math.sin(r1) * L1, ey = sy + Math.cos(r1) * L1;
     const hx = ex + sg * Math.sin(r2) * L2, hy = ey + Math.cos(r2) * L2;
     const dir = deg(Math.atan2(hy - ey, hx - ex));
-    return `<path d="M${sx} ${sy} L${R(ex)} ${R(ey)} L${R(hx)} ${R(hy)}" fill="none" ${ST(10)}/>${elde(side, aks, hx, hy)}${tut === 'tokmak' && side === 'r' ? tokmakElde(hx, hy, dir) : ''}${hand(a[2], hx, hy, dir, sg)}`;
+    return `<path d="M${sx} ${sy} L${R(ex)} ${R(ey)} L${R(hx)} ${R(hy)}" fill="none" ${ST(UZ.kol)}/>${elde(side, aks, hx, hy)}${tut === 'tokmak' && side === 'r' ? tokmakElde(hx, hy, dir) : ''}${hand(a[2], hx, hy, dir, sg)}`;
   }
 
   // ---------------- BACAKLAR (2 kemikli IK) ----------------
@@ -169,8 +172,8 @@
   function leg(side, hip, foot, lift) {
     const sg = side === 'l' ? -1 : 1;
     const knee = ik(hip, foot, 44, 44, side === 'l' ? 1 : -1);
-    return `<path d="M${R(hip[0])} ${R(hip[1])} L${R(knee[0])} ${R(knee[1])} L${R(foot[0])} ${R(foot[1])}" fill="none" ${ST(10)}/>
-    <g transform="translate(${R(foot[0])} ${R(foot[1])}) rotate(${R(-lift * sg)})"><ellipse cx="${8 * sg}" cy="2" rx="24" ry="12" fill="${C.line}"/>
+    return `<path d="M${R(hip[0])} ${R(hip[1])} L${R(knee[0])} ${R(knee[1])} L${R(foot[0])} ${R(foot[1])}" fill="none" ${ST(UZ.kol)}/>
+    <g transform="translate(${R(foot[0])} ${R(foot[1])}) rotate(${R(-lift * sg)}) scale(${UZ.ayak})"><ellipse cx="${8 * sg}" cy="2" rx="24" ry="12" fill="${C.line}"/>
     <path d="M${-2 * sg} -5 Q${10 * sg} -9 ${20 * sg} -4" stroke="#6a5a5a" stroke-width="3.5" fill="none" stroke-linecap="round"/></g>`;
   }
 
@@ -391,6 +394,6 @@
     return s;
   }
 
-  const api = { C, draw, svg, poz, stateAt, elKonum, tokmakBas, kolIK, ifadeState, IFADE, VISEME, JEST };
+  const api = { C, belirgin, draw, svg, poz, stateAt, elKonum, tokmakBas, kolIK, ifadeState, IFADE, VISEME, JEST };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.Dosya = api;
 })(this);
