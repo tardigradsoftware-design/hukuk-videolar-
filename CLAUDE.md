@@ -50,3 +50,8 @@ node scripts/video/uret.js VID_XXX kisa|uzun       # render (+ tema: ID'ye göre
 - Daktilo en fazla 1,2 sn sürer, söylendiği an başlar; önemli detayı geciktirmez. Damga yalnızca gerçek uyarıda, videoda en fazla 2.
 - Plan öğeleri: edevlet, liste, damga, ikon, nesne (tokmak/belge/kitap), rozet, ok, yorum, adim, arama, portal (cihaz:'telefon', uygulama, ekran türleri: giris/arama/tablo/form/menu), not, kontrol, karsilastir, eposta, soru.
 - Mimik: notr, mutlu, bitkin, saskin, kizgin, dusunceli, korkmus, emin, uzgun. Jest: bekle, selam, anlat, isaret, yukari, omuz, basparmak, belde, dusun, eller_yukari, dur.
+
+## Yaratıcı serbestlik (kullanıcı isteği)
+- Tek kalıp yok. Sabit olanlar: ses kuralları, fon müziği yok, kostümsüz maskot, çözünürlük, ilerleme çubuğu yok, altyazı stili, para kazanma uyumu.
+- Geri kalan her şey (sahne düzeni, telefon/masaüstü ekranı, bileşen seçimi, efekt, nesne, kapak kurgusu) senaryoya göre serbestçe seçilir; amaç o konuyu en iyi anlatan, akılda kalan video.
+- Sayı sınırları (damga ≤2, fırlatma 1–3, daktilo ≤1,2 sn) kalite içindir; gerekçeyle esnetilebilir.
