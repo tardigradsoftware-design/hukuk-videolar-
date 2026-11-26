@@ -17,7 +17,7 @@ module.exports = {
       k: 14, baslik: ['ZAMANINDA ÇEKMEZSEN', 'DEVLETE GEÇİYOR'],
       mimik: [[14, 'notr', 'anlat'], [24, 'korkmus', 'eller_yukari'], [28, 'bitkin', 'omuz']],
       ogeler: [
-        { tip: 'liste', k: 14, x: 360, y: 435, ogeler: [{ e: '🏥', t: 'Sağlık iadeleri' }, { e: '🛡️', t: 'Eski sigorta alacakları' }, { e: '🐷', t: 'Otomatik BES kesintisi' }], alt: [14, 16, 20] },
+        { tip: 'liste', k: 14, k1: 26, x: 360, y: 435, ogeler: [{ e: '🏥', t: 'Sağlık iadeleri' }, { e: '🛡️', t: 'Eski sigorta alacakları' }, { e: '🐷', t: 'Otomatik BES kesintisi' }], alt: [14, 16, 20] },
         { tip: 'damga', k: 26, x: 360, y: 450, yazi: '✗ ZAMANAŞIMI', rot: -9 },
         { tip: 'ok', k: 28, x: 240, y: 690 },
         { tip: 'ikon', k: 28, x: 430, y: 690, e: '🏛️', yazi: 'DEVLET' },
