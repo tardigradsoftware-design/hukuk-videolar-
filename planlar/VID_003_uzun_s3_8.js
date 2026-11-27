@@ -15,8 +15,8 @@ const s3 = [
     altbant: [{ k: 49, ust: 'DİKKAT', metin: 'Bankaların çoğu 4. adımda “faiz artar” blöfüyle vazgeçirmeye çalışır', uy: 1 }] },
   { tur: 'g_slayt', sinif: 'gr', gir: 'itme', a: 61, adim: 1, rayUst: 'ADIM 1 / 5', rayAd: 'Cayma hakkı', ust: '1. ADIM', baslik: '30 gün cayma hakkını kontrol et',
     belge: { tur: 'police', baslik: 'Kredi Hayat Sigortası Poliçesi', satirlar: [['Poliçe no', '•••••••', 61], ['Sigorta şirketi', '••• Sigorta A.Ş.', 61], ['Başlangıç tarihi', '••.••.••••', 72, 74], ['Prim', '••• TL', 87, 89]] },
-    buyuk: { y: 650, liste: [[63, '30 gün', 'cayma hakkı'], [90, '%100', 'ilk 30 günde iade'], [97, 'Kalan gün', 'gün bazlı iade']] },
-    zaman: [{ y: 470, k: 74, dolK: 75, n: 30, a: 0, b: 30, adim: 5, sol: 'Poliçe başlangıcı', orta: 'İlk 30 gün', sag: '30. gün' }],
+    buyuk: { y: 585, liste: [[63, '30 gün', 'cayma hakkı'], [90, '%100', 'ilk 30 günde iade'], [97, 'Kalan gün', 'gün bazlı iade']] },
+    zaman: [{ y: 440, k: 74, dolK: 75, n: 30, a: 0, b: 30, adim: 5, sol: 'Poliçe başlangıcı', orta: 'İlk 30 gün', sag: '30. gün' }],
     maddeler: [], altbant: [{ k: 80, cik: 95, ust: 'İLK 30 GÜN', metin: 'Tek kuruş kesintisiz: primin %100’ü hesabına' }, { k: 95, ust: '30 GÜN GEÇTİYSE', metin: 'Vazgeçme: kalan vade günleri kadar gün bazlı iade' }] },
   { tur: 'g_ekran', sinif: 'gr', gir: 'bulanik', a: 111, adim: 2, rayUst: 'ADIM 2 / 5', rayAd: 'Poliçeyi bul', panel: P(111), ss: [149],
     yan: [[121, 'ARAMA', 'Hayat Sigortası Poliçe Sorgulama'], [129, 'HİZMET', 'Sigorta Bilgi ve Gözetim Merkezi']],
@@ -52,4 +52,4 @@ const ses = [];
 s3.forEach(s => { ses.push([s.a, 'whoosh']); (s.maddeler || []).forEach(m => { const k = Array.isArray(m[1]) ? m[1] : [m[1], 0]; ses.push([k[0], 'pop', .6, k[1]]); });
   (s.altbant || []).forEach(a => ses.push([a.k, 'swish'])); (s.ss || []).forEach(k => ses.push([k, 'click'])); if (s.belge && s.belge.damgaK) ses.push([s.belge.damgaK, 'thud']);
   if (s.alinti) ses.push([s.alinti.cizK, 'swish']); if (s.panel) s.panel.ekranlar.forEach(e => { if (e.aramaK) ses.push([e.aramaK, 'key']); ['butonK', 'secK', 'tapK', 'onayK'].forEach(f => { if (e[f] != null) ses.push([e[f], 'click']); }); (e.alanK || []).forEach(k => ses.push([k, 'key'])); }); });
-module.exports = { maskot: true, dil: 8, altyazi: false, sahneler: base.sahneler, s3, sesler: ses.map(([k, t, v, d]) => [Array.isArray(k) ? k[0] : k, t, v, d || 0]) };
+module.exports = { maskot: true, dil: 8, altyazi: false, adimPos: [-600, -600], sahneler: base.sahneler, s3, sesler: ses.map(([k, t, v, d]) => [Array.isArray(k) ? k[0] : k, t, v, d || 0]) };
