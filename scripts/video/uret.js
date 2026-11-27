@@ -184,23 +184,35 @@ const META_TXT = (outDir, ad) => fs.writeFileSync(path.join(outDir, ad.replace(/
   const tmp = path.join(outDir, `.${ID}.html`); fs.writeFileSync(tmp, html);
   const browser = await chromium.launch();
   const TASLAK = process.argv.includes('--taslak');   // test: yarım çözünürlük, 15 fps, hızlı kodlama (~5x hızlı)
-  const p = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: TASLAK ? .5 : 1 });
-  await p.goto('file://' + tmp); await p.evaluate(() => document.fonts.ready);
   const FPS = TASLAK ? 15 : 30, n = Math.ceil(tl.duration * FPS), BLUR = process.argv.includes('--blur') && !TASLAK;   // --blur: 3 alt kare + tmix (gerçek hareket bulanıklığı)
-  const ff = spawn('ffmpeg', ['-y', '-v', 'error', '-f', 'image2pipe', '-framerate', String(BLUR ? FPS * 3 : FPS), '-i', '-', '-i', tl.audio,
-    ...(BLUR ? ['-vf', "tmix=frames=3,select='eq(mod(n\\,3)\\,2)',setpts=N/(30*TB)", '-r', '30'] : []),
-    '-map', '0:v', '-map', '1:a',
-    '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '24', '-preset', TASLAK ? 'veryfast' : 'slow', '-tune', 'animation', '-c:a', 'aac', '-b:a', '192k', '-t', String(tl.duration), '-movflags', '+faststart', outPath], { stdio: ['pipe', 'inherit', 'inherit'] });
-  const rapor = {}, kareler = [];
-  for (let i = 0; i < n; i++) {
-    await p.evaluate(t => frame(t), i / FPS);
-    if (i % 15 === 0) { const r = await p.evaluate(t => kontrol(t), i / FPS); r.forEach(m => { (rapor[m] = rapor[m] || []).push((i / FPS).toFixed(1)); }); }
-    if (BLUR) for (const dt of [-1 / 240, 1 / 240]) { await p.evaluate(t => frame(t), Math.max(0, i / FPS + dt)); const b2 = await p.screenshot({ type: 'jpeg', quality: TASLAK ? 70 : 93 }); if (!ff.stdin.write(b2)) await new Promise(r => ff.stdin.once('drain', r)); if (dt < 0) { await p.evaluate(t => frame(t), i / FPS); const b1 = await p.screenshot({ type: 'jpeg', quality: TASLAK ? 70 : 93 }); if (!ff.stdin.write(b1)) await new Promise(r => ff.stdin.once('drain', r)); } }
-    else { const buf = await p.screenshot({ type: 'jpeg', quality: TASLAK ? 70 : 93 });
-    if (!ff.stdin.write(buf)) await new Promise(r => ff.stdin.once('drain', r)); }
-    if (i % 90 === 0) process.stderr.write(`\r${ID} ${TUR}: ${i}/${n}`);
-  }
-  ff.stdin.end(); await new Promise(r => ff.on('close', r)); await browser.close(); fs.unlinkSync(tmp);
+  // paralel render: kareler PAR parçaya bölünür, her parça kendi sayfası + kodlayıcısıyla işlenir, sonra birleştirilir (kayıpsız kopya)
+  const PAR = +((process.argv.find(a => a.startsWith('--par=')) || '').slice(6) || Math.max(1, Math.min(3, require('os').cpus().length - 1)));
+  const segDir = path.join(KOK, 'veri', 'parca', ID + '_' + TUR); fs.rmSync(segDir, { recursive: true, force: true }); fs.mkdirSync(segDir, { recursive: true });
+  const rapor = {}, Q = TASLAK ? 70 : 93; let bitti = 0;
+  const parca = async (k) => {
+    const a0 = Math.floor(n * k / PAR), a1 = Math.floor(n * (k + 1) / PAR), seg = path.join(segDir, `p${k}.mp4`);
+    const p = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: TASLAK ? .5 : 1 });
+    await p.goto('file://' + tmp); await p.evaluate(() => document.fonts.ready);
+    const ff = spawn('ffmpeg', ['-y', '-v', 'error', '-f', 'image2pipe', '-framerate', String(BLUR ? FPS * 3 : FPS), '-i', '-',
+      ...(BLUR ? ['-vf', `tmix=frames=3,select='eq(mod(n\\,3)\\,2)',setpts=N/(${FPS}*TB)`, '-r', String(FPS)] : []),
+      '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '24', '-preset', TASLAK ? 'veryfast' : 'medium', '-tune', 'animation', '-threads', '2', seg], { stdio: ['pipe', 'inherit', 'inherit'] });
+    const yaz = async () => { const buf = await p.screenshot({ type: 'jpeg', quality: Q }); if (!ff.stdin.write(buf)) await new Promise(r => ff.stdin.once('drain', r)); };
+    for (let i = a0; i < a1; i++) {
+      if (BLUR) { await p.evaluate(t => frame(t), Math.max(0, i / FPS - 1 / 240)); await yaz(); }
+      await p.evaluate(t => frame(t), i / FPS);
+      if (i % 15 === 0) { const r = await p.evaluate(t => kontrol(t), i / FPS); r.forEach(m => { (rapor[m] = rapor[m] || []).push((i / FPS).toFixed(1)); }); }
+      await yaz();
+      if (BLUR) { await p.evaluate(t => frame(t), i / FPS + 1 / 240); await yaz(); }
+      if (++bitti % 90 === 0) process.stderr.write(`\r${ID} ${TUR}: ${bitti}/${n} (${PAR} paralel)`);
+    }
+    ff.stdin.end(); await new Promise(r => ff.on('close', r)); await p.close(); return seg;
+  };
+  const segler = await Promise.all(Array.from({ length: PAR }, (_, k) => parca(k)));
+  fs.writeFileSync(path.join(segDir, 'liste.txt'), segler.map(f => `file '${f}'`).join('\n'));
+  execFileSync('ffmpeg', ['-y', '-v', 'error', '-f', 'concat', '-safe', '0', '-i', path.join(segDir, 'liste.txt'), '-i', tl.audio, '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-t', String(tl.duration), '-movflags', '+faststart', outPath]);
+  fs.rmSync(segDir, { recursive: true, force: true });
+  Object.values(rapor).forEach(v => v.sort((x, y) => x - y));
+  await browser.close(); fs.unlinkSync(tmp);
   // --- KONTROL: görsel sorunlar, sessizlik, 2 fps kontrol görseli
   const kdir = path.join(KOK, 'kontrol'); fs.mkdirSync(kdir, { recursive: true });
   const kad = `${ID}_${TUR}`;

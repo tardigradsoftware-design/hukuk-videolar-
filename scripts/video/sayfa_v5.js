@@ -167,7 +167,8 @@ TL.vurus.forEach((b, i) => { const pv = TL.vurus[i-1]; if (b.tip === 'not' && pv
 }
 let _hz = false;
 const G = document.getElementById('gren'), gx = G.getContext('2d'), GI = gx.createImageData(G.width, G.height);
-function gren(f){ let s = (f * 2654435761) >>> 0; const d = GI.data; for (let i = 0; i < d.length; i += 4) { s = (Math.imul(s, 1664525) + 1013904223) >>> 0; const v = 96 + (s >>> 24) * .25; d[i] = d[i+1] = d[i+2] = v; d[i+3] = 255; } gx.putImageData(GI, 0, 0); }
+const GC = [];
+function gren(f){ const c = f % 8; if (GC[c]) { gx.putImageData(GC[c], 0, 0); return; } const GI = gx.createImageData(G.width, G.height); GC[c] = GI; let s = ((c + 1) * 2654435761) >>> 0; const d = GI.data; for (let i = 0; i < d.length; i += 4) { s = (Math.imul(s, 1664525) + 1013904223) >>> 0; const v = 96 + (s >>> 24) * .25; d[i] = d[i+1] = d[i+2] = v; d[i+3] = 255; } gx.putImageData(GI, 0, 0); }
 const N = TL.vurus.length;
 const bitis = i => { const b = TL.vurus[i]; if (b.tip === 'yorum' && i >= N - 2) return TL.duration + 9; return i + 1 < N ? TL.vurus[i+1].t : TL.duration + 9; };
 function harfler(el, lt, out){
