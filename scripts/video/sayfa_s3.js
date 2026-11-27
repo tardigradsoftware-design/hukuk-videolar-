@@ -3,6 +3,7 @@
 // Amaç: izleyici ANLASIN — kural, süre, oran görsel olarak kurulur. Deterministik; her kare zamanın saf fonksiyonu.
 const fs = require('fs'), path = require('path');
 const FN = p => 'file://' + path.join(__dirname, '..', '..', 'node_modules', p);
+const MOD = ['mavi', 'celld', 'distil', 'flow'].map(n => require('./sahne/' + n));
 const esc = x => String(x == null ? '' : x).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 
 // --- sahne stilleri (prompt-motion referanslarından uyarlama): renk + yazı + kart dili + geçiş + dekor
@@ -13,8 +14,8 @@ const boya = (x, n) => { const [a, b, c] = RENK[n] || RENK[3]; return x.replace(
 function sayfa({ W, H, L, tl }) {
   const plan = tl.planS3 || [];
   const tv = (process.argv.find(a => a.startsWith('--tema=')) || '').slice(7) || '3', karma = tv === 'karma';
-  const tem = plan.map(sc => karma ? (KARMA_S3[sc.tur] || 3) : +tv);
-  const S = plan.map((sc, i) => `<div class="sh t${tem[i]}" id="sh${i}" data-tur="${sc.tur}" data-tm="${tem[i]}">${MARK[sc.tur] ? boya(MARK[sc.tur](sc, i), tem[i]) : ''}</div>`).join('\n');
+  const tem = plan.map(sc => tl.planDil ? 0 : karma ? (KARMA_S3[sc.tur] || 3) : +tv);
+  const S = plan.map((sc, i) => `<div class="sh t${tem[i]} ${sc.sinif || ''}" id="sh${i}" data-tur="${sc.tur}" data-tm="${tem[i]}">${MARK[sc.tur] ? boya(MARK[sc.tur](sc, i), tem[i]) : ''}</div>`).join('\n');
   const rtTema = tem[tem.length - 1] || 3;
   return boya(`<!DOCTYPE html><html lang="tr"><head><meta charset="utf-8"><style>
 @font-face{font-family:IS;src:url('${FN('@fontsource/instrument-serif/files/instrument-serif-latin-ext-400-normal.woff2')}');unicode-range:U+0100-024F,U+1E00-1EFF}
@@ -28,6 +29,8 @@ function sayfa({ W, H, L, tl }) {
 @font-face{font-family:Arc;src:url('${FN('@fontsource-variable/archivo/files/archivo-latin-ext-standard-normal.woff2')}') format('woff2');font-weight:100 900;font-stretch:62% 125%;unicode-range:U+0100-024F,U+1E00-1EFF}
 @font-face{font-family:Arc;src:url('${FN('@fontsource-variable/archivo/files/archivo-latin-standard-normal.woff2')}') format('woff2');font-weight:100 900;font-stretch:62% 125%}
 ${TEMA_CSS}
+${MOD.map(m => m.css).join('\n')}
+body.k #sub span{color:#fff}
 :root{--ink:#151515;--mint:#12B76A;--mavi:#2F6BFF;--pemb:#E8402F;--sicak:#F6B92B;--kirm:#E8402F}
 *{box-sizing:border-box}html,body{margin:0;width:${W}px;height:${H}px;overflow:hidden;background:#fff;color:var(--ink);font-family:G,sans-serif}
 #bg{position:absolute;inset:0;background:#fff radial-gradient(#E3E5EB 1.6px,transparent 1.8px) 0 0/36px 36px}
@@ -65,11 +68,12 @@ svg.nn{position:absolute;inset:0;overflow:visible}svg.nn .ln{fill:none;stroke-li
 <div id="cam">${S}</div>
 <div id="adim">${[1, 2, 3, 4, 5].map(n => `<i>${n}</i>`).join('')}<span></span></div>
 <div id="vin"></div><i id="wl"></i><div id="sub"></div>${tl.mk ? '<div id="stage"></div>' : ''}<canvas id="gren" width="${W >> 1}" height="${H >> 1}"></canvas>
-${tl.mk ? `<script>${fs.readFileSync(path.join(__dirname, '..', 'dosya', 'dosya.js'), 'utf8')}</script>` : ''}
+${tl.mk ? `<script>${fs.readFileSync(path.join(__dirname, '..', 'dosya', 'dosya.js'), 'utf8')}</script>` : ''}<script>${fs.readFileSync(path.join(__dirname, 'cizimler.js'), 'utf8')}</script>
 <script>
-const TL = ${JSON.stringify({ tem, s3: plan, kelimeler: tl.kelimeler, parcalar: tl.parcalar, duration: tl.duration, mk: tl.mk || null })};
+const TL = ${JSON.stringify({ adimPos: tl.adimPos || null, tem, s3: plan, kelimeler: tl.kelimeler, parcalar: tl.parcalar, duration: tl.duration, mk: tl.mk || null })};
 const W = ${W}, H = ${H};
 ${RUNTIME}
+${MOD.map(m => m.rt).join('\n')}
 </script></body></html>`, rtTema);
 }
 
@@ -158,6 +162,7 @@ const MARK = {
 };
 
 // ---------------- tarayıcı çalışma zamanı ----------------
+MOD.forEach(m => Object.assign(MARK, m.mark));
 const RUNTIME = `
 const cl = (v, a, b) => Math.max(a, Math.min(b, v)), eo = k => 1 - Math.pow(1 - cl(k, 0, 1), 3), ei = k => Math.pow(cl(k, 0, 1), 3), eio = k => { k = cl(k, 0, 1); return k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; };
 const bo = k => { k = cl(k, 0, 1); const c = 1.70158; return 1 + (c + 1) * Math.pow(k - 1, 3) + c * Math.pow(k - 1, 2); };
@@ -168,6 +173,11 @@ const SC = TL.s3.map((s, i) => { const o = Object.assign({}, s, { i, tm: TL.tem[
 SC.forEach((s, i) => { s.son = i + 1 < SC.length ? SC[i + 1].t : TL.duration + 1; });
 const q = (el, sel) => el.querySelector(sel), qa = (el, sel) => [...el.querySelectorAll(sel)];
 const maske = (el, k) => { const sp = el && el.querySelector('.msk>span'); if (sp) sp.style.transform = 'translateY(' + ((1 - bo(k)) * 110) + '%)'; };
+const esc2 = x => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+const say = (t, t0, d, a, b) => Math.round(a + (b - a) * eo(cl((t - t0) / d, 0, 1)));
+function gir(el, t0, t, m, d) { if (!el) return 0; d = d || .32; const k = cl((t - t0) / d, 0, 1), b = bo(k); el.style.opacity = t < t0 ? 0 : cl(k * 2.5, 0, 1); let tr;
+  if (m === 'x') tr = 'translateX(' + (1 - b) * 160 + 'px)'; else if (m === '-x') tr = 'translateX(' + (b - 1) * 160 + 'px)'; else if (m === 's') tr = 'scale(' + (t < t0 ? 0 : .4 + .6 * b) + ')'; else if (m === 'd') tr = 'translateY(' + (1 - b) * -240 + 'px) rotate(' + ((1 - k) * -6) + 'deg)'; else tr = 'translateY(' + (1 - b) * 80 + 'px)';
+  el.style.transform = tr; return k; }
 // sahne çizimleri: lt = sahne başından beri sn, o = çıkış (0..1)
 const D = {
   acilis(s, lt, o, t) { const el = s.el;
@@ -237,7 +247,7 @@ function sigdir() { const F = [['[data-r=bas]', 1400], ['[data-r=soz]', 1400], [
   SC.forEach(s => { s.el.style.display = 'block'; F.forEach(([sel, mx]) => qa(s.el, sel).forEach(el => { const m = el.querySelector('.msk>span') || el; let fs = parseFloat(getComputedStyle(el).fontSize), n = 0; while (m.offsetWidth > mx && n++ < 30) { fs *= .94; el.style.fontSize = fs + 'px'; } })); s.el.style.display = 'none'; }); }
 function frame(t) {
   if (!hazir) { hazir = true; sigdir(); }
-  let cs0 = SC[0]; SC.forEach(s => { if (t >= s.t) cs0 = s; }); const bc = 'b' + cs0.tm; if (document.body.className !== bc) document.body.className = bc;
+  let cs0 = SC[0]; SC.forEach(s => { if (t >= s.t) cs0 = s; }); const bc = 'b' + cs0.tm + (cs0.koyu ? ' k' : ''); if (document.body.className !== bc) document.body.className = bc;
   SC.forEach(s => { const on = t >= s.t - .05 && t < s.son + .45; s.el.style.display = on ? 'block' : 'none'; if (!on) return; const lt = t - s.t, nx = SC[s.i + 1], ntm = nx ? nx.tm : s.tm;
     let f = 'none', tr = 'none', cp = 'none', op = 1;
     if (t > s.son) { const o = cl((t - s.son) / .4, 0, 1);   // çıkış: SONRAKİ sahnenin stiline göre
@@ -245,16 +255,17 @@ function frame(t) {
       else if (ntm === 1 || ntm === 3) { f = o > .02 ? 'blur(' + (ei(o) * 14).toFixed(1) + 'px)' : 'none'; tr = 'scale(' + (1 + ei(o) * .25) + ')'; op = 1 - ei(o); }
       else tr = 'scale(' + (1 - .08 * eo(o)) + ')'; }
     if (lt < .45 && s.i > 0) { const k = lt / .45;   // giriş
-      if (s.tm === 2) tr = 'translateX(' + ((1 - bo(k)) * W) + 'px) rotate(' + ((1 - eo(k)) * 4) + 'deg)';
-      else if (s.tm === 4) cp = 'circle(' + (eo(k) * 130) + '% at 50% 55%)';
-      else if (s.tm === 5) cp = 'inset(0 0 ' + ((1 - eio(k)) * 100) + '% 0)';
-      else if (s.tm === 1) { tr = 'scale(' + (.92 + .08 * eo(k)) + ')'; op = eo(k * 1.6); } }
+      const gm = s.gir || ({ 1: 'zoom', 2: 'kay', 4: 'daire', 5: 'perde' })[s.tm];
+      if (gm === 'kay') tr = 'translateX(' + ((1 - bo(k)) * W) + 'px) rotate(' + ((1 - eo(k)) * 4) + 'deg)';
+      else if (gm === 'daire') cp = 'circle(' + (eo(k) * 130) + '% at 50% 55%)';
+      else if (gm === 'perde') cp = 'inset(0 0 ' + ((1 - eio(k)) * 100) + '% 0)';
+      else if (gm === 'zoom') { tr = 'scale(' + (.92 + .08 * eo(k)) + ')'; op = eo(k * 1.6); } }
     s.el.style.filter = f; s.el.style.transform = tr; s.el.style.clipPath = cp; s.el.style.opacity = op; s.el.style.zIndex = s.i;
-    const ln = document.getElementById('wl'); if (s.tm === 5 && lt < .45 && s.i > 0) { ln.style.display = 'block'; ln.style.top = (eio(lt / .45) * H) + 'px'; } else if (s === cs0) ln.style.display = 'none';
+    const ln = document.getElementById('wl'); if ((s.gir || (s.tm === 5 ? 'perde' : '')) === 'perde' && lt < .45 && s.i > 0) { ln.style.display = 'block'; ln.style.top = (eio(lt / .45) * H) + 'px'; } else if (s === cs0) ln.style.display = 'none';
     D[s.tur] && D[s.tur](s, lt, 0, t); });
   deko(t, cs0);
   // adım göstergesi
-  const A = document.getElementById('adim'); let cur = 0, ad = ''; SC.forEach(s => { if (s.adim && t >= s.t) { cur = s.adim; ad = s.adimAd || ad; } }); A.style.opacity = cur ? 1 : 0; [...A.querySelectorAll('i')].forEach((c, j) => c.className = j + 1 === cur ? 'on' : j + 1 < cur ? 'ok' : ''); A.querySelector('span').textContent = ad;
+  const A = document.getElementById('adim'); if (TL.adimPos) { A.style.left = TL.adimPos[0] + 'px'; A.style.top = TL.adimPos[1] + 'px'; } let cur = 0, ad = ''; SC.forEach(s => { if (s.adim && t >= s.t) { cur = s.adim; ad = s.adimAd || ad; } }); A.style.opacity = cur ? 1 : 0; [...A.querySelectorAll('i')].forEach((c, j) => c.className = j + 1 === cur ? 'on' : j + 1 < cur ? 'ok' : ''); A.querySelector('span').textContent = ad;
   // altyazı
   const Wd = K, sub = document.getElementById('sub'), P = TL.parcalar.find(p => t >= p.t0 && t < p.t1);
   if (!P) { sub.innerHTML = ''; sub.dataset.p = ''; } else { if (sub.dataset.p !== String(P.i0)) { sub.dataset.p = P.i0; sub.innerHTML = Wd.slice(P.i0, P.i1 + 1).map(k => '<span>' + k.w.replace(/[,.!?;:"“”()…]/g, '') + '</span>').join(''); }

@@ -34,7 +34,8 @@ const ses = path.join(KOK, 'veri', 'ses', `${AD}.wav`);
 // hız + ses seviyesi (kısa: 1.25x; uzun: hook 1.25x, sonrası 1.00x)
 const info = JSON.parse(execFileSync('python3', [path.join(__dirname, 'ses_hazirla.py'), ham, metin, TUR, ses]).toString());
 console.error(`ses: ${info.ham_sure}s → ${info.sure}s` + (info.kesim ? ` (hook ${info.hook_kelime} kelime, ${info.kesim}s'de 1.00x'e geçiş)` : ' (1.25x)'));
-const _pv = path.join(KOK, 'planlar', `${ID}_${TUR}_${STIL}.js`);
+const _tv = (process.argv.find(a => a.startsWith('--tema=')) || '').slice(7).replace('karma', '6'), _pt = path.join(KOK, 'planlar', `${ID}_${TUR}_${STIL}_${_tv}.js`);
+const _pv = STIL === 's3' && _tv && fs.existsSync(_pt) ? _pt : path.join(KOK, 'planlar', `${ID}_${TUR}_${STIL}.js`);
 const _pv5 = path.join(KOK, 'planlar', `${ID}_${TUR}_v5.js`);
 const plan = require(fs.existsSync(_pv) ? _pv : STIL === 'v6' && fs.existsSync(_pv5) ? _pv5 : path.join(KOK, 'planlar', `${ID}_${TUR}.js`));
 
@@ -133,7 +134,7 @@ tl.ogeler.forEach(o => {
 tl.zipla.forEach(t => ev(t + .1, 'boing'));
 (plan.sesler || []).forEach(([k, tip, v, dt]) => ev(T(k) + (dt || 0), tip, v));   // sahne motorları için elle ses vuruşları
 if (plan.maskot && !plan.vuruslar && !KISA) tl.mk = { cues: tl.cues, env: tl.env, ifade: tl.ifade, jest: tl.jest, zipla: [], yuru: [], firlat: [], cek: [], aks: null };
-if (plan.s3) tl.planS3 = plan.s3;
+if (plan.s3) { tl.planS3 = plan.s3; tl.planDil = !!plan.dil; tl.adimPos = plan.adimPos || null; }
 // v5 vuruşları: her vuruşta bir ses
 if (plan.vuruslar) {
   tl.vurus = plan.vuruslar.map(b => Object.assign({}, b, { t: Math.max(0, T(b.k)), altT: (b.alt || []).map(T), yazT: b.yazK != null ? T(b.yazK) : null, acT: b.acK != null ? T(b.acK) : null, carpiT: b.carpiK != null ? T(b.carpiK) : null, hlT: b.hlK != null ? T(b.hlK) : null, ekranlar: (b.ekranlar || []).map(e => { const c = Object.assign({}, e); Object.keys(e).forEach(key => { if (!/K$/.test(key) || key === 'k') return; const v = e[key]; c[key.slice(0, -1) + 'T'] = Array.isArray(v) ? v.map(T) : T(v); }); return c; }), ekranT: (b.ekranlar || []).map(e => T(e.k)), aramaT: (b.ekranlar || []).map(e => e.aramaK != null ? T(e.aramaK) : null) }));
