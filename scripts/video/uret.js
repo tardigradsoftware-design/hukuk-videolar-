@@ -3,7 +3,7 @@
 // Çıktı: cikti/kisa/VID_001 - <başlık>.mp4  |  cikti/uzun/VID_001 - <başlık>.mp4
 const fs = require('fs'), path = require('path'), { execFileSync, spawn } = require('child_process');
 const { chromium } = require('playwright');
-const { sayfa } = ((process.argv.includes('--stil=v5') || process.argv.includes('--stil=v6')) ? require('./sayfa_v5') : process.argv.includes('--stil=v4') ? require('./sayfa_v4') : require('./sayfa'));
+const { sayfa } = process.argv.includes('--stil=s3') ? require('./sayfa_s3') : ((process.argv.includes('--stil=v5') || process.argv.includes('--stil=v6')) ? require('./sayfa_v5') : process.argv.includes('--stil=v4') ? require('./sayfa_v4') : require('./sayfa'));
 
 const KOK = path.join(__dirname, '..', '..');
 const [, , ID, TUR = 'kisa'] = process.argv;
@@ -81,6 +81,7 @@ plan.sahneler.forEach((s, si) => {
 const son = plan.son || {};
 tl.ifade.push({ t: d.duration - .2, ad: son.ifade || 'mutlu' }); tl.jest.push({ t: d.duration - .2, ad: son.jest || 'selam' });
 tl.duration = d.duration + (son.uzat ?? 1.2);
+const _son = (process.argv.find(a => a.startsWith('--son=')) || '').slice(6); if (_son) tl.duration = Math.min(tl.duration, _son[0] === 'k' ? T(+_son.slice(1)) + .4 : +_son);   // kısmi render (deneme)
 tl.adimSayisi = plan.adimSayisi || 0;
 tl.parcalar = (() => {
   const P = []; let cur = null;
@@ -130,6 +131,9 @@ tl.ogeler.forEach(o => {
   });
 });
 tl.zipla.forEach(t => ev(t + .1, 'boing'));
+(plan.sesler || []).forEach(([k, tip, v, dt]) => ev(T(k) + (dt || 0), tip, v));   // sahne motorları için elle ses vuruşları
+if (plan.maskot && !plan.vuruslar && !KISA) tl.mk = { cues: tl.cues, env: tl.env, ifade: tl.ifade, jest: tl.jest, zipla: [], yuru: [], firlat: [], cek: [], aks: null };
+if (plan.s3) tl.planS3 = plan.s3;
 // v5 vuruşları: her vuruşta bir ses
 if (plan.vuruslar) {
   tl.vurus = plan.vuruslar.map(b => Object.assign({}, b, { t: Math.max(0, T(b.k)), altT: (b.alt || []).map(T), yazT: b.yazK != null ? T(b.yazK) : null, acT: b.acK != null ? T(b.acK) : null, carpiT: b.carpiK != null ? T(b.carpiK) : null, hlT: b.hlK != null ? T(b.hlK) : null, ekranlar: (b.ekranlar || []).map(e => { const c = Object.assign({}, e); Object.keys(e).forEach(key => { if (!/K$/.test(key) || key === 'k') return; const v = e[key]; c[key.slice(0, -1) + 'T'] = Array.isArray(v) ? v.map(T) : T(v); }); return c; }), ekranT: (b.ekranlar || []).map(e => T(e.k)), aramaT: (b.ekranlar || []).map(e => e.aramaK != null ? T(e.aramaK) : null) }));
@@ -200,7 +204,7 @@ const META_TXT = (outDir, ad) => fs.writeFileSync(path.join(outDir, ad.replace(/
 
 (async () => {
   const outDir = path.join(KOK, 'videolar', TUR); fs.mkdirSync(outDir, { recursive: true });
-  const ad = `${ID} - ${baslik.replace(/[\/\\:*?"<>|]/g, '').trim()}${tl.stil === 'yapaytu' ? ' (v2)' : tl.stil === 'v4' ? ' (v4)' : tl.stil === 'v5' ? ' (v5)' : tl.stil === 'v6' ? ' (v6)' : ''}${tl.temaAd ? ` (stil ${(process.argv.find(a => a.startsWith('--tema=')) || '').slice(7).replace('karma', '6')} ${tl.temaAd})` : ''}${process.argv.includes('--taslak') ? ' (taslak)' : ''}.mp4`;
+  const ad = `${ID} - ${baslik.replace(/[\/\\:*?"<>|]/g, '').trim()}${tl.stil === 'yapaytu' ? ' (v2)' : tl.stil === 'v4' ? ' (v4)' : tl.stil === 'v5' ? ' (v5)' : tl.stil === 'v6' ? ' (v6)' : tl.stil === 's3' ? ' (stil 3 sahne)' : ''}${tl.temaAd ? ` (stil ${(process.argv.find(a => a.startsWith('--tema=')) || '').slice(7).replace('karma', '6')} ${tl.temaAd})` : ''}${process.argv.includes('--taslak') ? ' (taslak)' : ''}.mp4`;
   const outPath = path.join(outDir, ad);
   if (process.argv.includes('--sadece-meta')) { META_TXT(outDir, ad); console.error('✔ meta: ' + ad.replace(/\.mp4$/, '.txt')); return; }
   const tmp = path.join(outDir, `.${ID}.html`); fs.writeFileSync(tmp, html);
