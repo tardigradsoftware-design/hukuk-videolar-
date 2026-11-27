@@ -46,7 +46,7 @@ node scripts/video/uret.js VID_XXX kisa|uzun       # render (+ tema: ID'ye göre
 - **Varsayılan stil: v3 (`STIL.md`)**. Eski stiller: `--stil=klasik`, `--stil=yapaytu`.
 - Altyazı: anlamlı 2–3 kelimelik parçalar (≤18 karakter), titremesiz, konuşulan kelime siyah kutu; stil videodan videoya değişmez.
 - Yayın temposu: YouTube günde 1 shorts + 1 uzun; diğer platformlar günde 1 shorts.
-- Her video yanında aynı adla `.txt`: başlık, açıklama, bölümler (uzun), etiketler, hashtagler. Render etmeden: `uret.js ... --sadece-meta`.
+- **`.txt` meta dosyası yazma** (kullanıcı istemiyor). Gerekirse yalnızca istenince: `--meta` / `--sadece-meta`.
 - Kapak (uzun): kod tabanlı, 3 varyant (A koyu, B sarı, C açık) → `videolar/uzun/kapak/`. Metin: `kapak_yaz.js VID_XXX 'YAZI|VURGU|NESNE' x3` (3–4 kelime, merak boşluğu, başlığı tekrar etme, abartılı vaat yok), sonra `kapak.js VID_XXX`. YouTube'da "Test et ve karşılaştır" ile 3'ü birden yüklenir.
 - Para kazanma uyumu (YouTube "özgün olmayan içerik"): her video farklı plan+tema, özgün senaryo; şablon kopyası video üretme.
 - Uzun video önceliği: gerçek fayda > efekt. Platform adımları (e-Devlet, mobil uygulama, e-posta, şikâyet kanalları) temsili ekranla; koşullar `karsilastir`, gerekenler `kontrol` (söylendikçe ✓), başvuru metni `eposta` (alanlar söylendikçe dolar).

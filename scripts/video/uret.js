@@ -174,6 +174,6 @@ const META_TXT = (outDir, ad) => fs.writeFileSync(path.join(outDir, ad.replace(/
   const satir = Object.entries(rapor).map(([m, ts]) => `  - ${m} @ ${ts.slice(0, 6).join(', ')}${ts.length > 6 ? ' …' : ''}`);
   console.error(`KONTROL ${kad}: ${satir.length ? '\n' + satir.join('\n') : 'görsel sorun yok'}\n  sessizlik (>0.25 sn, seslendirmenin kendi duraklamaları): ${sil}\n  kontrol görseli: kontrol/${kad}.jpg`);
   fs.writeFileSync(path.join(outDir, `.${ID}.json`), JSON.stringify({ dosya: ad, baslik, sure: tl.duration }));
-  META_TXT(outDir, ad);
+  if (process.argv.includes("--meta")) META_TXT(outDir, ad);   // .txt yalnızca istenirse
   console.error(`\n✔ ${outPath}`);
 })();
