@@ -26,7 +26,7 @@ const css = PCSS + `
 .gr .sl{position:absolute;inset:0}
 .gr .sl .ust{position:absolute;left:140px;top:120px;font:700 22px GM;letter-spacing:.22em;color:var(--mav)}
 .gr .sl h1{position:absolute;left:140px;top:160px;margin:0;font:800 84px/1.02 G;letter-spacing:-.045em;color:var(--lac);max-width:1400px}
-.gr .sl h1{white-space:normal;max-width:1340px}.gr .sl.bl .ust,.gr .sl.bl h1{left:870px;width:660px;max-width:660px}.gr .sl.bl h1{font-size:68px}.gr .sl.bl .zm{left:870px;width:660px}
+.gr .sl h1,.gr .md,.gr .md span,.gr .al,.gr .ab span{white-space:normal}.gr .sl h1{max-width:1340px}.gr .md span{min-width:0}.gr .sl.bl .ust,.gr .sl.bl h1{left:870px;width:660px;max-width:660px}.gr .sl.bl h1{font-size:68px}.gr .sl.bl .zm{left:870px;width:660px}
 .gr .bel{position:absolute;left:130px;top:140px;width:640px;height:860px;background:#fff;border-radius:6px;box-shadow:0 2px 0 #eee,0 40px 70px -30px rgba(15,27,51,.5),0 0 0 1px rgba(15,27,51,.06);padding:46px 50px;color:var(--lac)}
 .gr .bel .bh{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:18px;border-bottom:2px solid var(--lac)}
 .gr .bel .bh b{font:800 30px G;letter-spacing:-.02em}.gr .bel .bh small{font:600 14px GM;letter-spacing:.14em;color:var(--gri);text-align:right}
