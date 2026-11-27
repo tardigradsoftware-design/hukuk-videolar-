@@ -57,6 +57,7 @@ node scripts/video/uret.js VID_XXX kisa|uzun       # render (+ tema: ID'ye göre
 ## Hareket kütüphanesi
 - Yeni stil/sahne tasarlarken önce `kutuphane/HAREKET.md` + `scripts/video/hareket.js` (skill: `hareket`). Kaynak: prompt-motion.com.
 - v5 "kâğıt kinetik" (maskotsuz): `uret.js VID_XXX kisa --stil=v5`, plan `planlar/VID_XXX_kisa_v5.js` (vuruşlar). `--blur` = gerçek hareket bulanıklığı (3 alt kare, render 3x uzun).
+- **Sayı/grafik:** senaryoda gerçek rakam/süre/oran varsa mutlaka görselleştir (uydurma rakam yok). Önce **Remotion** (`remotion/index.jsx`: Sayac, Cubuk, Zaman → v5 vuruşu `tip:'grafik', comp, props`), zor kalırsa **HyperFrames**.
 
 ## Yaratıcı serbestlik (kullanıcı isteği)
 - Tek kalıp yok. Sabit olanlar: ses kuralları, fon müziği yok, kostümsüz maskot, çözünürlük, ilerleme çubuğu yok, altyazı stili, para kazanma uyumu.

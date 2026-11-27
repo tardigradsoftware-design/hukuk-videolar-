@@ -131,7 +131,14 @@ tl.zipla.forEach(t => ev(t + .1, 'boing'));
 // v5 vuruşları: her vuruşta bir ses
 if (plan.vuruslar) {
   tl.vurus = plan.vuruslar.map(b => Object.assign({}, b, { t: Math.max(0, T(b.k)), altT: (b.alt || []).map(T), yazT: b.yazK != null ? T(b.yazK) : null, acT: b.acK != null ? T(b.acK) : null, carpiT: b.carpiK != null ? T(b.carpiK) : null, hlT: b.hlK != null ? T(b.hlK) : null, ekranT: (b.ekranlar || []).map(e => T(e.k)) }));
+  // Remotion: sayı/grafik vuruşlarını şeffaf kare dizisine render et (v5'te <img> olarak oynar)
+  tl.vurus.forEach((b, i) => { if (b.tip !== 'grafik') return;
+    const son = i + 1 < tl.vurus.length ? tl.vurus[i + 1].t : d.duration, n = Math.max(30, Math.min(150, Math.ceil((son - b.t) * 30) + 6));
+    const dir = path.join(KOK, 'veri', 'remotion', `${ID}_${TUR}_${i}`);
+    const r = JSON.parse(execFileSync('node', [path.join(__dirname, 'remotion_render.mjs'), b.comp, JSON.stringify(b.props || {}), dir, String(n)], { maxBuffer: 64 << 20 }).toString().trim().split('\n').pop());
+    b.rm = { dir, n: r.kare, w: r.w, h: r.h }; console.error(`remotion: ${b.comp} → ${r.kare} kare`); });
   tl.vurus.forEach((b, i) => {
+    if (b.tip === 'grafik') { ev(b.t, 'whoosh', .6); ev(b.t + .25, 'pop'); if (b.comp === 'Sayac') for (let q = 0; q < 8; q++) ev(b.t + .1 + q * .08, 'tik', .4); }
     if (b.koyu !== undefined && i > 0 && !!b.koyu !== !!tl.vurus[i - 1].koyu) ev(b.t, 'thud', .8);
     if (b.tip === 'dev') { ev(b.t, 'whoosh', .6); ev(b.t + .16, 'pop'); }
     if (b.tip === 'not') ev(b.t, 'kagit');

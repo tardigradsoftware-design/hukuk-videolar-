@@ -26,6 +26,7 @@ function sayfa({ W, H, L, tl }) {
         ? `<div class="sc ok"><div class="ck">${IK.svg('check-circle', 120, '#1E9E6A', '#C9EFDC')}</div><b>${esc(e.basarili)}</b><small>${esc(e.alt || '')}</small></div>`
         : `<div class="sc"><h4>${esc(e.baslik)}</h4>${e.satirlar.map((r, q) => `<div class="rw${q === e.hedef ? ' hd' : ''}${/iptal/i.test(r) ? ' kr' : ''}">${esc(r)}<i>›</i></div>`).join('')}</div>`).join('')}
       <div class="rp"></div><div class="im">${IK.svg('hand-pointing', 76, '#151515', '#fff')}</div></div>`;
+    if (b.tip === 'grafik' && b.rm) x += `<div class="rm" id="rm${i}" style="left:${(W - b.rm.w) / 2}px;width:${b.rm.w}px;height:${b.rm.h}px;top:${b.top ?? 180}px">${Array.from({ length: b.rm.n }, (_, q) => `<img src="file://${b.rm.dir}/element-${String(q).padStart(String(b.rm.n - 1).length, '0')}.png">`).join('')}</div>`;
     if (b.tip === 'yorum') x += `<div class="yr" id="yr${i}"><div class="av">S</div><div class="kt"><span class="yz"></span><i class="cr"></i></div><div class="gn">${IK.svg('paper-plane-tilt', 40, '#fff')}</div></div>`;
     return `<div class="vb" id="vb${i}" data-koyu="${b.koyu ? 1 : 0}">${ic}${x}<svg class="cz" id="cz${i}" width="${W}" height="${H}"><path d="" /></svg></div>`;
   }).join('\n');
@@ -80,6 +81,7 @@ function sayfa({ W, H, L, tl }) {
 .rp{position:absolute;width:90px;height:90px;margin:-45px 0 0 -45px;border-radius:50%;border:4px solid #E8402F;opacity:0}
 .im{position:absolute;left:0;top:0;width:76px;height:76px;filter:drop-shadow(0 10px 8px rgba(0,0,0,.3))}
 .not.tn{top:96px;font-size:70px}
+.rm{position:absolute;transform-origin:50% 50%}.rm img{position:absolute;inset:0;width:100%;height:100%;visibility:hidden}
 .cz{position:absolute;left:0;top:0;overflow:visible}.cz path{fill:none;stroke:#E8402F;stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
 .vb[data-koyu="1"] .cz path{stroke:#F6B92B}
 #sub{position:absolute;left:${L.sub[0]}px;top:${L.sub[1]}px;width:${L.sub[2]}px;text-align:center;white-space:normal;z-index:8}
@@ -106,6 +108,7 @@ function alt(x0, x1, y, sd){ const r = sr(sd); let d = 'M' + x0 + ' ' + y; for (
 function ok(x, y0, y1){ return 'M'+x+' '+y0+' C'+(x-40)+' '+((y0+y1)/2)+' '+(x+40)+' '+((y0+y1)/2)+' '+x+' '+y1+' M'+(x-26)+' '+(y1-30)+' L'+x+' '+y1+' L'+(x+26)+' '+(y1-30); }
 // dev yazıyı genişliğe sığdır
 document.querySelectorAll('.sat').forEach(s => { let fs = 210; s.style.fontSize = fs + 'px'; while (s.scrollWidth > W - 70 && fs > 60) { fs -= 4; s.style.fontSize = fs + 'px'; } });
+document.querySelectorAll('.not span').forEach(sp => { let fs = parseFloat(getComputedStyle(sp.parentNode).fontSize); while (sp.getBoundingClientRect().width > W - 60 && fs > 40) { fs -= 3; sp.parentNode.style.fontSize = fs + 'px'; } });
 document.querySelectorAll('.dev').forEach(d => { const h = d.getBoundingClientRect().height; d.style.top = Math.max(110, 330 - h / 2) + 'px'; });
 // çizgileri hazırla (yerleşim ölçüldükten sonra)
 TL.vurus.forEach((b, i) => {
@@ -142,8 +145,8 @@ function harfler(el, lt, out){
 function cizgi(i, lt, gec){ const p = document.querySelector('#cz' + i + ' path'), Ln = +p.dataset.L; if (!Ln) return; const k = eo((lt - gec) / .42); p.style.strokeDashoffset = Ln * (1 - k); }
 function kontrol(t){
   const out = [], sub = document.getElementById('sub'), S = sub.children.length ? sub.getBoundingClientRect() : null;
-  document.querySelectorAll('.vb').forEach(vb => { if (+vb.style.opacity < .6) return; vb.querySelectorAll('.ik,.not span,.etk,.ui,.yr,.sat,.tf,.gz,.kx').forEach(e => { const st = getComputedStyle(e); if (+st.opacity < .6) return;
-    const r = e.getBoundingClientRect(); if (r.width < 2) return; const nt = e.closest('.not'); if (nt && +getComputedStyle(nt).opacity < .9) return; const dusen = /ik|etk/.test(e.className); if (r.left < -4 || r.right > W + 4 || (!dusen && r.top < -4)) out.push('taşma: ' + (e.className || e.tagName));
+  document.querySelectorAll('.vb').forEach(vb => { if (+vb.style.opacity < .6) return; vb.querySelectorAll('.ik,.not span,.etk,.ui,.yr,.sat,.tf,.gz,.kx,.rm').forEach(e => { const st = getComputedStyle(e); if (+st.opacity < .6) return;
+    const r = e.getBoundingClientRect(); if (r.width < 2) return; const nt = e.closest('.not'); if (nt && +getComputedStyle(nt).opacity < .9) return; const dusen = /ik|etk|rm/.test(e.className); if ((!/rm/.test(e.className) && (r.left < -4 || r.right > W + 4)) || (!dusen && r.top < -4)) out.push('taşma: ' + (e.className || e.tagName));
     if (S && r.left < S.right && S.left < r.right && r.top < S.bottom - 6 && S.top < r.bottom - 6) out.push('altyazı çakışması: ' + e.className); }); });
   return out;
 }
@@ -179,6 +182,9 @@ function frame(t){
       const a = b.acT != null ? cl((t - b.acT) / .22, 0, 1) : 0, ae = eo(a); const tg = ui.querySelector('.tg'); tg.style.background = a > .5 ? '#1E9E6A' : '#cfc8bc'; tg.querySelector('i').style.transform = 'translateX(' + (42 * ae) + 'px) scaleX(' + (1 + .25 * Math.sin(a * Math.PI)) + ')';
       ui.querySelector('.lk0').style.opacity = 1 - ae; ui.querySelector('.lk1').style.opacity = ae; ui.querySelector('.lk1').style.transform = 'scale(' + (a > 0 ? backOut(a) : .5) + ')';
       if (b.acT != null) cizgi(i, t - b.acT, .1); }
+    const rm = document.getElementById('rm' + i);
+    if (rm) { const ims = rm.children, q = Math.min(ims.length - 1, Math.max(0, Math.floor(lt * 30))); for (let j = 0; j < ims.length; j++) ims[j].style.visibility = j === q ? 'visible' : 'hidden';
+      const k = backOut(lt / .3), o = out >= 0 ? ei(out / .2) : 0; rm.style.opacity = cl(lt / .06, 0, 1) * (1 - o); rm.style.transform = 'translateY(' + ((1 - k) * 120 - 200 * o) + 'px) scale(' + (.9 + .1 * k + .15 * o) + ')'; }
     const gz = document.getElementById('gz' + i);
     if (gz) { const k = backOut(lt / .32), q = out >= 0 ? ei(out / .2) : 0; gz.style.opacity = cl(lt / .08, 0, 1) * (1 - q); gz.style.transform = 'translateY(' + ((1 - k) * 220 - 260 * q) + 'px) rotate(' + ((1 - k) * 5 - 2) + 'deg)';
       [...gz.querySelectorAll('.gr')].forEach((r, j) => { const st = (b.altT || [])[j] ?? b.t + .1 * j, kk = cl((t - st) / .22, 0, 1); r.style.opacity = kk; r.style.transform = 'translateX(' + ((1 - backOut(kk)) * -60) + 'px)'; });
