@@ -19,7 +19,7 @@ const css = `
 .c2 .ls3{position:absolute;padding:20px 24px;background:#fff;border:4px solid #151515;border-radius:12px;box-shadow:8px 8px 0 #151515}
 .c2 .ls3 h4{margin:0 0 14px;font:900 34px Arc;font-stretch:88%;text-transform:uppercase}
 .c2 .ls3 .m{display:flex;align-items:center;gap:16px;margin-top:12px;font:700 32px G;white-space:nowrap}
-.c2 .ls3 .m i{width:46px;height:46px;border:4px solid #151515;border-radius:10px;display:flex;align-items:center;justify-content:center;font:900 30px G;font-style:normal;flex:none}
+.c2 .ls3 .m i.on{background:#A8F08C}.c2 .ls3 .m i{width:46px;height:46px;border:4px solid #151515;border-radius:10px;display:flex;align-items:center;justify-content:center;font:900 30px G;font-style:normal;flex:none}
 .c2 .pn{position:absolute;background:#fff;border:4px solid #151515;border-radius:14px;box-shadow:10px 10px 0 #151515;overflow:hidden;color:#151515}
 .c2 .pn .tb{height:58px;background:#151515;display:flex;align-items:center;gap:10px;padding:0 18px}
 .c2 .pn .tb i{width:14px;height:14px;border-radius:50%;background:#FF9AD5}.c2 .pn .tb i:nth-child(2){background:#F7D14C}.c2 .pn .tb i:nth-child(3){background:#A8F08C}
@@ -66,6 +66,52 @@ const css = `
 .c2 .ad3{position:absolute;display:flex;gap:18px}.c2 .ad3 div{width:248px;height:112px;padding:12px 14px;border:4px solid #151515;border-radius:10px;box-shadow:6px 6px 0 #151515;font:900 30px/1.02 Arc;font-stretch:88%;text-transform:uppercase;position:relative}
 .c2 .ad3 small{display:block;font:800 15px GM;letter-spacing:.14em;margin-bottom:6px}.c2 .ad3 b{position:absolute;right:10px;top:8px;font:900 30px G;opacity:0}
 `;
+const DERI = `
+.c2 .pn.tel,.m1 .pn.tel,.k3 .pn.tel{border-radius:52px}.pn.tel .tb b{color:#fff;font:700 20px G;margin-left:16px}.pn.tel .tb span{background:transparent!important}
+.pn.tel .ek{padding:22px}.pn.tel .al3 div{font-size:22px;height:58px}.pn.tel .btn{font-size:24px}.pn.tel h5{font-size:32px}
+.kg5{position:absolute;left:0;top:0;width:150px;height:200px;padding:22px 16px;background:#fff;border-radius:6px}.kg5 i{display:block;height:7px;margin-bottom:14px;border-radius:4px;background:#D9D5CD}
+.yd{position:absolute;left:0;top:0;display:flex;flex-direction:column;align-items:center}.yd b{width:84px;height:84px;border-radius:50%;display:flex;align-items:center;justify-content:center}.yd span{position:absolute;top:96px;white-space:nowrap}
+.ytk{position:absolute;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%}
+.bsl .msk{display:block}.bsl.yt .msk{display:inline-block}.bsl .msk{overflow:hidden;padding:0 .04em .1em 0;vertical-align:top}.bsl .msk>span{display:inline-block}
+/* --- c2 --- */
+.c2 .kg5{border:3px solid #151515;box-shadow:5px 5px 0 #151515}.c2 .yd b{background:#fff;border:4px solid #151515;box-shadow:5px 5px 0 #151515;font:900 40px Arc}.c2 .yd.on b{background:#E8402F;color:#fff}.c2 .yd span{font:900 28px Arc;text-transform:uppercase}.c2 .ytk{background:#F7D14C;border:3px solid #151515}
+.c2 .bsl{font:900 110px/.95 Arc;font-stretch:86%;text-transform:uppercase;color:#151515}.c2 .bsl .v{background:#F7D14C;padding:0 .06em}
+/* --- m1 (Mavi Ferah) --- */
+.m1 .kt3{border:0;border-radius:28px;box-shadow:0 34px 64px -26px rgba(30,100,220,.5),0 0 0 1px rgba(30,110,230,.14)}.m1 .kt3 .eti{background:#1E7BF2;border-radius:999px;padding:5px 14px}
+.m1 .kt3 h3{font:800 46px/1.02 G;letter-spacing:-.045em;text-transform:none;color:#0E1726}.m1 .kt3 .al{border:0;background:#F1F5FC;border-radius:14px}
+.m1 .dm3{border:5px solid #1E7BF2;color:#1E7BF2;background:rgba(255,255,255,.94)!important;box-shadow:0 20px 40px -20px rgba(30,123,242,.5);font:800 40px G;letter-spacing:-.03em;text-transform:none;border-radius:16px}
+.m1 .nt3{border:0;border-radius:24px;box-shadow:0 30px 60px -26px rgba(30,100,220,.45),0 0 0 1px rgba(30,110,230,.12);font:700 34px/1.25 G}.m1 .nt3 .k{background:#1E7BF2;border-radius:999px}.m1 .nt3 .hl{background:linear-gradient(90deg,#DCEAFF var(--p,0%),transparent var(--p,0%))}
+.m1 .ls3{border:0;border-radius:28px;box-shadow:0 40px 70px -30px rgba(30,100,220,.5),0 0 0 1px rgba(30,110,230,.14)}.m1 .ls3 h4{font:700 18px GM;letter-spacing:.24em;color:#1E7BF2}
+.m1 .ls3 .m{font:700 32px G;letter-spacing:-.02em;color:#0E1726}.m1 .ls3 .m i{border:0;border-radius:14px;background:#E8F1FF;color:#1E7BF2;font:800 24px G}.m1 .ls3 .m i.on{background:#1E7BF2;color:#fff}
+.m1 .pn{border:0;border-radius:26px;box-shadow:0 60px 90px -36px rgba(30,100,220,.55),0 0 0 1px rgba(30,110,230,.14)}.m1 .pn .tb{background:#F1F5FC}.m1 .pn .tb i{background:#D5DEEE!important}.m1 .pn .tb span{background:#fff;color:#556}.m1 .pn .tb em{background:#E8F1FF;color:#1E7BF2}.m1 .pn.tel .tb{background:#0E1726}
+.m1 .pn .hd3{background:#1E7BF2;color:#fff;border:0;font:800 26px G}.m1 .pn .hd3 b{border:0;background:rgba(255,255,255,.35)}.m1 .pn h5{font:800 34px G;letter-spacing:-.03em;text-transform:none}
+.m1 .pn .ara{border:2px solid #D5DEEE;border-radius:18px}.m1 .pn .on{border:0;background:#F6F9FF;border-radius:14px}.m1 .pn .on.sec{background:#1E7BF2;color:#fff;box-shadow:none}.m1 .pn .on.sec small{color:#DCEAFF}
+.m1 .pn td{border:0!important;background:#F6F9FF}.m1 .pn tr.hl td{background:#DCEAFF}.m1 .pn .dur{border:0;background:#1E7BF2;color:#fff}.m1 .pn .al3 div{border:2px solid #D5DEEE;border-radius:14px}
+.m1 .pn .btn{border:0;background:#1E7BF2;color:#fff;box-shadow:0 14px 24px -10px rgba(30,123,242,.6);border-radius:16px;font:800 28px G;text-transform:none}.m1 .pn .ok3{background:#1E7BF2;color:#fff;font:800 46px G;text-transform:none}.m1 .pn .ok3 i{border:0;color:#1E7BF2}
+.m1 .imc{filter:drop-shadow(0 6px 8px rgba(0,0,0,.25))}.m1 .rp{border-color:#1E7BF2}
+.m1 .zm .ax{background:#D5DEEE}.m1 .zm .tk{background:#B9C6DC}.m1 .zm .tl{color:#8A94A6}.m1 .zm .ar{border:0;background:#1E7BF2;color:#fff;border-radius:16px;box-shadow:0 20px 30px -14px rgba(30,123,242,.6);font:800 30px G}.m1 .zm .lb{font:700 18px GM;letter-spacing:.2em;color:#8A94A6}
+.m1 .ik3{border:0;box-shadow:0 30px 50px -24px rgba(30,100,220,.5),0 0 0 1px rgba(30,110,230,.12);background:#fff!important}
+.m1 .yr3{background:#1E7BF2;box-shadow:0 40px 70px -30px rgba(30,123,242,.7);font:800 64px G;letter-spacing:-.045em;text-transform:none;border-radius:30px}.m1 .yr3 b{background:#fff;color:#1E7BF2}
+.m1 .ab3{border:0;border-radius:28px;box-shadow:0 40px 70px -30px rgba(30,100,220,.55),0 0 0 1px rgba(30,110,230,.14)}.m1 .ab3 b{font:800 40px G;letter-spacing:-.03em;text-transform:none}.m1 .ab3 i{border:0;border-radius:999px;font:800 28px G}
+.m1 svg.ob path{stroke:#1E7BF2}.m1 .kg5{box-shadow:0 20px 40px -18px rgba(30,100,220,.45)}.m1 .kg5 i{background:#DDE6F5}
+.m1 .yd b{background:#fff;box-shadow:0 20px 40px -16px rgba(30,100,220,.6),0 0 0 3px #1E7BF2;font:800 34px G;color:#1E7BF2}.m1 .yd.on b{background:#1E7BF2;color:#fff}.m1 .yd span{font:700 26px G;color:#0E1726}.m1 .ytk{background:#1E7BF2;box-shadow:0 0 0 6px rgba(30,123,242,.2)}
+/* --- k3 (Kâğıt Serif) --- */
+.k3{background:#fff radial-gradient(#E3E5EB 1.6px,transparent 1.8px) 0 0/36px 36px}
+.k3 .kt3{background:#FFFDF8!important;border:2.5px solid #151515;border-radius:18px;box-shadow:6px 6px 0 #151515}.k3 .kt3 .eti{background:#FFFDF8;color:#6B7280;border:2px solid #151515;letter-spacing:.2em}
+.k3 .kt3 h3{font:400 54px/1 IS;letter-spacing:-.01em;text-transform:none}.k3 .kt3 .al{border:1.5px solid #D8D6CF;font:600 26px G}
+.k3 .dm3{font:italic 400 54px IS;text-transform:none;border:3px solid #2F6BFF;color:#2F6BFF;background:#fff!important;box-shadow:5px 5px 0 #2F6BFF;border-radius:999px;padding:4px 32px 8px}
+.k3 .nt3{border:2.5px solid #151515;border-radius:16px;font:400 44px/1.12 IS}.k3 .nt3 .k{background:#151515}.k3 .nt3 .hl{font-style:italic;background:linear-gradient(90deg,#CDEFDB var(--p,0%),transparent var(--p,0%))}
+.k3 .ls3{background:#FFFDF8;border:2.5px solid #151515;border-radius:20px;box-shadow:6px 6px 0 #151515}.k3 .ls3 h4{font:600 20px GM;letter-spacing:.24em;color:#6B7280}.k3 .ls3 .m{font:400 42px IS}.k3 .ls3 .m i{border:2.5px solid #151515;border-radius:50%;font:600 20px GM}.k3 .ls3 .m i.on{background:#12B76A;color:#fff}
+.k3 .pn{border:2.5px solid #151515;border-radius:20px;box-shadow:8px 8px 0 #151515}.k3 .pn .tb{background:#F3F1EC}.k3 .pn .tb span{background:#fff;color:#444}.k3 .pn .tb em{background:#151515;color:#fff}.k3 .pn.tel .tb{background:#151515}
+.k3 .pn .hd3{background:#FFFDF8;font:400 34px IS;border-bottom:2px solid #151515}.k3 .pn h5{font:400 46px IS;text-transform:none}.k3 .pn .ara{border:2.5px solid #151515}.k3 .pn .on{border:1.5px solid #D8D6CF}.k3 .pn .on.sec{background:#DCE6FF;box-shadow:none;border-color:#2F6BFF}
+.k3 .pn td{border-width:1.5px!important;border-color:#D8D6CF!important}.k3 .pn tr.hl td{background:#DCF5E7}.k3 .pn .dur{background:#fff}.k3 .pn .al3 div{border:2px solid #151515}.k3 .pn .btn{background:#2F6BFF;color:#fff;border:2.5px solid #151515;font:600 26px G;text-transform:none}.k3 .pn .ok3{background:#12B76A;color:#fff;font:400 60px IS;text-transform:none}
+.k3 svg.ob path{stroke:#2F6BFF}.k3 .zm .ax{background:#151515}.k3 .zm .ar{background:#2F6BFF;color:#fff;border:2.5px solid #151515;font:400 42px IS;text-transform:none}.k3 .zm .lb{font:400 40px IS;text-transform:none}
+.k3 .ik3{border:2.5px solid #151515;box-shadow:5px 5px 0 #151515}.k3 .yr3{background:#FFFDF8;color:#151515;border:2.5px solid #151515;box-shadow:8px 8px 0 #151515;font:400 76px IS;text-transform:none}.k3 .yr3 b{background:#E8402F;color:#fff;font-style:italic}.k3 .yr3 small{color:#555}
+.k3 .ab3{border:2.5px solid #151515;border-radius:20px}.k3 .ab3 b{font:400 54px IS;text-transform:none}.k3 .ab3 i{border:0;border-radius:999px;font:600 28px G}
+.k3 .kg5{border:2px solid #151515;box-shadow:5px 5px 0 #151515;background:#FFFDF8}.k3 .yd b{background:#fff;border:3px solid #151515;box-shadow:5px 5px 0 #151515;font:400 46px IS}.k3 .yd.on b{background:#E8402F;color:#fff}.k3 .yd span{font:italic 400 36px IS}.k3 .ytk{background:#F6B92B;border:2.5px solid #151515}
+.k3 .bsl{font:400 110px/1 IS;letter-spacing:-.015em;color:#151515}.k3 .bsl .v{font-style:italic;color:#2F6BFF}
+.k3 .dv3{background:#151515}.k3 .dv3 .y{font:400 120px/1 IS;text-transform:none}
+`;
 const ARA = '<svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" fill="none" stroke="#151515" stroke-width="3"/><path d="M15 15 L21 21" stroke="#151515" stroke-width="3.4" stroke-linecap="round"/></svg>';
 function ekran(e, j) {
   const ust = e.baslik ? `<h5>${esc(e.baslik)}</h5>` : '';
@@ -85,7 +131,7 @@ function oge(o, j) {
     case 'damga': return `<div class="dm3" ${A} style="${st}background:${o.renk || '#FF9AD5'}">${esc(o.yazi)}</div>`;
     case 'not': return `<div class="nt3" ${A} style="${st}">${o.eti ? `<span class="k">${esc(o.eti)}</span><br>` : ''}${esc(o.metin)}${o.vurgu ? ` <span class="hl">${esc(o.vurgu)}</span>` : ''}${o.son ? esc(o.son) : ''}</div>`;
     case 'liste': return `<div class="ls3" ${A} style="${st}">${o.baslik ? `<h4>${esc(o.baslik)}</h4>` : ''}${o.maddeler.map(([m], n) => `<div class="m" data-m="${n}"><i>${n + 1}</i>${esc(m)}</div>`).join('')}</div>`;
-    case 'panel': return `<div class="pn" ${A} style="${st}"><div class="tb"><i></i><i></i><i></i><span>${esc(o.url || '')}</span><em>TEMSİLİ GÖRÜNTÜ</em></div><div class="hd3"><b></b>${esc(o.site || '')}</div>${o.ekranlar.map(ekran).join('')}</div><svg class="imc" data-im="${j}" viewBox="0 0 24 24" style="left:0;top:0"><path d="M3 2 L20 12 L12 13.5 L8 21 Z" fill="#fff" stroke="#151515" stroke-width="2" stroke-linejoin="round"/></svg><i class="rp" data-rp="${j}"></i>`;
+    case 'panel': return `<div class="pn${o.cihaz === 'telefon' ? ' tel' : ''}" ${A} style="${st}"><div class="tb">${o.cihaz === 'telefon' ? '<b>9:41</b><span></span>' : `<i></i><i></i><i></i><span>${esc(o.url || '')}</span>`}<em>TEMSİLİ GÖRÜNTÜ</em></div><div class="hd3"><b></b>${esc(o.site || '')}</div>${o.ekranlar.map(ekran).join('')}</div><svg class="imc" data-im="${j}" viewBox="0 0 24 24" style="left:0;top:0"><path d="M3 2 L20 12 L12 13.5 L8 21 Z" fill="#fff" stroke="#151515" stroke-width="2" stroke-linejoin="round"/></svg><i class="rp" data-rp="${j}"></i>`;
     case 'zaman': return `<div class="zm" ${A} style="${st}"><i class="ax"></i>${Array.from({ length: o.n + 1 }, (_, m) => `<i class="tk" style="left:${m / o.n * 100}%"></i>${m % (o.adim || 1) === 0 ? `<span class="tl" style="left:${m / o.n * 100}%">${m}</span>` : ''}`).join('')}
       <div class="ar" data-ar="1" style="left:${o.a / o.n * 100}%;width:${(o.b - o.a) / o.n * 100}%">${esc(o.yazi || '')}</div>${(o.etiketler || []).map(([x, tx], m) => `<span class="lb" style="left:${x / o.n * 100}%;${m ? 'transform:translateX(-100%)' : ''}">${esc(tx)}</span>`).join('')}<span class="tl" style="left:50%;top:136px;font-size:20px;letter-spacing:.14em">${esc(o.birim || '')}</span></div>`;
     case 'yigin': return `<div class="yg ob" ${A} style="${st}">${Array.from({ length: o.n }, (_, m) => `<i data-y="${m}" style="background:${P[m % P.length]}"></i>`).join('')}</div>`;
@@ -93,22 +139,26 @@ function oge(o, j) {
     case 'ikon': return `<div class="ik3" ${A} style="${st}width:${o.boy || 170}px;height:${o.boy || 170}px;background:${o.renk || '#fff'}">${CZ.svg(o.ad, (o.boy || 170) * .72)}</div>`;
     case 'yorum': return `<div class="yr3" ${A} style="${st}">Yorumlara <b>${esc(o.kelime)}</b> yaz<small>${esc(o.soru || '')}</small></div>`;
     case 'abone': return `<div class="ab3" ${A} style="${st}">${CZ.svg('zil', 90)}<div><b>${esc(o.yazi || 'Abone ol')}</b><small>${esc(o.ek || 'yeni hak rehberleri için')}</small></div><i>ABONE OL</i></div>`;
+    case 'baslik': return `<div class="hd bsl ob${o.yatay ? ' yt' : ''}" ${A} style="${st}font-size:${o.boy || 130}px;${o.orta ? 'text-align:center;' : ''}">${o.satir.map(([x, a, v]) => `<span class="msk" data-a="${a}"><span${v ? ' class="b v"' : ''}>${esc(x)}${o.yatay ? '&nbsp;' : ''}</span></span>`).join('')}</div>`;
+    case 'cip': return `<div class="chip" ${A}><i></i><span></span><em></em></div>${o.nokta === false ? '' : `<div class="dots" data-od="${j}" data-ek="${esc(o.ek || '')}" style="left:${o.x - 120}px;top:${o.y + 118}px;width:240px;justify-content:center">${o.cipler.filter(c => c[4]).map(() => '<b></b>').join('')}<span></span></div>`}`;
+    case 'kagitlar': return `<div class="ob" ${A} style="left:0;top:0;width:1920px;height:1080px">${Array.from({ length: o.n || 10 }, (_, m) => `<div class="kg5" data-kg="${m}">${Array.from({ length: 7 }, (_, r) => `<i style="width:${45 + (r * 31 + m * 17) % 50}%"></i>`).join('')}</div>`).join('')}</div>`;
+    case 'yol': return `<svg class="ob" ${A} style="left:0;top:0;width:1920px;height:1080px;overflow:visible" viewBox="0 0 1920 1080"><path d="${o.d}" fill="none" stroke="#151515" stroke-width="6" stroke-linecap="round"/></svg>${o.dugumler.map(([p, et], m) => `<div class="yd" data-yd="${j}_${m}"><b>${m + 1}</b><span>${esc(et)}</span></div>`).join('')}<i class="ytk" data-yt="${j}"></i>`;
     case 'adimlar': return `<div class="ad3" ${A} style="${st}">${o.adlar.map((a, m) => `<div data-ad="${m}" style="background:${P[m % P.length]}"><small>ADIM ${m + 1}</small>${esc(a)}<b>✓</b></div>`).join('')}</div>`;
   }
   return '';
 }
 const STAR = (c, n) => `<svg viewBox="0 0 100 100" width="100%" height="100%"><path d="${n === 1 ? 'M50 0 L61 39 L100 50 L61 61 L50 100 L39 61 L0 50 L39 39Z' : 'M50 0 L58 30 L88 14 L70 42 L100 50 L70 58 L88 86 L58 70 L50 100 L42 70 L12 86 L30 58 L0 50 L30 42 L12 14 L42 30Z'}" fill="${c}" stroke="#151515" stroke-width="4" stroke-linejoin="round"/></svg>`;
 const mark = {
-  c_genel: s => `<div class="pil" data-r="pil"></div><div class="bas" data-r="bas"></div>
-    ${[[1180, 40, '#F7D14C', 1, 80], [1800, 70, '#FF7AC6', 2, 64], [1840, 600, '#A8F08C', 1, 56]].map(([x, y, c, n, b], j) => `<div class="st" data-st="${j}" style="left:${x}px;top:${y}px;width:${b}px;height:${b}px">${STAR(c, n)}</div>`).join('')}
+  c_genel: s => `${s.basliklar ? '<div class="pil" data-r="pil"></div><div class="bas" data-r="bas"></div>' : ''}
+    ${!/c2/.test(s.sinif || '') ? '' : [[1180, 40, '#F7D14C', 1, 80], [1800, 70, '#FF7AC6', 2, 64], [1840, 600, '#A8F08C', 1, 56]].map(([x, y, c, n, b], j) => `<div class="st" data-st="${j}" style="left:${x}px;top:${y}px;width:${b}px;height:${b}px">${STAR(c, n)}</div>`).join('')}
     ${s.ogeler.map(oge).join('\n')}`,
 };
 const rt = `
 const KT = v => v == null ? 1e9 : Array.isArray(v) ? T(v[0]) + v[1] : T(v);
 function tyz(el, txt, t0, t, sure) { if (!el) return; const n = t < t0 ? 0 : Math.floor(cl((t - t0) / (sure || Math.min(1.1, .04 * txt.length + .2)), 0, 1) * txt.length); el.textContent = txt.slice(0, n) + (n > 0 && n < txt.length ? '|' : ''); }
 function goreli(el, hedef) { const a = el.getBoundingClientRect(), b = hedef.getBoundingClientRect(), sc = a.width / el.offsetWidth; return [(b.left - a.left) / sc + b.width / sc * .6, (b.top - a.top) / sc + b.height / sc * .6]; }
-function cGenelOge(s, o, j, t, el) { const e = q(el, '[data-o="' + j + '"]'); if (!e) return; const t0 = KT(o.k), t1 = KT(o.cik);
-  if (t < t0 - .05 || t > t1 + .4) { e.style.display = 'none'; const x = q(el, '[data-oe="' + j + '"]'); if (x) x.style.display = 'none'; const im = q(el, '[data-im="' + j + '"]'); if (im) im.style.display = 'none'; const rp = q(el, '[data-rp="' + j + '"]'); if (rp) rp.style.display = 'none'; return; }
+function cGenelOge(s, o, j, t, el) { const e = q(el, '[data-o="' + j + '"]'); if (!e) return; const t0 = o.k == null ? s.t : KT(o.k), t1 = KT(o.cik);
+  if (t < t0 - .05 || t > t1 + .4) { e.style.display = 'none'; const x = q(el, '[data-oe="' + j + '"]'); if (x) x.style.display = 'none'; const im = q(el, '[data-im="' + j + '"]'); if (im) im.style.display = 'none'; const rp = q(el, '[data-rp="' + j + '"]'); if (rp) rp.style.display = 'none'; const od = q(el, '[data-od="' + j + '"]'); if (od) od.style.display = 'none'; qa(el, '[data-yd^="' + j + '_"]').forEach(z => z.style.display = 'none'); const yt = q(el, '[data-yt="' + j + '"]'); if (yt) yt.style.display = 'none'; return; }
   e.style.display = ''; const cik = cl((t - t1) / .35, 0, 1);
   const G = () => { gir(e, t0, t, o.giris || (o.t === 'damga' ? 'damga' : 'd')); if (cik > 0) { e.style.opacity = (1 - cik); e.style.transform += ' translateY(' + (-60 * ei(cik)) + 'px)'; } };
   if (o.t === 'kart') { G(); (o.durum || []).forEach(([k, d]) => { if (t >= KT(k)) { if (d.renk) e.style.background = d.renk; if (d.soluk) e.style.filter = 'grayscale(1) opacity(.6)'; } }); if (!(o.durum || []).some(([k, d]) => d.soluk && t >= KT(k))) e.style.filter = '';
@@ -121,7 +171,7 @@ function cGenelOge(s, o, j, t, el) { const e = q(el, '[data-o="' + j + '"]'); if
     e.style.opacity = t < t0 ? 0 : (1 - cik) * (o.kal ? 1 : 1 - cl((k - .92) / .08, 0, 1)); e.style.transform = 'translate(' + (Pp.x - e.offsetWidth / 2) + 'px,' + (Pp.y - e.offsetHeight / 2) + 'px) rotate(' + (Math.sin(k * 9) * 5) + 'deg)'; return; }
   if (o.t === 'damga') { if (t < t0) { e.style.opacity = 0; return; } const k = eo(cl((t - t0) / .2, 0, 1)); e.style.opacity = 1 - cik; e.style.transform = 'rotate(' + (o.rot || -6) + 'deg) scale(' + (1 + 1.6 * Math.pow(1 - k, 2)) + ')'; return; }
   if (o.t === 'not') { G(); const hl = e.querySelector('.hl'); if (hl) hl.style.setProperty('--p', (eo(cl((t - KT(o.vurguK != null ? o.vurguK : o.k)) / .4, 0, 1)) * 100) + '%'); return; }
-  if (o.t === 'liste') { G(); qa(e, '[data-m]').forEach((m, n) => { const mk = KT(o.maddeler[n][1]), on = t >= mk, k = bo(cl((t - mk) / .3, 0, 1)), ic = m.querySelector('i'); m.style.opacity = o.hepsi || on ? 1 : .35; ic.textContent = on ? '✓' : n + 1; ic.style.background = on ? '#A8F08C' : '#fff'; ic.style.transform = 'scale(' + (on ? .7 + .3 * k : 1) + ') rotate(' + (on ? (1 - k) * -30 : 0) + 'deg)'; }); return; }
+  if (o.t === 'liste') { G(); qa(e, '[data-m]').forEach((m, n) => { const mk = KT(o.maddeler[n][1]), on = t >= mk, k = bo(cl((t - mk) / .3, 0, 1)), ic = m.querySelector('i'); m.style.opacity = o.hepsi || on ? 1 : .35; ic.textContent = on ? '✓' : n + 1; ic.className = on ? 'on' : ''; ic.style.transform = 'scale(' + (on ? .7 + .3 * k : 1) + ') rotate(' + (on ? (1 - k) * -30 : 0) + 'deg)'; }); return; }
   if (o.t === 'panel') { G(); let ai = 0; o.ekranlar.forEach((x, n) => { if (t >= KT(x.k)) ai = n; }); const at = KT(o.ekranlar[ai].k);
     qa(e, '[data-ek]').forEach((x, n) => { const on = n === ai, k = eio(cl((t - at) / .35, 0, 1)); x.style.display = on || (n === ai - 1 && k < 1) ? 'block' : 'none'; x.style.transform = on ? 'translateX(' + ((1 - k) * (n ? 100 : 0)) + '%)' : 'translateX(' + (-100 * k) + '%)'; });
     const E = o.ekranlar[ai], X = q(e, '[data-ek="' + ai + '"]'), hedef = [];
@@ -139,12 +189,18 @@ function cGenelOge(s, o, j, t, el) { const e = q(el, '[data-o="' + j + '"]'); if
     const y2 = e.querySelector('.y2'); if (y2) gir(y2, KT(o.altK), t, 'y'); return; }
   if (o.t === 'ikon') { G(); const c = e.querySelector('.cz-il'); if (c) CZ.anim(c, t - t0); return; }
   if (o.t === 'yorum' || o.t === 'abone') { G(); if (t > t0 + .4) e.style.transform += ' rotate(' + (Math.sin(t * 2.4) * 1.5) + 'deg) scale(' + (1 + .02 * Math.sin(t * 3.1)) + ')'; const c = e.querySelector('.cz-il'); if (c) CZ.anim(c, t - t0); return; }
+  if (o.t === 'baslik') { e.style.opacity = 1 - cik; e.style.transform = cik > 0 ? 'translateY(' + (-60 * ei(cik)) + 'px)' : ''; hdCiz(e, t); return; }
+  if (o.t === 'cip') { const dt = q(el, '[data-od="' + j + '"]'); if (dt) dt.style.display = ''; cipCiz(e, o.cipler, t, o.x, o.y, dt, o.toplam); if (cik > 0) { e.style.opacity = 1 - cik; if (dt) dt.style.opacity = 1 - cik; } return; }
+  if (o.t === 'kagitlar') { e.style.opacity = (1 - cik) * cl((t - t0) / .5, 0, 1); qa(e, '[data-kg]').forEach((g, m) => { const x = hs(m) * 1800, y = ((hs(m + 5) * 1300 + t * (14 + hs(m + 2) * 18)) % 1300) - 200, r = (hs(m + 9) - .5) * 50 + Math.sin(t * .5 + m) * 6; g.style.transform = 'translate(' + x + 'px,' + (1080 - y) + 'px) rotate(' + r + 'deg) scale(' + (.6 + hs(m + 3) * .5) + ')'; }); return; }
+  if (o.t === 'yol') { const p = e.querySelector('path'), L = +p.dataset.L || (p.dataset.L = p.getTotalLength()), k = eio(cl((t - t0) / (o.sure || .9), 0, 1)); p.style.strokeDasharray = L; p.style.strokeDashoffset = L * (1 - k); e.style.opacity = 1 - cik;
+    o.dugumler.forEach(([pos, et, dk, vk], m) => { const d = q(el, '[data-yd="' + j + '_' + m + '"]'), P0 = p.getPointAtLength(L * pos), kk = bo(cl((t - KT(dk)) / .35, 0, 1)), on = vk != null && t >= KT(vk); d.style.display = ''; d.style.left = P0.x + 'px'; d.style.top = P0.y + 'px'; d.style.opacity = (t < KT(dk) ? 0 : 1) * (1 - cik); d.style.transform = 'translate(-50%,-50%) scale(' + (.3 + .7 * kk + .03 * Math.sin(t * 4 + m)) + ')'; d.classList.toggle('on', on); });
+    const tk = q(el, '[data-yt="' + j + '"]'); if (tk) { tk.style.display = ''; const ph = ((t - t0) / 2.4) % 1, P1 = p.getPointAtLength(L * ph * k); tk.style.left = P1.x + 'px'; tk.style.top = P1.y + 'px'; tk.style.opacity = t > t0 + .6 ? Math.sin(ph * Math.PI) * (1 - cik) : 0; } return; }
   if (o.t === 'adimlar') { G(); qa(e, '[data-ad]').forEach((d, m) => { const dk = t0 + m * .1, k = bo(cl((t - dk) / .3, 0, 1)); let tr = 'translateY(' + ((1 - k) * -120) + 'px)'; d.style.opacity = t < dk ? 0 : 1; const ak = o.aktif && o.aktif[1] === m && t >= KT(o.aktif[0]); if (ak) { const kk = bo(cl((t - KT(o.aktif[0])) / .3, 0, 1)); tr += ' translateY(' + (-30 * kk) + 'px) scale(' + (1 + .1 * kk) + ')'; d.style.outline = '5px solid #E8402F'; d.style.outlineOffset = '5px'; } else d.style.outline = 'none';
       const ok = o.tamam && t >= KT(o.tamam[m]); d.querySelector('b').style.opacity = ok ? 1 : 0; d.style.transform = tr; }); return; }
 }
 Object.assign(D, {
-  c_genel(s, lt, o, t) { const el = s.el; c2Ust(el, s, t);
+  c_genel(s, lt, o, t) { const el = s.el; if (s.basliklar) c2Ust(el, s, t);
     const sh = s.ogeler.reduce((a, x) => { if (!x.sars) return a; const d = t - KT(x.k); return d > 0 && d < .35 ? a + Math.sin(d * 80) * 9 * (1 - d / .35) : a; }, 0); el.style.translate = sh + 'px 0';
     s.ogeler.forEach((x, j) => cGenelOge(s, x, j, t, el)); },
 });`;
-module.exports = { css, mark, rt };
+module.exports = { css: css.replace(/\.c2 /g, ':is(.c2,.m1,.k3) ') + DERI, mark, rt };

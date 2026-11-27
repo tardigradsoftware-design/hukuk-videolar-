@@ -131,7 +131,7 @@ const MARK = {
   kitap: s => `<div class="etk" data-r="ust" style="position:absolute;left:0;right:0;top:100px;text-align:center">${esc(s.ust)}</div>
     <div data-r="ktp" style="position:absolute;left:460px;top:250px;width:1000px;height:600px;perspective:1600px">
       <div style="position:absolute;left:0;top:0;width:500px;height:600px;background:#F3F1EC;border:3px solid #151515;border-radius:16px 0 0 16px;box-shadow:inset -30px 0 40px -30px rgba(0,0,0,.4),0 40px 90px rgba(0,0,0,.6);padding:60px 50px">${Array.from({ length: 9 }, (_, j) => `<div style="height:9px;margin:0 0 24px;border-radius:5px;background:#C9C3B4;width:${70 + (j * 17) % 30}%"></div>`).join('')}</div>
-      <div data-r="sag" style="position:absolute;left:500px;top:0;width:500px;height:600px;background:#FFFDF8;border:3px solid #151515;border-radius:0 16px 16px 0;transform-origin:left center;box-shadow:0 40px 90px rgba(0,0,0,.6);padding:60px 50px;color:#151515">
+      <div data-r="sag" style="position:absolute;left:500px;top:0;width:500px;height:600px;backface-visibility:hidden;background:#FFFDF8;border:3px solid #151515;border-radius:0 16px 16px 0;transform-origin:left center;box-shadow:0 40px 90px rgba(0,0,0,.6);padding:60px 50px;color:#151515">
         <div style="font:600 18px GM;letter-spacing:.22em;color:#8B8E95">${esc(s.madde)}</div>
         <div style="margin-top:26px;font:400 46px/1.1 IS">${esc(s.metin)}</div>
         <div data-r="vur" style="position:relative;display:inline-block;margin-top:30px;font:400 76px IS;font-style:italic">${esc(s.vurgu)}<i data-r="cz" style="position:absolute;left:-6px;right:-6px;bottom:6px;height:22px;background:#12B76A;z-index:-1;transform-origin:left;transform:scaleX(0);border-radius:6px"></i></div>

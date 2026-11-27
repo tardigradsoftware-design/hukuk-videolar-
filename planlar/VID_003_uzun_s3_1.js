@@ -1,5 +1,5 @@
 // VID_003 uzun — sahne dili 1 (Mavi Ferah / BlueVisa uyarlaması). İlk ~42 sn. Rakamlar yalnız metinden.
-const base = require('./VID_003_uzun_s3.js');
+const base = require('./VID_003_uzun_s3.js'), DEVAM = require('./VID_003_uzun_devam.js');
 module.exports = { maskot: true, dil: 1, sahneler: base.sahneler, adimPos: [1480, 46],
   sesler: [[0, 'whoosh'], [1, 'tik'], [2, 'tik'], [4, 'tik'], [10, 'thud'], [13, 'whoosh'], [15, 'pop'], [17, 'swish'], [25, 'pop'], [28, 'whoosh'], [30, 'pop'], [32, 'pop'], [38, 'tik'], [38, 'tik', .4, .4], [52, 'ding'], [55, 'pop'], [57, 'thud'],
     [61, 'whoosh'], [69, 'pop'], [72, 'pop'], [74, 'swish'], [80, 'click'], [83, 'pop'], [90, 'whoosh'], [91, 'ding'], [95, 'whoosh'], [100, 'swish']],
@@ -14,4 +14,6 @@ module.exports = { maskot: true, dil: 1, sahneler: base.sahneler, adimPos: [1480
       dolK: 74, dolBitK: 79, birGun: '1. GÜN', birGunK: 72, tikK: 80,
       cipler: [[69, '1', 'Krediyi çektin', 'Tamam'], [72, '2', 'Poliçe kesildi', '1. gün'], [80, '3', 'İptal başvurusu', '30 gün içinde'], [83, '4', 'Kesinti', 'Yok']] },
     { tur: 'm_yuzde', sinif: 'm1', koyu: true, gir: 'daire', a: 90, adim: 1, sayK: 90, pill: 'iade', pillK: 92, alt: 'PRİMİN TAMAMI · HESABINA', ikiK: 95, satir2: [['30 günü', 95], ['geçtin', 97], ['mi?', 97], ['Vazgeçme.', 99, 1]], kalanK: 100 },
+    ...DEVAM.m1,
   ] };
+module.exports.sesler = [...module.exports.sesler, ...require('./_ses.js')(DEVAM.m1), [151, 'whoosh'], [157, 'pop'], [161, 'whoosh'], [171, 'pop'], [172, 'whoosh'], [176, 'pop']];
