@@ -18,6 +18,7 @@ const css = PCSS + `
 .gr .ray .ad{display:flex;gap:8px;margin-top:18px}.gr .ray .ad i{flex:1;height:8px;border-radius:4px;background:#C9CDD5}.gr .ray .ad i.on{background:var(--mav)}.gr .ray .ad i.ok{background:var(--lac)}
 .gr .ray .kt{margin-top:26px;padding:20px 22px;background:#fff;border-radius:12px;box-shadow:0 20px 40px -24px rgba(15,27,51,.45);font:600 28px/1.25 G;color:var(--lac)}
 .gr .ray .kt small{display:block;margin-bottom:6px;font:700 15px GM;letter-spacing:.18em;color:var(--mav)}
+.gr .ray.sol{left:130px;right:auto;top:210px;width:700px}.gr .ray.sol .an{font-size:72px}.gr .ray.sol .kt{font-size:42px;padding:26px 30px}.gr .ray.sol .kt small{font-size:18px}
 .gr .fl{position:absolute;inset:0;background:#fff;z-index:40;pointer-events:none}
 .gr .th{position:absolute;right:70px;bottom:90px;width:360px;height:220px;border-radius:12px;background:#fff;border:6px solid #fff;box-shadow:0 30px 60px -20px rgba(0,0,0,.45);z-index:41;overflow:hidden}
 .gr .th i{display:block;height:20px;background:#1C1D21}.gr .th em{display:block;margin:10px;height:24px;border-radius:6px;background:#E8EBF1}.gr .th u{display:block;margin:8px 10px;height:12px;border-radius:6px;background:#EEF0F4}
@@ -25,7 +26,7 @@ const css = PCSS + `
 .gr .sl{position:absolute;inset:0}
 .gr .sl .ust{position:absolute;left:140px;top:120px;font:700 22px GM;letter-spacing:.22em;color:var(--mav)}
 .gr .sl h1{position:absolute;left:140px;top:160px;margin:0;font:800 84px/1.02 G;letter-spacing:-.045em;color:var(--lac);max-width:1400px}
-.gr .sl.bl .ust,.gr .sl.bl h1{left:880px;max-width:700px}.gr .sl.bl h1{font-size:70px}
+.gr .sl h1{white-space:normal;max-width:1340px}.gr .sl.bl .ust,.gr .sl.bl h1{left:870px;width:660px;max-width:660px}.gr .sl.bl h1{font-size:68px}.gr .sl.bl .zm{left:870px;width:660px}
 .gr .bel{position:absolute;left:130px;top:140px;width:640px;height:860px;background:#fff;border-radius:6px;box-shadow:0 2px 0 #eee,0 40px 70px -30px rgba(15,27,51,.5),0 0 0 1px rgba(15,27,51,.06);padding:46px 50px;color:var(--lac)}
 .gr .bel .bh{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:18px;border-bottom:2px solid var(--lac)}
 .gr .bel .bh b{font:800 30px G;letter-spacing:-.02em}.gr .bel .bh small{font:600 14px GM;letter-spacing:.14em;color:var(--gri);text-align:right}
@@ -34,8 +35,8 @@ const css = PCSS + `
 .gr .bel .rw em{font-style:normal;font:600 24px GM}.gr .bel .rw i{position:absolute;inset:4px -4px;border-radius:6px;background:rgba(255,213,79,.55);transform-origin:left;z-index:-1}
 .gr .bel .ln{height:10px;border-radius:5px;background:#EEF0F4;margin:14px 0}
 .gr .bel .dm{position:absolute;right:40px;bottom:60px;padding:6px 18px;border:4px solid var(--kir);color:var(--kir);border-radius:8px;font:800 30px G;transform:rotate(-8deg);opacity:.85}
-.gr .md{position:absolute;left:140px;display:flex;gap:22px;align-items:flex-start;max-width:1380px;font:600 40px/1.25 G;letter-spacing:-.02em;color:var(--lac)}
-.gr .sl.bl .md{left:880px;max-width:700px;font-size:36px}
+.gr .md{position:absolute;left:140px;display:flex;gap:22px;align-items:flex-start;max-width:1380px;font:600 48px/1.22 G;letter-spacing:-.02em;color:var(--lac)}
+.gr .sl.bl .md{left:870px;max-width:660px;font-size:38px}
 .gr .md i{flex:none;width:54px;height:54px;border-radius:12px;background:var(--mav);color:#fff;font:800 28px G;font-style:normal;display:flex;align-items:center;justify-content:center;margin-top:-2px}
 .gr .md.uy i{background:var(--kir)}.gr .md.ok i{background:#127A4A}
 .gr .md mark{background:linear-gradient(90deg,rgba(255,213,79,.7) var(--p,0%),transparent var(--p,0%));color:inherit;padding:0 .08em}
@@ -60,7 +61,7 @@ const BELGE = {
 };
 BELGE.police = BELGE.plan; BELGE.sozlesme = BELGE.plan;
 const mark = {
-  g_ekran: s => `${PANEL.html(Object.assign({}, s.panel, { tip: 'panel' }), 'g' + s.a)}${ray(s)}${(s.altbant || []).map((a, n) => `<div class="ab${a.uy ? ' uy' : ''}" data-ab="${n}"><b>${esc(a.ust)}</b><span>${esc(a.metin)}</span></div>`).join('')}${(s.ss || []).map((k, n) => ss(n)).join('')}`,
+  g_ekran: s => `${PANEL.html(Object.assign({}, s.panel, { tip: 'panel' }), 'g' + s.a)}${s.panel.cihaz === 'tel' ? ray(s).replace('class="ray"', 'class="ray sol"') : ray(s)}${(s.altbant || []).map((a, n) => `<div class="ab${a.uy ? ' uy' : ''}" data-ab="${n}"><b>${esc(a.ust)}</b><span>${esc(a.metin)}</span></div>`).join('')}${(s.ss || []).map((k, n) => ss(n)).join('')}`,
   g_slayt: s => `<div class="sl${s.belge ? ' bl' : ''}">${s.belge ? `<div class="bel" data-r="bel">${BELGE[s.belge.tur || 'plan'](s.belge)}</div>` : ''}
     <div class="ust" data-r="u">${esc(s.ust || '')}</div><h1 data-r="h">${esc(s.baslik || '')}</h1>
     ${(s.maddeler || []).map(([m, k, v, tip], n) => `<div class="md${tip ? ' ' + tip : ''}" data-md="${n}" style="top:${(s.mdY || 400) + n * (s.mdAra || 110)}px"><i>${tip === 'uy' ? '!' : tip === 'ok' ? '✓' : n + 1}</i><span>${v ? esc(m).replace(esc(v), '<mark>' + esc(v) + '</mark>') : esc(m)}</span></div>`).join('')}
