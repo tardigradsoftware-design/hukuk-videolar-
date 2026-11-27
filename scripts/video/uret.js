@@ -3,7 +3,7 @@
 // Çıktı: cikti/kisa/VID_001 - <başlık>.mp4  |  cikti/uzun/VID_001 - <başlık>.mp4
 const fs = require('fs'), path = require('path'), { execFileSync, spawn } = require('child_process');
 const { chromium } = require('playwright');
-const { sayfa } = (process.argv.includes('--stil=v4') ? require('./sayfa_v4') : require('./sayfa'));
+const { sayfa } = (process.argv.includes('--stil=v5') ? require('./sayfa_v5') : process.argv.includes('--stil=v4') ? require('./sayfa_v4') : require('./sayfa'));
 
 const KOK = path.join(__dirname, '..', '..');
 const [, , ID, TUR = 'kisa'] = process.argv;
@@ -33,7 +33,8 @@ const ses = path.join(KOK, 'veri', 'ses', `${AD}.wav`);
 // hız + ses seviyesi (kısa: 1.25x; uzun: hook 1.25x, sonrası 1.00x)
 const info = JSON.parse(execFileSync('python3', [path.join(__dirname, 'ses_hazirla.py'), ham, metin, TUR, ses]).toString());
 console.error(`ses: ${info.ham_sure}s → ${info.sure}s` + (info.kesim ? ` (hook ${info.hook_kelime} kelime, ${info.kesim}s'de 1.00x'e geçiş)` : ' (1.25x)'));
-const plan = require(path.join(KOK, 'planlar', `${ID}_${TUR}.js`));
+const _pv = path.join(KOK, 'planlar', `${ID}_${TUR}_${STIL}.js`);
+const plan = require(fs.existsSync(_pv) ? _pv : path.join(KOK, 'planlar', `${ID}_${TUR}.js`));
 
 // --- dudak senkronu + kelime zamanları
 const dudak = (wav, txt) => JSON.parse(execFileSync('python3', [path.join(__dirname, '..', 'dosya', 'dudak.py'), wav, txt], { maxBuffer: 64 << 20 }).toString());
@@ -127,6 +128,19 @@ tl.ogeler.forEach(o => {
   });
 });
 tl.zipla.forEach(t => ev(t + .1, 'boing'));
+// v5 vuruşları: her vuruşta bir ses
+if (plan.vuruslar) {
+  tl.vurus = plan.vuruslar.map(b => Object.assign({}, b, { t: Math.max(0, T(b.k)), altT: (b.alt || []).map(T), yazT: b.yazK != null ? T(b.yazK) : null, acT: b.acK != null ? T(b.acK) : null }));
+  tl.vurus.forEach((b, i) => {
+    if (b.koyu !== undefined && i > 0 && !!b.koyu !== !!tl.vurus[i - 1].koyu) ev(b.t, 'thud', .8);
+    if (b.tip === 'dev') { ev(b.t, 'whoosh', .6); ev(b.t + .16, 'pop'); }
+    if (b.tip === 'not') ev(b.t, 'kagit');
+    if (b.ikon) ev(b.t + .34, 'pop', .8);
+    (b.etiketler || []).forEach((e, j) => { const tt = b.altT[j] ?? b.t + .2 * j; ev(tt + .42, 'tik'); ev(tt + .62, 'tik', .5); });
+    if (b.tip === 'ui' && b.acT != null) { ev(b.acT, 'click'); ev(b.acT + .15, 'ding', .7); }
+    if (b.yaz) { const st = b.yazT ?? b.t + .3, hz = Math.max(10, b.yaz.length / 1.0); for (let c = 0; c < b.yaz.length; c++) ev(st + c / hz, 'key'); }
+  });
+}
 const olayP = ses.replace('.wav', '.olay.json'), miksP = ses.replace('.wav', tl.stil ? `.${tl.stil}.miks.wav` : '.miks.wav');
 fs.writeFileSync(olayP, JSON.stringify({ sure: tl.duration, olaylar: olay }));
 const kulak = require('child_process').spawnSync('python3', [path.join(__dirname, 'miks.py'), ses, olayP, TUR, miksP, ...(tl.stil === 'yapaytu' ? ['--muzik', '--sfx-db=-12'] : [])], { encoding: 'utf8' });
@@ -140,13 +154,14 @@ const W = KISA ? 720 : 1920, H = KISA ? 1280 : 1080;
 const L = KISA
   ? { title: [52, 96, 616], titleSize: 62, sub: [0, 812, 720], subSize: 42, mascot: [170, 840, 400], ogeScale: 1.15 }
   : { title: [90, 70, 1100], titleSize: 76, sub: [0, 940, 1920], subSize: 50, mascot: [1190, 190, 700], ogeScale: 1.35 };
+if (tl.stil === 'v5') { L.sub = [0, 905, 720]; }
 if (tl.stil === 'yapaytu' || tl.stil === 'v3' || tl.stil === 'v4') L.mascot = KISA ? [370, 900, 330] : [1310, 440, 580];   // karakter sağ altta
 const html = sayfa({ W, H, L, tl });
 const META_TXT = (outDir, ad) => fs.writeFileSync(path.join(outDir, ad.replace(/\.mp4$/, '.txt')), require('./meta').yaz({ satir, kisa: KISA, basliklar: tl.basliklar, sure: tl.duration }));
 
 (async () => {
   const outDir = path.join(KOK, 'videolar', TUR); fs.mkdirSync(outDir, { recursive: true });
-  const ad = `${ID} - ${baslik.replace(/[\/\\:*?"<>|]/g, '').trim()}${tl.stil === 'yapaytu' ? ' (v2)' : tl.stil === 'v4' ? ' (v4)' : ''}.mp4`;
+  const ad = `${ID} - ${baslik.replace(/[\/\\:*?"<>|]/g, '').trim()}${tl.stil === 'yapaytu' ? ' (v2)' : tl.stil === 'v4' ? ' (v4)' : tl.stil === 'v5' ? ' (v5)' : ''}.mp4`;
   const outPath = path.join(outDir, ad);
   if (process.argv.includes('--sadece-meta')) { META_TXT(outDir, ad); console.error('✔ meta: ' + ad.replace(/\.mp4$/, '.txt')); return; }
   const tmp = path.join(outDir, `.${ID}.html`); fs.writeFileSync(tmp, html);
