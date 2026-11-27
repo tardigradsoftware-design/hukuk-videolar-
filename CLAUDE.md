@@ -26,7 +26,7 @@
 - Uzun videolarda portal ekranları (imleç, daktilo, tıklama) temsilidir; resmi logo yok, "TEMSİLİ GÖRÜNTÜ" etiketi kalır, kişisel veri/tutar "•••".
 - Yorum çağrısı: anahtar kelime ("PARA yaz") + soru CTA'sı.
 
-- **Emoji yok** (Noto/Windows/Fluent çocuksu duruyor; domuz ikonu asla). İkonlar: Phosphor duotone (`scripts/video/ikonlar.js`, MIT), renkli karo içinde.
+- **Emoji yasak, hazır ikon kütüphanesi de yok** (domuz asla). Görseller **kendi 2B SVG çizimlerimiz**: `scripts/video/cizimler.js` (düz renk, kalın siyah kontur, her biri animasyonlu: ampul yanar, kilit kapanır, kalkan dolar, belge yazılır+mühür…). Planlarda emoji anahtar olarak yazılabilir, çizime eşlenir; yeni ihtiyaçta yeni çizim ekle.
 - Kart girişleri yüksek tempolu (~0,25 sn, yaylı); video asla durgun olmamalı (kamera sürekli hareketli).
 
 ## Çıktı

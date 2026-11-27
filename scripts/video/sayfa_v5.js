@@ -5,6 +5,7 @@
 // Deterministik: rastgelelik yok; titrek kalem çizgileri sabit tohumlu.
 const fs = require('fs'), path = require('path');
 const IK = require('./ikonlar');
+const CZ = require('./cizimler');   // kendi 2B SVG çizimlerimiz (emoji/ikon kütüphanesi yok)
 const FN = (p) => 'file://' + path.join(__dirname, '..', '..', 'node_modules', '@fontsource', p);
 const esc = x => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 
@@ -13,21 +14,21 @@ function sayfa({ W, H, L, tl }) {
   const ink = b => b.koyu ? '#F2EEE6' : '#151515', acc = '#E8402F';
   const harf = (s, vurgu, cp) => [...s].map(c => `<b class="h${vurgu ? ' v' : ''}${cp && c !== ' ' ? ' c' : ''}">${c === ' ' ? '&nbsp;' : esc(c)}</b>`).join('');
   const html = V.map((b, i) => {
-    let ic = b.ikon ? `<div class="ik" id="ik${i}">${IK.svg(b.ikon, 210, ink(b), b.koyu ? acc : '#F6B92B')}</div>` : '';
+    let ic = b.ikon ? `<div class="ik" id="ik${i}">${CZ.svg(b.ikon, 210)}</div>` : '';
     let x = '';
     if (b.tip === 'dev' || b.tip === 'yorum') x += `<div class="dev" id="dv${i}">${(b.satir || []).map(s => `<div class="sat">${s.split(' ').map(w => harf(w + ' ', w.replace(/["']/g, '') === (b.vurgu || ''), w === b.carpi)).join('')}</div>`).join('')}</div>`;
     if (b.tip === 'not') x += `<div class="not" id="nt${i}"><span>${esc(b.yazi)}</span></div>`;
     if (b.etiketler) x += b.etiketler.map((e, j) => `<div class="etk" id="et${i}_${j}">${esc(e)}</div>`).join('');
     if (b.tip === 'ui') x += `<div class="ui" id="ui${i}"><div class="uh"><span>e-Devlet</span><small>TEMSİLİ GÖRÜNTÜ</small></div>
-      <div class="ur"><span class="lk lk0">${IK.svg('lock-open', 54, '#151515', '#F6B92B')}</span><span class="lk lk1">${IK.svg('lock', 54, '#151515', '#1E9E6A')}</span><div class="ut"><b>${esc(b.baslik)}</b><small>${esc(b.alt1 || '')}</small></div><div class="tg"><i></i></div></div></div>`;
+      <div class="ur"><span class="lk">${CZ.svg('kilit', 58)}</span><div class="ut"><b>${esc(b.baslik)}</b><small>${esc(b.alt1 || '')}</small></div><div class="tg"><i></i></div></div></div>`;
     if (b.tip === 'gazete') x += `<div class="gz" id="gz${i}"><div class="gm"><span>${esc(b.ust || '')}</span><span>TEMSİLİ</span></div><h3>${esc(b.baslik)}</h3>${b.satirlar.map((r, j) => `<div class="gr${j === b.hl ? ' hlr' : ''}"><i class="hl"></i><span>${esc(r[0])}</span><b>${esc(r[1])}</b></div>`).join('')}</div>`;
     if (b.tip === 'karisim') x += `<div class="ks" id="ks${i}"><small>${esc(b.ust || '')}</small><div class="kx">${[...b.yazi].map(c => `<b data-c="${esc(c)}">${esc(c)}</b>`).join('')}</div></div>`;
     if (b.tip === 'telefon') x += `${b.not ? `<div class="not tn" id="nt${i}"><span>${esc(b.not)}</span></div>` : ''}<div class="tf" id="tf${i}"><div class="tb"><span>9:41</span><span>●●● ▮</span></div>${b.ekranlar.map((e, j) => e.basarili
-        ? `<div class="sc ok"><div class="ck">${IK.svg('check-circle', 120, '#1E9E6A', '#C9EFDC')}</div><b>${esc(e.basarili)}</b><small>${esc(e.alt || '')}</small></div>`
+        ? `<div class="sc ok"><div class="ck">${CZ.svg('tik', 120)}</div><b>${esc(e.basarili)}</b><small>${esc(e.alt || '')}</small></div>`
         : `<div class="sc"><h4>${esc(e.baslik)}</h4>${e.satirlar.map((r, q) => `<div class="rw${q === e.hedef ? ' hd' : ''}${/iptal/i.test(r) ? ' kr' : ''}">${esc(r)}<i>›</i></div>`).join('')}</div>`).join('')}
-      <div class="rp"></div><div class="im">${IK.svg('hand-pointing', 76, '#151515', '#fff')}</div></div>`;
+      <div class="rp"></div><div class="im">${CZ.svg('el', 76)}</div></div>`;
     if (b.tip === 'grafik' && b.rm) x += `<div class="rm" id="rm${i}" style="left:${(W - b.rm.w) / 2}px;width:${b.rm.w}px;height:${b.rm.h}px;top:${b.top ?? 140}px">${Array.from({ length: b.rm.n }, (_, q) => `<img src="file://${b.rm.dir}/element-${String(q).padStart(String(b.rm.n - 1).length, '0')}.png">`).join('')}</div>`;
-    if (b.tip === 'yorum') x += `<div class="yr" id="yr${i}"><div class="av">S</div><div class="kt"><span class="yz"></span><i class="cr"></i></div><div class="gn">${IK.svg('paper-plane-tilt', 40, '#fff')}</div></div>`;
+    if (b.tip === 'yorum') x += `<div class="yr" id="yr${i}"><div class="av">S</div><div class="kt"><span class="yz"></span><i class="cr"></i></div><div class="gn">${CZ.svg('ucak', 40)}</div></div>`;
     return `<div class="vb" id="vb${i}" data-koyu="${b.koyu ? 1 : 0}">${ic}${x}<svg class="cz" id="cz${i}" width="${W}" height="${H}"><path d="" /></svg></div>`;
   }).join('\n');
   return `<!DOCTYPE html><html lang="tr"><head><meta charset="utf-8"><style>
@@ -54,7 +55,7 @@ function sayfa({ W, H, L, tl }) {
 .vb[data-koyu="1"] .sat{color:#F2EEE6}
 .h{display:inline-block;font-weight:900;will-change:transform;transform-origin:50% 100%}.h.v{color:#E8402F}
 .ik{position:absolute;left:${W / 2 - 105}px;top:560px;width:210px;height:210px;transform-origin:50% 100%}
-.ik .il{filter:drop-shadow(0 16px 10px rgba(40,25,10,.22))}
+.ik .cz-il{filter:drop-shadow(0 16px 10px rgba(40,25,10,.22))}
 .not{position:absolute;left:30px;right:30px;top:430px;text-align:center;font-family:Caveat,cursive;font-size:84px;line-height:1;color:#E8402F;white-space:nowrap}
 .not span{display:inline-block}
 .etk{position:absolute;top:0;left:0;font-family:Arc;font-weight:900;font-stretch:68%;font-size:68px;padding:6px 28px 4px;border-radius:14px;background:#151515;color:#F2EEE6;box-shadow:0 18px 20px -12px rgba(40,25,10,.5);transform-origin:50% 100%}
@@ -100,6 +101,7 @@ body.k #sub span{color:#F2EEE6;text-shadow:none}body.k #sub span.on{background:#
 <div id="zemin"></div><div id="doku"></div><div id="koyu"></div><div id="vin"></div>
 <div id="cam">${html}</div><div id="sub"></div><canvas id="gren" width="${W >> 1}" height="${H >> 1}"></canvas>
 <script>${fs.readFileSync(path.join(__dirname, 'hareket.js'), 'utf8')}</script>
+<script>${fs.readFileSync(path.join(__dirname, 'cizimler.js'), 'utf8')}</script>
 <script>
 const TL = ${JSON.stringify({ vurus: V, kelimeler: tl.kelimeler, parcalar: tl.parcalar, duration: tl.duration })};
 const W = ${W}, H = ${H};
@@ -190,11 +192,12 @@ function frame(t){
     const ui = document.getElementById('ui' + i);
     if (ui) { const k = backOut(lt / .3), q = out >= 0 ? ei(out / .2) : 0; ui.style.opacity = cl(lt / .1, 0, 1) * (1 - q); ui.style.transform = 'translateY(' + ((1 - k) * 260 - 300 * q) + 'px) rotate(' + ((1 - k) * -6) + 'deg)';
       const a = b.acT != null ? cl((t - b.acT) / .22, 0, 1) : 0, ae = eo(a); const tg = ui.querySelector('.tg'); tg.style.background = a > .5 ? '#1E9E6A' : '#cfc8bc'; tg.querySelector('i').style.transform = 'translateX(' + (42 * ae) + 'px) scaleX(' + (1 + .25 * Math.sin(a * Math.PI)) + ')';
-      ui.querySelector('.lk0').style.opacity = 1 - ae; ui.querySelector('.lk1').style.opacity = ae; ui.querySelector('.lk1').style.transform = 'scale(' + (a > 0 ? backOut(a) : .5) + ')';
+      CZ.anim(ui.querySelector('.lk .cz-il'), lt, { kapan: b.acT != null ? b.acT - b.t : 99 });
       if (b.acT != null) cizgi(i, t - b.acT, .1); }
     const rm = document.getElementById('rm' + i);
     if (rm) { const ims = rm.children, q = Math.min(ims.length - 1, Math.max(0, Math.floor(lt * 30))); for (let j = 0; j < ims.length; j++) ims[j].style.visibility = j === q ? 'visible' : 'hidden';
       const k = backOut(lt / .3), o = out >= 0 ? ei(out / .2) : 0; rm.style.opacity = cl(lt / .06, 0, 1) * (1 - o); rm.style.transform = 'translateY(' + ((1 - k) * 120 - 200 * o) + 'px) scale(' + (.9 + .1 * k + .15 * o) + ')'; }
+    vb.querySelectorAll('.cz-il').forEach(c => { if (c.closest('.lk')) return; const ik = c.closest('.ik'); CZ.anim(c, ik ? lt - .55 : c.closest('.sc') ? t - (b.ekranT || []).at(-1) : lt); });
     const gz = document.getElementById('gz' + i);
     if (gz) { const k = backOut(lt / .32), q = out >= 0 ? ei(out / .2) : 0; gz.style.opacity = cl(lt / .08, 0, 1) * (1 - q); gz.style.transform = 'translateY(' + ((1 - k) * 220 - 260 * q) + 'px) rotate(' + ((1 - k) * 5 - 2) + 'deg)';
       [...gz.querySelectorAll('.gr')].forEach((r, j) => { const st = (b.altT || [])[j] ?? b.t + .1 * j, kk = cl((t - st) / .22, 0, 1); r.style.opacity = kk; r.style.transform = 'translateX(' + ((1 - backOut(kk)) * -60) + 'px)'; });
