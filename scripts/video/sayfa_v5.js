@@ -35,12 +35,12 @@ function sayfa({ W, H, L, tl }) {
 @font-face{font-family:Anton;src:url('${FN('anton/files/anton-latin-400-normal.woff2')}') format('woff2')}
 @font-face{font-family:Caveat;src:url('${FN('caveat/files/caveat-latin-ext-700-normal.woff2')}') format('woff2');unicode-range:U+0100-024F,U+1E00-1EFF}
 @font-face{font-family:Caveat;src:url('${FN('caveat/files/caveat-latin-700-normal.woff2')}') format('woff2')}
-*{box-sizing:border-box}html,body{margin:0;width:${W}px;height:${H}px;overflow:hidden;background:#F2EEE6;font-family:'Inter Display','Inter',sans-serif}
-#zemin{position:absolute;inset:0;background:#F2EEE6}
-#doku{position:absolute;inset:-4%;filter:url(#kg);opacity:.9}
-#vin{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 40%,transparent 55%,rgba(40,25,10,.16))}
+*{box-sizing:border-box}html,body{margin:0;width:${W}px;height:${H}px;overflow:hidden;background:#FFFFFF;font-family:'Inter Display','Inter',sans-serif}
+#zemin{position:absolute;inset:0;background:#FFFFFF}
+#doku{display:none}
+#vin{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 40%,transparent 70%,rgba(0,0,0,.05))}
 #koyu{position:absolute;inset:0;background:#1B1A19;display:none}body.k #doku{opacity:.25}body.k #vin{background:radial-gradient(ellipse at 50% 40%,transparent 45%,rgba(0,0,0,.55))}
-#gren{position:absolute;inset:0;width:${W}px;height:${H}px;mix-blend-mode:overlay;opacity:.45;pointer-events:none;z-index:9}
+#gren{position:absolute;inset:0;width:${W}px;height:${H}px;mix-blend-mode:multiply;opacity:.06;pointer-events:none;z-index:9}
 #cam{position:absolute;inset:0;transform-origin:50% 45%}
 .vb{position:absolute;inset:0;pointer-events:none}
 .dev{position:absolute;left:0;right:0;top:150px;text-align:center}
