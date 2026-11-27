@@ -10,14 +10,14 @@ module.exports = {
       mimik: [[0, 'saskin', 'isaret'], [4, 'dusunceli', 'dusun'], [9, 'emin', 'anlat'], [12, 'mutlu', 'eller_yukari']],
       ogeler: [
         { tip: 'edevlet', k: 0, x: 360, y: 430, satirlar: [{ t: 'Şahıs ödemeleri', sag: 'sorgulandı' }, { t: 'Adına bekleyen ödeme', rozet: 'VAR ✓' }], alt: [1, 7], rozetK: [9] },
-        { tip: 'ikon', k: 12, x: 545, y: 662, e: '💰', yazi: 'PARA', rot: 6, firlat: 'el' },
+        { tip: 'ikon', k: 12, x: 545, y: 668, e: '💰', yazi: 'PARA', rot: 6, firlat: 'el' },
       ],
     },
     {
       k: 14, baslik: ['ZAMANINDA ÇEKMEZSEN', 'DEVLETE GEÇİYOR'],
       mimik: [[14, 'notr', 'anlat'], [24, 'korkmus', 'eller_yukari'], [28, 'bitkin', 'omuz']],
       ogeler: [
-        { tip: 'liste', k: 14, k1: 26, x: 360, y: 490, ogeler: [{ e: '🏥', t: 'Sağlık iadeleri' }, { e: '🛡️', t: 'Eski sigorta alacakları' }, { e: '🐷', t: 'Otomatik BES kesintisi' }], alt: [14, 16, 20] },
+        { tip: 'liste', k: 14, k1: 26, x: 360, y: 525, ogeler: [{ e: '🏥', t: 'Sağlık iadeleri' }, { e: '🛡️', t: 'Eski sigorta alacakları' }, { e: '🐷', t: 'Otomatik BES kesintisi' }], alt: [14, 16, 20] },
         { tip: 'damga', k: 26, x: 360, y: 470, yazi: '✗ ZAMANAŞIMI', rot: -9 },
         { tip: 'ok', k: 28, x: 240, y: 640 },
         { tip: 'ikon', k: 28, x: 430, y: 640, e: '🏛️', yazi: 'DEVLET' },
@@ -31,7 +31,7 @@ module.exports = {
         { tip: 'yorum', k: 30, k1: 44, x: 360, y: 440, yazi: 'PARA', yazK: 31, hiz: 8 },
         { tip: 'rozet', k: 36, x: 360, y: 620, e: '⏱️', yazi: 'SANİYELER İÇİNDE', renk: 'y', rot: -3 },
         { tip: 'rozet', k: 40, x: 360, y: 715, e: '🏦', yazi: 'HESABINA ÇEK', renk: 'g', rot: 2 },
-        { tip: 'soru', k: 44, firlat: true, x: 360, y: 440, e: '💬', yazi: "'PARA' yaz, rehber gelsin!", ust: 'YORUMLARA YAZ 👇' },
+        { tip: 'soru', k: 44, firlat: true, x: 360, y: 440, e: '📩', yazi: "'PARA' yaz, rehber gelsin!", ust: 'YORUMLARA YAZ 👇' },
       ],
     },
   ],

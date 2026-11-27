@@ -5,6 +5,17 @@
 // Deterministik: Math.random/Date yok; gren LCG tohumu kare numarası.
 const fs = require('fs'), path = require('path');
 const { CSS, TIPLER, STIL_V3 } = require('./sayfa');
+const IK = require('./ikonlar');
+const esc = x => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+const tem = x => esc(IK.degistir(String(x), 0)).replace(/&lt;svg[\s\S]*?&lt;\/svg>/g, '').trim();   // metinden emojiyi at
+// v4 öğeleri: kutu yok; düz illüstrasyon (Fluent Emoji Flat) + tipografi
+const V4T = {
+  liste: p => `<div class="v4ls">${p.ogeler.map((r, i) => `<div class="it" data-sub="${i}"><span class="blob b${i % 3}">${IK.svg(r.e, 78)}</span><b>${tem(r.t)}</b></div>`).join('')}</div>`,
+  ikon: p => `<div class="v4ik"><div class="ill">${IK.svg(p.e, 140)}</div><i class="gol"></i>${p.yazi ? `<b class="tag">${tem(p.yazi)}</b>` : ''}</div>`,
+  rozet: p => `<div class="v4pl r-${p.renk || 'k'}">${p.e ? IK.svg(p.e, 46) : ''}<span>${tem(p.yazi)}</span></div>`,
+  soru: p => `<div class="v4sr"><div class="ill">${IK.svg(p.e || '💬', 92)}</div><div class="tx"><small>${tem(p.ust || 'YORUMLARA YAZ')}</small>${tem(p.yazi)}</div></div>`,
+};
+const oge = o => V4T[o.tip] ? V4T[o.tip](o) : IK.degistir(TIPLER[o.tip](o), 34);
 
 const V4 = (W, H) => `
 html,body{background:#EFE9DD}
@@ -20,9 +31,24 @@ html,body{background:#EFE9DD}
 #title .satir>i{display:inline-block;font-style:normal;will-change:transform}
 #title .alt>i{color:#E8402F}
 #title .cz{display:block;height:9px;width:0;background:#151515;border-radius:6px;margin-top:6px;transform-origin:left}
-.kart,.pl,.ad .no{border:5px solid #151515!important;border-radius:22px!important;
-  box-shadow:6px 6px 0 #151515,0 34px 50px -18px rgba(60,35,10,.45),0 10px 18px -8px rgba(60,35,10,.25)!important}
-.pl{border-radius:16px!important}
+.kart{border:0!important;border-radius:26px!important;box-shadow:0 0 0 1.5px rgba(30,20,10,.08),0 40px 60px -26px rgba(60,35,10,.55),0 12px 20px -10px rgba(60,35,10,.25)!important}
+.ed .hd{border-bottom:0!important;font-size:24px}.ed .row{border-bottom:2px solid #f0ebe2}.rz{border:0!important;box-shadow:none!important;border-radius:999px}
+.yr .kutu{border:2.5px solid #d9d2c5!important}.yr .gon{border:0!important;border-radius:14px;background:#151515!important}
+.v4ls{display:flex;flex-direction:column;gap:20px;width:580px}
+.v4ls .it{display:flex;align-items:center;gap:22px}
+.v4ls .blob{flex:none;width:112px;height:112px;border-radius:38% 62% 55% 45%/50% 42% 58% 50%;display:flex;align-items:center;justify-content:center;box-shadow:0 18px 26px -14px rgba(60,35,10,.45)}
+.v4ls .b0{background:#FFDCCF}.v4ls .b1{background:#FFEDB8}.v4ls .b2{background:#D3F0E2}
+.v4ls b{font-weight:900;font-size:36px;line-height:1.08;color:#151515;letter-spacing:-.02em}
+.v4ik{display:flex;flex-direction:column;align-items:center}
+.v4ik .ill{filter:drop-shadow(0 22px 16px rgba(60,35,10,.30))}
+.v4ik .gol{display:block;width:120px;height:18px;margin-top:-6px;border-radius:50%;background:rgba(60,35,10,.16)}
+.v4ik .tag{margin-top:10px;background:#151515;color:#fff;padding:6px 16px 8px;border-radius:12px;font-weight:900;font-size:24px;letter-spacing:.02em}
+.v4pl{display:inline-flex;align-items:center;gap:12px;padding:8px 26px 8px 10px;border-radius:999px;font-weight:900;font-size:30px;white-space:nowrap;letter-spacing:-.02em;box-shadow:0 18px 28px -14px rgba(60,35,10,.55)}
+.v4pl.r-y{background:#F6B92B;color:#151515}.v4pl.r-g{background:#1E9E6A;color:#fff}.v4pl.r-k{background:#E8402F;color:#fff}.v4pl.r-s{background:#151515;color:#fff}.v4pl.r-b{background:#fff;color:#151515}
+.v4sr{position:relative;display:flex;align-items:center;gap:16px;background:#fff;border-radius:34px;padding:18px 30px 18px 18px;max-width:600px;box-shadow:0 40px 60px -26px rgba(60,35,10,.55)}
+.v4sr::after{content:'';position:absolute;left:46px;bottom:-16px;width:34px;height:34px;background:#fff;transform:rotate(45deg);border-radius:6px}
+.v4sr .tx{font-weight:900;font-size:32px;line-height:1.12;color:#151515}.v4sr small{display:block;font-size:20px;color:#E8402F;letter-spacing:.06em;margin-bottom:4px}
+.il{display:block}
 .kart{position:relative;overflow:hidden}
 .gl{position:absolute;top:-20%;bottom:-20%;width:38%;left:0;pointer-events:none;
   background:linear-gradient(100deg,transparent,rgba(255,255,255,.75) 45%,rgba(255,255,255,.0) 70%);transform:translateX(-160%) skewX(-14deg)}
@@ -36,7 +62,7 @@ function sayfa({ W, H, L, tl }) {
   const kaynak = fs.readFileSync(path.join(__dirname, 'sayfa.js'), 'utf8');
   // v3 ile ortak: portal ölçümü/oynatıcısı ve otomatik KONTROL (birebir aynı kalsın)
   const ortak = kaynak.slice(kaynak.indexOf('const PT = {};'), kaynak.indexOf('function frame(t){'));
-  const ogeler = tl.ogeler.map((o, i) => `<div class="o" id="o${i}" style="left:${o.x}px;top:${o.y}px;opacity:0">${TIPLER[o.tip](o).replace(/^<div class="kart([^"]*)">/, '<div class="kart$1"><i class="gl"></i>')}</div>`).join('\n');
+  const ogeler = tl.ogeler.map((o, i) => `<div class="o" id="o${i}" style="left:${o.x}px;top:${o.y}px;opacity:0">${oge(o).replace(/^<div class="kart([^"]*)">/, '<div class="kart$1"><i class="gl"></i>')}</div>`).join('\n');
   return `<!DOCTYPE html><html lang="tr"><head><meta charset="utf-8"><style>${CSS(W, H, L)}${STIL_V3()}${V4(W, H)}:root{--ts:${L.titleSize}px;--ss:${L.subSize}px}</style></head><body>
 <svg width="0" height="0" style="position:absolute"><filter id="doku"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7"/><feColorMatrix values="0 0 0 0 .93  0 0 0 0 .91  0 0 0 0 .86  0 0 0 -.9 1.1"/><feComposite in2="SourceGraphic" operator="in"/><feBlend in="SourceGraphic" mode="multiply"/></filter></svg>
 <div id="kagit"></div><div id="nokta"></div><div id="isik"></div><div id="bg"></div><div id="flas"></div>
@@ -94,6 +120,9 @@ function frame(t){
     const gl = el.querySelector('.gl'); if (gl) { const k = cl((lt - .35)/.7, 0, 1); gl.style.transform = 'translateX('+(-160 + 460*k)+'%) skewX(-14deg)'; }
     el.querySelectorAll('[data-sub]').forEach(sub => { const st = (o.altT||[])[+sub.dataset.sub]; const k = st==null ? 1 : softLand((t-st)/.4); sub.style.opacity = cl(k*1.6,0,1); sub.style.transform = 'translateY('+((1-k)*26)+'px)'; sub.style.filter = k < .98 ? 'blur('+((1-k)*5).toFixed(1)+'px)' : 'none'; });
     el.querySelectorAll('[data-rz]').forEach(rz => { const st = (o.rozetT||[])[+rz.dataset.rz]; if (st==null) return; const lk = t-st, k = cl(lk/.22,0,1); rz.style.opacity = k; rz.style.transform = 'scale('+(lk<.22 ? 1.6-.6*k*k : 1+.06*Math.exp(-(lk-.22)*12)*Math.cos((lk-.22)*36))+')'; });
+    el.querySelectorAll('.il').forEach((il, j) => { const host = il.closest('[data-sub]'); const st = host ? (o.altT||[])[+host.dataset.sub] : o.t0; const lk = t - (st ?? o.t0);
+      const pk = lk < .45 ? (lk < 0 ? 0 : .35 + .65*backOut(cl(lk/.45,0,1))) : 1, fl = Math.sin(t*2.2 + i + j*1.3);
+      il.style.transform = 'translateY('+(fl*4)+'px) rotate('+(fl*3)+'deg) scale('+pk+')'; });
     if (o.tip === 'portal') portal(o, i, el, t);
     el.querySelectorAll('[data-yaz]').forEach(y => { const txt = y.dataset.yaz, st = o.yazT ?? o.t0 + .3, hz = Math.max(o.hiz||9, txt.length/1.2), n = Math.floor(cl((t-st)*hz,0,txt.length)); y.textContent = txt.slice(0,n); });
     el.querySelectorAll('[data-kl]').forEach(m => { const st = (o.altT||[])[+m.dataset.kl]; const k = st==null ? 1 : cl((t-st)/.25,0,1); m.style.opacity = .35 + .65*k; m.classList.toggle('ok', st!=null && t >= st + .1); });

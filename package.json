@@ -1,0 +1,24 @@
+{
+  "name": "hukuk-videolar-",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tardigradsoftware-design/hukuk-videolar-.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tardigradsoftware-design/hukuk-videolar-/issues"
+  },
+  "homepage": "https://github.com/tardigradsoftware-design/hukuk-videolar-#readme",
+  "dependencies": {
+    "@iconify-json/fluent-emoji-flat": "^1.2.6",
+    "emojibase-data": "^18.0.0"
+  }
+}

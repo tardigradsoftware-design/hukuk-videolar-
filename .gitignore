@@ -4,3 +4,4 @@ tts/
 videolar/**/.*
 maskotlar/kapanis/.*
 kontrol/
+node_modules/
