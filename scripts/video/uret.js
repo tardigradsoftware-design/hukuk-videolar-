@@ -130,7 +130,7 @@ tl.ogeler.forEach(o => {
 tl.zipla.forEach(t => ev(t + .1, 'boing'));
 // v5 vuruşları: her vuruşta bir ses
 if (plan.vuruslar) {
-  tl.vurus = plan.vuruslar.map(b => Object.assign({}, b, { t: Math.max(0, T(b.k)), altT: (b.alt || []).map(T), yazT: b.yazK != null ? T(b.yazK) : null, acT: b.acK != null ? T(b.acK) : null }));
+  tl.vurus = plan.vuruslar.map(b => Object.assign({}, b, { t: Math.max(0, T(b.k)), altT: (b.alt || []).map(T), yazT: b.yazK != null ? T(b.yazK) : null, acT: b.acK != null ? T(b.acK) : null, carpiT: b.carpiK != null ? T(b.carpiK) : null, hlT: b.hlK != null ? T(b.hlK) : null, ekranT: (b.ekranlar || []).map(e => T(e.k)) }));
   tl.vurus.forEach((b, i) => {
     if (b.koyu !== undefined && i > 0 && !!b.koyu !== !!tl.vurus[i - 1].koyu) ev(b.t, 'thud', .8);
     if (b.tip === 'dev') { ev(b.t, 'whoosh', .6); ev(b.t + .16, 'pop'); }
@@ -138,6 +138,10 @@ if (plan.vuruslar) {
     if (b.ikon) ev(b.t + .34, 'pop', .8);
     (b.etiketler || []).forEach((e, j) => { const tt = b.altT[j] ?? b.t + .2 * j; ev(tt + .42, 'tik'); ev(tt + .62, 'tik', .5); });
     if (b.tip === 'ui' && b.acT != null) { ev(b.acT, 'click'); ev(b.acT + .15, 'ding', .7); }
+    if (b.tip === 'gazete') { ev(b.t, 'swish', .7); (b.altT || []).forEach(t => ev(t, 'tik')); if (b.hlT != null) ev(b.hlT, 'kagit'); }
+    if (b.carpiT != null) ev(b.carpiT, 'kagit');
+    if (b.tip === 'karisim') { for (let q = 0; q < 6; q++) ev(b.t + .05 + q * .07, 'tik', .5); ev(b.t + .5, 'pop'); }
+    if (b.tip === 'telefon') { ev(b.t, 'swish'); b.ekranT.forEach((t, j) => { if (j) { ev(t - .22, 'click'); ev(t, 'swish', .6); } }); if (b.ekranlar.at(-1).basarili) ev(b.ekranT.at(-1) + .2, 'ding'); }
     if (b.yaz) { const st = b.yazT ?? b.t + .3, hz = Math.max(10, b.yaz.length / 1.0); for (let c = 0; c < b.yaz.length; c++) ev(st + c / hz, 'key'); }
   });
 }

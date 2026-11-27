@@ -11,15 +11,21 @@ const esc = x => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 function sayfa({ W, H, L, tl }) {
   const V = tl.vurus || [];
   const ink = b => b.koyu ? '#F2EEE6' : '#151515', acc = '#E8402F';
-  const harf = (s, vurgu) => [...s].map(c => `<b class="h${vurgu ? ' v' : ''}">${c === ' ' ? '&nbsp;' : esc(c)}</b>`).join('');
+  const harf = (s, vurgu, cp) => [...s].map(c => `<b class="h${vurgu ? ' v' : ''}${cp && c !== ' ' ? ' c' : ''}">${c === ' ' ? '&nbsp;' : esc(c)}</b>`).join('');
   const html = V.map((b, i) => {
     let ic = b.ikon ? `<div class="ik" id="ik${i}">${IK.svg(b.ikon, 210, ink(b), b.koyu ? acc : '#F6B92B')}</div>` : '';
     let x = '';
-    if (b.tip === 'dev' || b.tip === 'yorum') x += `<div class="dev" id="dv${i}">${(b.satir || []).map(s => `<div class="sat">${s.split(' ').map(w => harf(w + ' ', w.replace(/["']/g, '') === (b.vurgu || ''))).join('')}</div>`).join('')}</div>`;
+    if (b.tip === 'dev' || b.tip === 'yorum') x += `<div class="dev" id="dv${i}">${(b.satir || []).map(s => `<div class="sat">${s.split(' ').map(w => harf(w + ' ', w.replace(/["']/g, '') === (b.vurgu || ''), w === b.carpi)).join('')}</div>`).join('')}</div>`;
     if (b.tip === 'not') x += `<div class="not" id="nt${i}"><span>${esc(b.yazi)}</span></div>`;
     if (b.etiketler) x += b.etiketler.map((e, j) => `<div class="etk" id="et${i}_${j}">${esc(e)}</div>`).join('');
     if (b.tip === 'ui') x += `<div class="ui" id="ui${i}"><div class="uh"><span>e-Devlet</span><small>TEMSİLİ GÖRÜNTÜ</small></div>
       <div class="ur"><span class="lk lk0">${IK.svg('lock-open', 54, '#151515', '#F6B92B')}</span><span class="lk lk1">${IK.svg('lock', 54, '#151515', '#1E9E6A')}</span><div class="ut"><b>${esc(b.baslik)}</b><small>${esc(b.alt1 || '')}</small></div><div class="tg"><i></i></div></div></div>`;
+    if (b.tip === 'gazete') x += `<div class="gz" id="gz${i}"><div class="gm"><span>${esc(b.ust || '')}</span><span>TEMSİLİ</span></div><h3>${esc(b.baslik)}</h3>${b.satirlar.map((r, j) => `<div class="gr${j === b.hl ? ' hlr' : ''}"><i class="hl"></i><span>${esc(r[0])}</span><b>${esc(r[1])}</b></div>`).join('')}</div>`;
+    if (b.tip === 'karisim') x += `<div class="ks" id="ks${i}"><small>${esc(b.ust || '')}</small><div class="kx">${[...b.yazi].map(c => `<b data-c="${esc(c)}">${esc(c)}</b>`).join('')}</div></div>`;
+    if (b.tip === 'telefon') x += `${b.not ? `<div class="not tn" id="nt${i}"><span>${esc(b.not)}</span></div>` : ''}<div class="tf" id="tf${i}"><div class="tb"><span>9:41</span><span>●●● ▮</span></div>${b.ekranlar.map((e, j) => e.basarili
+        ? `<div class="sc ok"><div class="ck">${IK.svg('check-circle', 120, '#1E9E6A', '#C9EFDC')}</div><b>${esc(e.basarili)}</b><small>${esc(e.alt || '')}</small></div>`
+        : `<div class="sc"><h4>${esc(e.baslik)}</h4>${e.satirlar.map((r, q) => `<div class="rw${q === e.hedef ? ' hd' : ''}${/iptal/i.test(r) ? ' kr' : ''}">${esc(r)}<i>›</i></div>`).join('')}</div>`).join('')}
+      <div class="rp"></div><div class="im">${IK.svg('hand-pointing', 76, '#151515', '#fff')}</div></div>`;
     if (b.tip === 'yorum') x += `<div class="yr" id="yr${i}"><div class="av">S</div><div class="kt"><span class="yz"></span><i class="cr"></i></div><div class="gn">${IK.svg('paper-plane-tilt', 40, '#fff')}</div></div>`;
     return `<div class="vb" id="vb${i}" data-koyu="${b.koyu ? 1 : 0}">${ic}${x}<svg class="cz" id="cz${i}" width="${W}" height="${H}"><path d="" /></svg></div>`;
   }).join('\n');
@@ -56,6 +62,24 @@ function sayfa({ W, H, L, tl }) {
 .yr .kt{flex:1;border:3px solid #d9d2c5;border-radius:14px;height:76px;display:flex;align-items:center;padding:0 18px;font-family:Anton;font-size:46px;color:#151515}
 .yr .cr{display:inline-block;width:4px;height:44px;background:#E8402F;margin-left:4px}
 .yr .gn{width:76px;height:76px;border-radius:18px;background:#151515;display:flex;align-items:center;justify-content:center;flex:none}
+@font-face{font-family:Playfair;src:url('${FN('playfair-display/files/playfair-display-latin-ext-900-normal.woff2')}') format('woff2');unicode-range:U+0100-024F,U+1E00-1EFF}
+@font-face{font-family:Playfair;src:url('${FN('playfair-display/files/playfair-display-latin-900-normal.woff2')}') format('woff2')}
+.gz{position:absolute;left:50px;width:620px;top:360px;background:#FFFDF8;padding:26px 34px 30px;box-shadow:0 0 0 2px #151515,0 40px 50px -26px rgba(40,25,10,.5);transform-origin:50% 0}
+.gz .gm{display:flex;justify-content:space-between;font:700 17px 'JetBrains Mono',monospace;letter-spacing:.18em;color:#8B8E95;border-bottom:3px double #151515;padding-bottom:10px}
+.gz h3{font:900 58px/1.02 Playfair,'DejaVu Serif',serif;margin:18px 0 14px;color:#151515;letter-spacing:-.01em}
+.gr{position:relative;display:flex;justify-content:space-between;font:600 30px Inter,sans-serif;color:#151515;padding:14px 0;border-top:1.5px solid #151515}.gr b{font-family:'JetBrains Mono',monospace;font-weight:700}
+.gr .hl{position:absolute;left:-10px;right:-10px;top:8px;bottom:8px;background:#F6B92B;transform-origin:left;transform:scaleX(0);z-index:-1;border-radius:4px}.gr{z-index:0}.gz{isolation:isolate}
+.ks{position:absolute;left:0;right:0;top:420px;text-align:center}.ks small{display:block;font:700 26px 'JetBrains Mono',monospace;letter-spacing:.3em;color:#8B8E95;margin-bottom:18px}
+.ks .kx{display:inline-block;font:800 124px 'JetBrains Mono',monospace;color:#F2EEE6;letter-spacing:-.02em}.ks .kx b{display:inline-block}
+.tf{position:absolute;left:${W / 2 - 190}px;top:175px;width:380px;height:760px;border-radius:56px;background:#F7F7F9;box-shadow:0 0 0 11px #111,0 0 0 13px #3a3a3e,0 50px 70px -30px rgba(40,25,10,.6);overflow:hidden;transform-origin:50% 0}
+.tb{display:flex;justify-content:space-between;padding:20px 34px 6px;font:700 19px Inter;color:#111}
+.sc{position:absolute;left:0;right:0;top:56px;bottom:0;padding:14px 20px}.sc h4{font:800 36px Inter;margin:8px 6px 18px;color:#111;letter-spacing:-.02em}
+.rw{display:flex;justify-content:space-between;align-items:center;background:#fff;border-radius:18px;padding:22px 20px;margin-bottom:12px;font:700 24px Inter;color:#151515;box-shadow:0 1px 0 rgba(0,0,0,.06),0 8px 18px -12px rgba(0,0,0,.3)}
+.rw i{font-style:normal;color:#aaa;font-size:30px}.rw.kr{color:#E8402F}.rw.sec{background:#151515;color:#fff}
+.sc.ok{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px}.sc.ok b{font:800 32px Inter;color:#111;padding:0 20px}.sc.ok small{font:600 22px Inter;color:#666}
+.rp{position:absolute;width:90px;height:90px;margin:-45px 0 0 -45px;border-radius:50%;border:4px solid #E8402F;opacity:0}
+.im{position:absolute;left:0;top:0;width:76px;height:76px;filter:drop-shadow(0 10px 8px rgba(0,0,0,.3))}
+.not.tn{top:96px;font-size:70px}
 .cz{position:absolute;left:0;top:0;overflow:visible}.cz path{fill:none;stroke:#E8402F;stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
 .vb[data-koyu="1"] .cz path{stroke:#F6B92B}
 #sub{position:absolute;left:${L.sub[0]}px;top:${L.sub[1]}px;width:${L.sub[2]}px;text-align:center;white-space:normal;z-index:8}
@@ -91,6 +115,7 @@ TL.vurus.forEach((b, i) => {
   else if (b.cizgi === 'daire' && ik) { const r = ik.getBoundingClientRect(); d = daire(r.left + r.width/2, r.top + r.height/2, 150, 135, i*7+3); }
   else if (b.cizgi === 'alt' && nt) { const r = nt.querySelector('span').getBoundingClientRect(); d = alt(r.left, r.right, r.bottom + 6, i*5+1); }
   else if (b.cizgi === 'ok' && nt) { const r = nt.querySelector('span').getBoundingClientRect(), yb = document.getElementById('yr' + (i-1)); const y1 = yb ? yb.getBoundingClientRect().top - 18 : r.bottom + 150; d = ok(W/2 + 150, r.bottom + 10, y1); }
+  else if (dv && b.carpi) { const c = [...dv.querySelectorAll('.h.c')]; if (c.length) { const a = c[0].getBoundingClientRect(), z = c[c.length-1].getBoundingClientRect(), cx = (a.left + z.right) / 2, cy = (a.top + a.bottom) / 2, rx = (z.right - a.left) / 2 + 14, ry = (a.bottom - a.top) / 2; d = 'M' + (cx - rx) + ' ' + (cy - ry) + ' L' + (cx + rx) + ' ' + (cy + ry) + ' M' + (cx + rx) + ' ' + (cy - ry) + ' L' + (cx - rx) + ' ' + (cy + ry); } }
   else if (dv && b.vurgu) { const v = [...dv.querySelectorAll('.h.v')]; if (v.length) { const a = v[0].getBoundingClientRect(), z = v[v.length-2 >= 0 ? v.length-2 : 0].getBoundingClientRect(); d = alt(a.left, z.right, a.bottom - 6, i*3+2); } }
   p.setAttribute('d', d); p.dataset.L = d ? p.getTotalLength() : 0; p.style.strokeDasharray = p.dataset.L; p.style.strokeDashoffset = p.dataset.L;
 });
@@ -117,7 +142,7 @@ function harfler(el, lt, out){
 function cizgi(i, lt, gec){ const p = document.querySelector('#cz' + i + ' path'), Ln = +p.dataset.L; if (!Ln) return; const k = eo((lt - gec) / .42); p.style.strokeDashoffset = Ln * (1 - k); }
 function kontrol(t){
   const out = [], sub = document.getElementById('sub'), S = sub.children.length ? sub.getBoundingClientRect() : null;
-  document.querySelectorAll('.vb').forEach(vb => { if (+vb.style.opacity < .6) return; vb.querySelectorAll('.ik,.not span,.etk,.ui,.yr,.sat').forEach(e => { const st = getComputedStyle(e); if (+st.opacity < .6) return;
+  document.querySelectorAll('.vb').forEach(vb => { if (+vb.style.opacity < .6) return; vb.querySelectorAll('.ik,.not span,.etk,.ui,.yr,.sat,.tf,.gz,.kx').forEach(e => { const st = getComputedStyle(e); if (+st.opacity < .6) return;
     const r = e.getBoundingClientRect(); if (r.width < 2) return; const nt = e.closest('.not'); if (nt && +getComputedStyle(nt).opacity < .9) return; const dusen = /ik|etk/.test(e.className); if (r.left < -4 || r.right > W + 4 || (!dusen && r.top < -4)) out.push('taşma: ' + (e.className || e.tagName));
     if (S && r.left < S.right && S.left < r.right && r.top < S.bottom - 6 && S.top < r.bottom - 6) out.push('altyazı çakışması: ' + e.className); }); });
   return out;
@@ -139,7 +164,7 @@ function frame(t){
       if (out >= 0) { const q = ei(out / .2); y += 340 * q; op *= 1 - q; }
       ik.style.opacity = op; ik.style.transform = (ik.style.transform.includes('scale(.7)') ? 'scale(.7) ' : '') + 'translateY(' + y + 'px) rotate(' + r + 'deg) scale(' + sx + ',' + sy + ')'; }
     const nt = document.getElementById('nt' + i);
-    if (nt) { const sp = nt.querySelector('span'), dur = Math.min(.9, b.yazi.length * .035), k = eo(lt / dur);
+    if (nt) { const sp = nt.querySelector('span'), dur = Math.min(.9, (b.yazi || b.not).length * .035), k = eo(lt / dur);
       sp.style.clipPath = 'inset(-20% ' + ((1 - k) * 100) + '% -20% -5%)'; sp.style.transform = 'rotate(-3deg) translateY(' + (Math.sin(lt * 2.4) * 3) + 'px)';
       const q = out >= 0 ? ei(out / .2) : 0; nt.style.opacity = 1 - q; nt.style.transform = 'translateX(' + (-260 * q) + 'px)'; }
     b.etiketler && b.etiketler.forEach((x, j) => { const el = document.getElementById('et' + i + '_' + j), st = b.altT[j] ?? b.t + .2 * j, l = t - st;
@@ -154,12 +179,31 @@ function frame(t){
       const a = b.acT != null ? cl((t - b.acT) / .22, 0, 1) : 0, ae = eo(a); const tg = ui.querySelector('.tg'); tg.style.background = a > .5 ? '#1E9E6A' : '#cfc8bc'; tg.querySelector('i').style.transform = 'translateX(' + (42 * ae) + 'px) scaleX(' + (1 + .25 * Math.sin(a * Math.PI)) + ')';
       ui.querySelector('.lk0').style.opacity = 1 - ae; ui.querySelector('.lk1').style.opacity = ae; ui.querySelector('.lk1').style.transform = 'scale(' + (a > 0 ? backOut(a) : .5) + ')';
       if (b.acT != null) cizgi(i, t - b.acT, .1); }
+    const gz = document.getElementById('gz' + i);
+    if (gz) { const k = backOut(lt / .32), q = out >= 0 ? ei(out / .2) : 0; gz.style.opacity = cl(lt / .08, 0, 1) * (1 - q); gz.style.transform = 'translateY(' + ((1 - k) * 220 - 260 * q) + 'px) rotate(' + ((1 - k) * 5 - 2) + 'deg)';
+      [...gz.querySelectorAll('.gr')].forEach((r, j) => { const st = (b.altT || [])[j] ?? b.t + .1 * j, kk = cl((t - st) / .22, 0, 1); r.style.opacity = kk; r.style.transform = 'translateX(' + ((1 - backOut(kk)) * -60) + 'px)'; });
+      const hl = gz.querySelector('.hlr .hl'); if (hl && b.hlT != null) hl.style.transform = 'scaleX(' + eo((t - b.hlT) / .35) + ')'; }
+    const ks = document.getElementById('ks' + i);
+    if (ks) { const sd = window.H.tohum(i * 13 + 5), AB = 'ABCDEFGHIJKLMNOPRSTUVYZ#%&?'; const q = out >= 0 ? ei(out / .2) : 0; ks.style.opacity = cl(lt / .06, 0, 1) * (1 - q); ks.style.transform = 'scale(' + (1 + .25 * q) + ')';
+      [...ks.querySelectorAll('.kx b')].forEach((c, j) => { const yer = .12 + j * .07; if (lt < yer) { const r = window.H.tohum(Math.floor(lt * 30) * 31 + j * 7)(); c.textContent = AB[Math.floor(r * AB.length)]; c.style.color = '#8B8E95'; c.style.transform = 'translateY(' + ((r - .5) * 20) + 'px)'; } else { c.textContent = c.dataset.c; c.style.color = c.dataset.c === '?' ? '#E8402F' : '#F2EEE6'; const kk = cl((lt - yer) / .2, 0, 1); c.style.transform = 'translateY(' + (-14 * Math.sin(kk * Math.PI)) + 'px) scale(' + (1 + .15 * Math.sin(kk * Math.PI)) + ')'; } }); }
+    const tf = document.getElementById('tf' + i);
+    if (tf) { const k = backOut(lt / .36), q = out >= 0 ? ei(out / .22) : 0; tf.style.opacity = cl(lt / .08, 0, 1) * (1 - q); tf.style.transform = 'translateY(' + ((1 - k) * 700 + 400 * q) + 'px) scale(.86) rotate(' + ((1 - k) * 8) + 'deg)';
+      const E = b.ekranlar, ET = b.ekranT; let cur = 0; ET.forEach((tt, j) => { if (t >= tt) cur = j; });
+      const scs = [...tf.querySelectorAll('.sc')]; scs.forEach((sc, j) => { const st = ET[j], kk = j === 0 ? 1 : eo((t - st) / .28); const on = j === cur, prev = j === cur - 1 && t - ET[cur] < .28;
+        sc.style.opacity = on || prev ? 1 : 0; sc.style.transform = on ? 'translateX(' + ((1 - kk) * 380) + 'px)' : prev ? 'translateX(' + (-120 * eo((t - ET[cur]) / .28)) + 'px)' : 'none';
+        if (E[j].basarili && on) { const ck = sc.querySelector('.ck'); const a = cl((t - st - .1) / .35, 0, 1); ck.style.transform = 'scale(' + (a > 0 ? backOut(a) : 0) + ')'; } });
+      // imleç: hedef satıra kay, dokun (bir sonraki ekranı ateşler)
+      const im = tf.querySelector('.im'), rp = tf.querySelector('.rp'); let px = 300, py = 640, bas = 0, rk = -1;
+      for (let j = 0; j < E.length - 1; j++) { const hd = scs[j].querySelectorAll('.rw')[E[j].hedef]; if (!hd) continue; const tap = ET[j + 1] - .22, gx = 290, gy = 56 + 14 + hd.offsetTop + hd.offsetHeight / 2;
+        if (t >= ET[j] && t < ET[j + 1]) { const m = eo((t - Math.max(ET[j], tap - .5)) / .45); px = 300 + (gx - 300) * m; py = 640 + (gy - 640) * m; if (t > tap) { bas = Math.sin(cl((t - tap) / .16, 0, 1) * Math.PI); rk = (t - tap) / .4; hd.classList.add('sec'); } else hd.classList.remove('sec'); } }
+      if (E.at(-1).basarili && t >= ET.at(-1)) { px = 300; py = 900; }
+      im.style.transform = 'translate(' + (px - 20) + 'px,' + (py - 8) + 'px) scale(' + (1 - .15 * bas) + ')'; rp.style.left = px + 'px'; rp.style.top = py + 'px'; rp.style.opacity = rk >= 0 && rk < 1 ? 1 - rk : 0; rp.style.transform = 'scale(' + (.3 + Math.max(0, rk) * 1.2) + ')'; }
     const yr = document.getElementById('yr' + i);
     if (yr) { const k = backOut((lt - .15) / .3); yr.style.opacity = cl((lt - .15) / .1, 0, 1); yr.style.transform = 'translateY(' + ((1 - k) * 240) + 'px)';
       const st = b.yazT ?? b.t + .3, hz = Math.max(10, b.yaz.length / 1.0), n = Math.floor(cl((t - st) * hz, 0, b.yaz.length)); yr.querySelector('.yz').textContent = b.yaz.slice(0, n);
       yr.querySelector('.cr').style.opacity = Math.floor(t * 3) % 2 ? 1 : .2;
       const gn = yr.querySelector('.gn'), p = t - (st + b.yaz.length / hz + .25); gn.style.transform = p > 0 && p < .15 ? 'scale(.88)' : 'scale(1)'; }
-    if (b.tip !== 'ui') cizgi(i, lt, b.tip === 'not' ? Math.min(.9, (b.yazi || '').length * .035) : .45);
+    if (b.tip !== 'ui') cizgi(i, lt, b.carpiT != null ? b.carpiT - b.t : b.tip === 'not' ? Math.min(.9, (b.yazi || '').length * .035) : b.tip === 'telefon' ? 9 : .45);
   });
   // açık↔koyu: renk taşması (prompt-motion: "a black shape floods the whole frame and contracts into the next scene")
   const KY = document.getElementById('koyu'); let kd = null;
