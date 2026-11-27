@@ -3,7 +3,7 @@
 // Amaç: izleyici ANLASIN — kural, süre, oran görsel olarak kurulur. Deterministik; her kare zamanın saf fonksiyonu.
 const fs = require('fs'), path = require('path');
 const FN = p => 'file://' + path.join(__dirname, '..', '..', 'node_modules', p);
-const MOD = ['mavi', 'celld', 'distil', 'flow', 'sema', 'defter'].map(n => require('./sahne/' + n));
+const MOD = ['mavi', 'celld', 'distil', 'flow', 'sema', 'defter', 'gercek'].map(n => require('./sahne/' + n));
 const esc = x => String(x == null ? '' : x).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 
 // --- sahne stilleri (prompt-motion referanslarından uyarlama): renk + yazı + kart dili + geçiş + dekor
@@ -68,9 +68,9 @@ svg.nn{position:absolute;inset:0;overflow:visible}svg.nn .ln{fill:none;stroke-li
 <div id="cam">${S}</div>
 <div id="adim">${[1, 2, 3, 4, 5].map(n => `<i>${n}</i>`).join('')}<span></span></div>
 <div id="vin"></div><i id="wl"></i><div id="sub"></div>${tl.mk ? '<div id="stage"></div>' : ''}<canvas id="gren" width="${W >> 1}" height="${H >> 1}"></canvas>
-${tl.mk ? `<script>${fs.readFileSync(path.join(__dirname, '..', 'dosya', 'dosya.js'), 'utf8')}</script>` : ''}<script>${fs.readFileSync(path.join(__dirname, 'cizimler.js'), 'utf8')}</script>
+${tl.mk ? `<script>${fs.readFileSync(path.join(__dirname, '..', 'dosya', 'dosya.js'), 'utf8')}</script>` : ''}<script>${fs.readFileSync(path.join(__dirname, 'cizimler.js'), 'utf8')}</script><script>${fs.readFileSync(path.join(__dirname, 'panel.js'), 'utf8')}</script>
 <script>
-const TL = ${JSON.stringify({ adimPos: tl.adimPos || null, tem, s3: plan, kelimeler: tl.kelimeler, parcalar: tl.parcalar, duration: tl.duration, mk: tl.mk || null })};
+const TL = ${JSON.stringify({ altyaziYok: !!tl.altyaziYok, adimPos: tl.adimPos || null, tem, s3: plan, kelimeler: tl.kelimeler, parcalar: tl.parcalar, duration: tl.duration, mk: tl.mk || null })};
 const W = ${W}, H = ${H};
 ${RUNTIME}
 ${MOD.map(m => m.rt).join('\n')}
@@ -267,7 +267,7 @@ function frame(t) {
   // adım göstergesi
   const A = document.getElementById('adim'); if (TL.adimPos) { A.style.left = TL.adimPos[0] + 'px'; A.style.top = TL.adimPos[1] + 'px'; } let cur = 0, ad = ''; SC.forEach(s => { if (s.adim && t >= s.t) { cur = s.adim; ad = s.adimAd || ad; } }); A.style.opacity = cur ? 1 : 0; [...A.querySelectorAll('i')].forEach((c, j) => c.className = j + 1 === cur ? 'on' : j + 1 < cur ? 'ok' : ''); A.querySelector('span').textContent = ad;
   // altyazı
-  const Wd = K, sub = document.getElementById('sub'), P = TL.parcalar.find(p => t >= p.t0 && t < p.t1);
+  const Wd = K, sub = document.getElementById('sub'), P = TL.altyaziYok ? null : TL.parcalar.find(p => t >= p.t0 && t < p.t1);
   if (!P) { sub.innerHTML = ''; sub.dataset.p = ''; } else { if (sub.dataset.p !== String(P.i0)) { sub.dataset.p = P.i0; sub.innerHTML = Wd.slice(P.i0, P.i1 + 1).map(k => '<span>' + k.w.replace(/[,.!?;:"“”()…]/g, '') + '</span>').join(''); }
     const kk = cl((t - P.t0) / .12, 0, 1); sub.style.opacity = kk; sub.style.transform = 'translateY(' + ((1 - kk) * 12) + 'px)'; let aw = -1; for (let i = P.i0; i <= P.i1; i++) if (t >= Wd[i].t0 - .02) aw = i; [...sub.children].forEach((sp, j) => sp.classList.toggle('on', P.i0 + j === aw)); }
   // kamera: sürekli nefes + sahne başında küçük itme
