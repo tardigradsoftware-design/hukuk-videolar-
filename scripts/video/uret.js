@@ -132,7 +132,7 @@ tl.ogeler.forEach(o => {
 tl.zipla.forEach(t => ev(t + .1, 'boing'));
 // v5 vuruşları: her vuruşta bir ses
 if (plan.vuruslar) {
-  tl.vurus = plan.vuruslar.map(b => Object.assign({}, b, { t: Math.max(0, T(b.k)), altT: (b.alt || []).map(T), yazT: b.yazK != null ? T(b.yazK) : null, acT: b.acK != null ? T(b.acK) : null, carpiT: b.carpiK != null ? T(b.carpiK) : null, hlT: b.hlK != null ? T(b.hlK) : null, ekranT: (b.ekranlar || []).map(e => T(e.k)), aramaT: (b.ekranlar || []).map(e => e.aramaK != null ? T(e.aramaK) : null) }));
+  tl.vurus = plan.vuruslar.map(b => Object.assign({}, b, { t: Math.max(0, T(b.k)), altT: (b.alt || []).map(T), yazT: b.yazK != null ? T(b.yazK) : null, acT: b.acK != null ? T(b.acK) : null, carpiT: b.carpiK != null ? T(b.carpiK) : null, hlT: b.hlK != null ? T(b.hlK) : null, ekranlar: (b.ekranlar || []).map(e => { const c = Object.assign({}, e); Object.keys(e).forEach(key => { if (!/K$/.test(key) || key === 'k') return; const v = e[key]; c[key.slice(0, -1) + 'T'] = Array.isArray(v) ? v.map(T) : T(v); }); return c; }), ekranT: (b.ekranlar || []).map(e => T(e.k)), aramaT: (b.ekranlar || []).map(e => e.aramaK != null ? T(e.aramaK) : null) }));
   // anahtar kelime kartları (yatay): cümle başı olmayan büyük harfli terimler, sayılar; söylendiği an sağda belirir
   if (!KISA) { const DUR = new Set(['Birinci', 'İkinci', 'Üçüncü', 'Dördüncü', 'Beşinci', 'Şimdi', 'Peki', 'Ama', 'Çoğu', 'Süreç', 'Tek', 'Yazılı']), C = []; let son = -9;
     const temiz = w => w.replace(/[’'](?:[a-zçğıöşü]+)$/i, '').replace(/[,.;:!?"“”()]/g, '');
@@ -144,6 +144,14 @@ if (plan.vuruslar) {
       const x = ph.join(' ').trim(); i = j; if (x.length < 2 || x.length > 34 || kel[i].t0 - son < .9 || C.some(c => c.x === x && kel[i].t0 - c.t < 25)) continue;
       C.push({ t: +kel[i - ph.length + 1].t0.toFixed(2), x }); son = kel[i].t0; }
     tl.cips = C; C.forEach(c => ev(c.t, 'tik', .5)); console.error('anahtar kart:', C.length); }
+  tl.vurus.forEach(b => { if (b.tip !== 'panel') return; ev(b.t, 'swish', .8); b.ekranlar.forEach((e, j) => { if (j) ev(b.ekranT[j], 'swish', .5);
+      const tikla = [e.aramaT, e.butonT, e.secT, e.onayT, e.tapT, ...(e.alanT || [])].filter(x => x != null); tikla.forEach(x => ev(x - .02, 'click'));
+      const yz = [[e.arama, e.aramaT], ...(e.alanlar || []).map((a, q) => [a.deger, (e.alanT || [])[q]])]; yz.forEach(([tx, st]) => { if (!tx || st == null) return; const hz = Math.max(16, tx.length / 1.1); for (let c = 0; c < tx.length; c += 2) ev(st + .15 + c / hz, 'key', .55); });
+      if (e.tur === 'sonuc') ev(b.ekranT[j] + .2, 'ding'); if (e.kaydirT != null) ev(e.kaydirT, 'swish', .5); }); });
+  if (plan.maskot && !KISA) { const M = b => b.koyu ? ['korkmus', 'eller_yukari'] : b.tip === 'abone' ? ['mutlu', 'selam'] : ['panel', 'telefon', 'gazete', 'kontrol', 'eposta', 'ui'].includes(b.tip) ? ['emin', 'isaret'] : b.tip === 'grafik' ? ['saskin', 'yukari'] : b.ikon === 'tik' ? ['mutlu', 'basparmak'] : b.tam ? ['saskin', 'eller_yukari'] : ['notr', 'anlat'];
+    tl.vurus.forEach(b => { const [f, j] = M(b); tl.ifade.push({ t: Math.max(0, b.t - .1), ad: f }); tl.jest.push({ t: Math.max(0, b.t - .1), ad: j }); });
+    tl.ifade.sort((a, c) => a.t - c.t); tl.jest.sort((a, c) => a.t - c.t);
+    tl.mk = { cues: tl.cues, env: tl.env, ifade: tl.ifade, jest: tl.jest, zipla: [], yuru: [], firlat: [], cek: [], aks: null }; }
   tl.vurus.forEach(b => { if (b.tip === 'abone') { ev(b.t, 'whoosh', .5); ev(b.t + 1.1, 'ding', .8); } });
   { const tv = (process.argv.find(a => a.startsWith('--tema=')) || '').slice(7), TMm = require('./temalar');
     if (tv) tl.tmB = tl.vurus.map(b => tv === 'karma' ? TMm.KARMA[b.adim || 0] : +tv); tl.temaAd = tv ? TMm.ADLAR[tv] : null; }

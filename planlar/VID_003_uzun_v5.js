@@ -1,6 +1,7 @@
 // VID_003 uzun (v2 metin) — v5 yatay: solda ekran/çizim/grafik, sağda dev yazı, üstte adım göstergesi. Maskotsuz.
 // Kelime indeksleri: veri/tts_v2/VID_003_uzun.txt (491 kelime). Rakamlar yalnızca metinden: 30 gün, %100, 15 iş günü, 2–4 ay, 6502.
 module.exports = {
+  maskot: true,
   sahneler: [
     { k: 0, baslik: ['HAYAT SİGORTASI', 'PARAN BANKADA KALMASIN'] },
     { k: 61, baslik: ['1. ADIM', '30 GÜN CAYMA'] },
@@ -23,19 +24,19 @@ module.exports = {
     { k: 83, adim: 1, tip: 'grafik', comp: 'Sayac', props: { deger: 100, birim: '% İADE', ust: 'İLK 30 GÜN' }, satir: ['TEK KURUŞ', 'KESİNTİ YOK'], vurgu: 'YOK' },
     { k: 95, adim: 1, tip: 'dev', satir: ['GEÇTİYSEN DE', 'KALAN İADE'], vurgu: 'İADE', ikon: 'takvim' },
     // 2. ADIM
-    { k: 111, adim: 2, adimAd: 'POLİÇEYİ BUL', tip: 'telefon', cihaz: 'pc', url: 'turkiye.gov.tr', satir: ['POLİÇENİ', 'BUL'], vurgu: 'BUL', ekranlar: [
-      { k: 119, baslik: 'e-Devlet Kapısı', arama: 'Hayat Sigortası Poliçe Sorgulama', aramaK: 121, satirlar: ['Hayat Sigortası Poliçe Sorgulama · SBM', 'Kasko Poliçe Sorgulama'], hedef: 0 },
-      { k: 136, baslik: 'Poliçelerim', satirlar: ['Kredi hayat sigortası · Aktif', 'Konut sigortası · Pasif'], hedef: 0 },
-      { k: 140, baslik: 'Poliçe detayı', satirlar: ['Poliçe no  •••', 'Başlangıç  ••.••.••••', 'Şirket  •••'] } ] },
+    { k: 111, adim: 2, adimAd: 'POLİÇEYİ BUL', tip: 'panel', cihaz: 'pc', url: 'turkiye.gov.tr', site: 'e-Devlet Kapısı', satir: ['POLİÇENİ', 'BUL'], vurgu: 'BUL', ekranlar: [
+      { k: 119, tur: 'ana', arama: 'Hayat Sigortası Poliçe Sorgulama', aramaK: 121, oneriler: ['Hayat Sigortası Poliçe Sorgulama', 'Kasko Poliçe Sorgulama', 'Trafik Sigortası Poliçe Sorgulama'], kurumlar: ['Sigorta Bilgi ve Gözetim Merkezi', 'SBM', 'SBM'], sec: 0 },
+      { k: 129, tur: 'hizmet', baslik: 'Hayat Sigortası Poliçe Sorgulama', kurum: 'Sigorta Bilgi ve Gözetim Merkezi', maddeler: ['Adınıza düzenlenmiş hayat sigortası poliçelerini listeler.', 'Poliçe numarası, sigorta şirketi ve başlangıç tarihi görüntülenir.'], buton: 'Sorgula', butonK: 134 },
+      { k: 136, tur: 'tablo', baslik: 'Poliçelerim', kolonlar: ['Poliçe no', 'Sigorta şirketi', 'Başlangıç', 'Durum'], satirlar: [['•••', '•••', '••.••.••••', 'Aktif'], ['•••', '•••', '••.••.••••', 'Sona erdi']], sec: 0, secK: 139, not: 'Poliçe no, başlangıç tarihi ve şirket adını not et.' } ] },
     { k: 151, adim: 2, tip: 'dev', satir: ['"KREDİ ŞARTI"', 'DERSE'], vurgu: 'DERSE', ikon: 'mesaj' },
     { k: 161, adim: 2, tip: 'not', yazi: '6502 sayılı kanun: zorunlu değil', ikon: 'terazi', cizgi: 'alt' },
     { k: 172, adim: 2, tip: 'dev', satir: ['YAZILI', 'TALEP ET'], vurgu: 'TALEP', ikon: 'imza' },
     // 3. ADIM
     { k: 186, adim: 3, adimAd: 'YAZILI BAŞVURU', tip: 'dev', satir: ['BANKAYI ARAMA', 'YAZILI YAZ'], vurgu: 'YAZ', carpi: 'ARAMA', carpiK: 196, ikon: 'telefon' },
-    { k: 200, adim: 3, tip: 'telefon', satir: ['POLİÇE', 'İŞLEMLERİ'], vurgu: 'İŞLEMLERİ', ekranlar: [
-      { k: 200, baslik: 'Sigortam', satirlar: ['Poliçe İşlemleri', 'Hasar bildirimi', 'Müşteri hizmetleri'], hedef: 0 },
-      { k: 206, baslik: 'Poliçe İşlemleri', satirlar: ['Poliçe iptal talebi', 'Poliçe belgesi indir'], hedef: 0 },
-      { k: 213, basarili: 'İptal talep formu', alt: 'ya da müşteri hizmetleri e-postası' } ] },
+    { k: 200, adim: 3, tip: 'panel', cihaz: 'tel', site: 'Sigortam', satir: ['POLİÇE', 'İŞLEMLERİ'], vurgu: 'İŞLEMLERİ', ekranlar: [
+      { k: 200, tur: 'liste', baslik: 'Poliçelerim', satirlar: [['Kasko', 'Aktif'], ['Konut sigortası', 'Aktif'], ['Seyahat sigortası', 'Sona erdi'], ['DASK', 'Aktif'], ['Ferdi kaza', 'Aktif'], ['Kredi hayat sigortası', 'Aktif · krediye bağlı'], ['Sağlık sigortası', 'Teklif']], hedef: 5, kaydirK: 201, tapK: 206 },
+      { k: 207, tur: 'liste', baslik: 'Poliçe İşlemleri', satirlar: [['Poliçe belgesi indir', 'PDF'], ['Teminatları gör', ''], ['Poliçe iptal talebi', '30 gün cayma / erken iptal'], ['Müşteri hizmetleri', 'e-posta / telefon']], hedef: 2, kaydirK: 208, tapK: 212 },
+      { k: 213, tur: 'sonuc', baslik: 'İptal talebin alındı', alt: 'Prim iadesi IBAN’ına yapılacak', ref: '•••-•••' } ] },
     { k: 218, adim: 3, tip: 'eposta', kime: 'musterihizmetleri@•••.com.tr', konu: 'Poliçe iptali ve prim iadesi talebi',
       satirlar: ['T.C. kimlik no: •••', 'Poliçe no: •••', '30 gün cayma / erken iptal hakkım kapsamında poliçemin iptalini', 've prim bedelinin adıma kayıtlı IBAN: TR•• hesabıma iadesini talep ederim.'],
       alt: [218, 219, 219, 222, 226, 236], satir: ['METNE', 'BUNLARI YAZ'], vurgu: 'YAZ' },
@@ -51,12 +52,12 @@ module.exports = {
     // 5. ADIM
     { k: 372, adim: 4, tip: 'dev', satir: ['15 İŞ GÜNÜNDE', 'ÖDEMEZSE?'], vurgu: 'ÖDEMEZSE?', ikon: 'saat' },
     { k: 387, adim: 5, adimAd: 'B PLANI', tip: 'dev', tam: true, satir: ['B', 'PLANI'], vurgu: 'PLANI' },
-    { k: 408, adim: 5, tip: 'telefon', cihaz: 'pc', url: 'turkiye.gov.tr', satir: ['BDDK', 'E-ŞİKAYET'], vurgu: 'E-ŞİKAYET', ekranlar: [
-      { k: 408, baslik: 'e-Devlet Kapısı', arama: 'BDDK e-Şikayet', aramaK: 409, satirlar: ['BDDK e-Şikayet Başvurusu', 'Tüketici Hakem Heyeti Başvurusu'], hedef: 0 },
-      { k: 412, basarili: 'Şikayetin alındı', alt: 'Başvuru no •••' } ] },
-    { k: 414, adim: 5, tip: 'telefon', cihaz: 'pc', url: 'sigortatahkim.org', satir: ['TAHKİME', 'BAŞVUR'], vurgu: 'BAŞVUR', ekranlar: [
-      { k: 414, baslik: 'Sigorta Tahkim Komisyonu', satirlar: ['Online başvuru', 'Başvuru sorgulama'], hedef: 0 },
-      { k: 419, basarili: 'Başvurun kaydedildi', alt: 'Bağlayıcı karar süreci başladı' } ] },
+    { k: 408, adim: 5, tip: 'panel', cihaz: 'pc', url: 'turkiye.gov.tr', site: 'e-Devlet Kapısı', satir: ['BDDK', 'E-ŞİKAYET'], vurgu: 'E-ŞİKAYET', ekranlar: [
+      { k: 408, tur: 'ana', arama: 'BDDK e-Şikayet', aramaK: 409, oneriler: ['BDDK e-Şikayet Başvurusu', 'Tüketici Hakem Heyeti Başvurusu'], kurumlar: ['Bankacılık Düzenleme ve Denetleme Kurumu', 'Ticaret Bakanlığı'], sec: 0 },
+      { k: 411, tur: 'form', baslik: 'BDDK e-Şikayet Başvurusu', alanlar: [{ ad: 'Şikayet edilen kurum', deger: '••• Bank A.Ş.' }, { ad: 'Konu', deger: 'Kredi hayat sigortası prim iadesi' }], alanK: [411, 412], onay: 'Yazılı iptal talebim ve poliçe çıktım ektedir', onayK: 412, buton: 'Başvur', butonK: 413 } ] },
+    { k: 414, adim: 5, tip: 'panel', cihaz: 'pc', url: 'sigortatahkim.org', site: 'Sigorta Tahkim Komisyonu', satir: ['TAHKİME', 'BAŞVUR'], vurgu: 'BAŞVUR', ekranlar: [
+      { k: 414, tur: 'hizmet', baslik: 'Online Başvuru', kurum: 'Sigorta Tahkim Komisyonu', maddeler: ['Sigorta şirketiyle uyuşmazlıkta bağlayıcı karar verir.', 'Başvuru internet üzerinden yapılır.'], buton: 'Başvuru Yap', butonK: 418 },
+      { k: 419, tur: 'sonuc', baslik: 'Başvurun kaydedildi', alt: 'Bağlayıcı karar süreci başladı', ref: 'ST-•••' } ] },
     { k: 424, adim: 5, tip: 'grafik', comp: 'Zaman', props: { adimlar: [{ ust: '0', alt: 'yazılı başvuru' }, { ust: '15', alt: 'iş günü: iade' }, { ust: '2–4', alt: 'ay: tahkim kararı' }], vurgu: 1 }, top: 260, satir: ['SÜREÇ', 'TAKVİMİ'], vurgu: 'TAKVİMİ' },
     // KAPANIŞ
     { k: 453, tip: 'dev', satir: ['PARAN', 'BANKADA KALMADI'], vurgu: 'KALMADI', ikon: 'tik' },
