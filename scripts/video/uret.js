@@ -133,6 +133,8 @@ tl.zipla.forEach(t => ev(t + .1, 'boing'));
 // v5 vuruşları: her vuruşta bir ses
 if (plan.vuruslar) {
   tl.vurus = plan.vuruslar.map(b => Object.assign({}, b, { t: Math.max(0, T(b.k)), altT: (b.alt || []).map(T), yazT: b.yazK != null ? T(b.yazK) : null, acT: b.acK != null ? T(b.acK) : null, carpiT: b.carpiK != null ? T(b.carpiK) : null, hlT: b.hlK != null ? T(b.hlK) : null, ekranT: (b.ekranlar || []).map(e => T(e.k)), aramaT: (b.ekranlar || []).map(e => e.aramaK != null ? T(e.aramaK) : null) }));
+  { const tv = (process.argv.find(a => a.startsWith('--tema=')) || '').slice(7), TMm = require('./temalar');
+    if (tv) tl.tmB = tl.vurus.map(b => tv === 'karma' ? TMm.KARMA[b.adim || 0] : +tv); tl.temaAd = tv ? TMm.ADLAR[tv] : null; }
   // Remotion: sayı/grafik vuruşlarını şeffaf kare dizisine render et (v5'te <img> olarak oynar)
   tl.vurus.forEach((b, i) => { if (b.tip !== 'grafik') return;
     const son = i + 1 < tl.vurus.length ? tl.vurus[i + 1].t : d.duration, n = Math.max(30, Math.min(150, Math.ceil((son - b.t) * 30) + 6));
@@ -178,7 +180,7 @@ const META_TXT = (outDir, ad) => fs.writeFileSync(path.join(outDir, ad.replace(/
 
 (async () => {
   const outDir = path.join(KOK, 'videolar', TUR); fs.mkdirSync(outDir, { recursive: true });
-  const ad = `${ID} - ${baslik.replace(/[\/\\:*?"<>|]/g, '').trim()}${tl.stil === 'yapaytu' ? ' (v2)' : tl.stil === 'v4' ? ' (v4)' : tl.stil === 'v5' ? ' (v5)' : tl.stil === 'v6' ? ' (v6)' : ''}${process.argv.includes('--taslak') ? ' (taslak)' : ''}.mp4`;
+  const ad = `${ID} - ${baslik.replace(/[\/\\:*?"<>|]/g, '').trim()}${tl.stil === 'yapaytu' ? ' (v2)' : tl.stil === 'v4' ? ' (v4)' : tl.stil === 'v5' ? ' (v5)' : tl.stil === 'v6' ? ' (v6)' : ''}${tl.temaAd ? ` (stil ${(process.argv.find(a => a.startsWith('--tema=')) || '').slice(7).replace('karma', '6')} ${tl.temaAd})` : ''}${process.argv.includes('--taslak') ? ' (taslak)' : ''}.mp4`;
   const outPath = path.join(outDir, ad);
   if (process.argv.includes('--sadece-meta')) { META_TXT(outDir, ad); console.error('✔ meta: ' + ad.replace(/\.mp4$/, '.txt')); return; }
   const tmp = path.join(outDir, `.${ID}.html`); fs.writeFileSync(tmp, html);

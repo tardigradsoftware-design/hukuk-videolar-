@@ -5,7 +5,8 @@
 // Deterministik: rastgelelik yok; titrek kalem çizgileri sabit tohumlu.
 const fs = require('fs'), path = require('path');
 const IK = require('./ikonlar');
-const CZ = require('./cizimler');   // kendi 2B SVG çizimlerimiz (emoji/ikon kütüphanesi yok)
+const CZ = require('./cizimler');
+const TM = require('./temalar');   // kendi 2B SVG çizimlerimiz (emoji/ikon kütüphanesi yok)
 const FN = (p) => 'file://' + path.join(__dirname, '..', '..', 'node_modules', '@fontsource', p);
 const esc = x => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 
@@ -117,14 +118,14 @@ body.yatay .ks{top:360px}body.yatay #sub span{font-size:58px}.cz path{fill:none;
   text-shadow:0 2px 0 #fff,0 -2px 0 #fff,2px 0 0 #fff,-2px 0 0 #fff}
 #sub span.on{background:#E8402F;color:#fff;text-shadow:none;padding:2px 18px 6px}
 body.k #sub span{color:#F2EEE6;text-shadow:none}body.k #sub span.on{background:#E8402F;color:#fff}
-</style></head><body class="${W > H ? 'yatay' : ''}">
+${TM.CSS()}</style></head><body class="${W > H ? 'yatay' : ''} ${(tl.tmB || [])[0] ? 'tm' + tl.tmB[0] : ''}">
 <svg width="0" height="0" style="position:absolute"><filter id="kg"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="11"/><feColorMatrix values="0 0 0 0 .55  0 0 0 0 .48  0 0 0 0 .38  0 0 0 .22 0"/></filter></svg>
-<div id="zemin"></div><div id="doku"></div><div id="koyu"></div><div id="vin"></div>
+<div id="zemin"></div><div id="doku"></div><div id="koyu"></div><div id="vin"></div>${TM.KOSE}
 <div id="cam">${html}<div id="top"></div></div>${V.some(b => b.adim) ? `<div id="adim">${[1, 2, 3, 4, 5].slice(0, Math.max(...V.map(b => b.adim || 0))).map(n => `<i>${n}</i>`).join('')}<span></span></div>` : ''}<div id="sub"></div><canvas id="gren" width="${W >> 1}" height="${H >> 1}"></canvas>
 <script>${fs.readFileSync(path.join(__dirname, 'hareket.js'), 'utf8')}</script>
 <script>${fs.readFileSync(path.join(__dirname, 'cizimler.js'), 'utf8')}</script>
 <script>
-const TL = ${JSON.stringify({ mod: tl.mod || null, vurus: V, kelimeler: tl.kelimeler, parcalar: tl.parcalar, duration: tl.duration })};
+const TL = ${JSON.stringify({ tmB: tl.tmB || null, mod: tl.mod || null, vurus: V, kelimeler: tl.kelimeler, parcalar: tl.parcalar, duration: tl.duration })};
 const W = ${W}, H = ${H};
 const cl = (v,a,b) => Math.max(a, Math.min(b, v));
 const eo = k => 1 - Math.pow(1 - cl(k,0,1), 3), ei = k => Math.pow(cl(k,0,1), 3);
@@ -136,13 +137,15 @@ function daire(cx, cy, rx, ry, sd){ const r = sr(sd); let d = ''; for (let a = 0
 function alt(x0, x1, y, sd){ const r = sr(sd); let d = 'M' + x0 + ' ' + y; for (let x = x0; x <= x1; x += 24) d += ' L' + x + ' ' + (y + (r() - .5) * 7 + Math.sin(x / 60) * 3).toFixed(1); return d; }
 function ok(x, y0, y1){ return 'M'+x+' '+y0+' C'+(x-40)+' '+((y0+y1)/2)+' '+(x+40)+' '+((y0+y1)/2)+' '+x+' '+y1+' M'+(x-26)+' '+(y1-30)+' L'+x+' '+y1+' L'+(x+26)+' '+(y1-30); }
 function hazirla(){
+const temaSet = i => { if (!TL.tmB) return; for (let k = 1; k <= 5; k++) document.body.classList.remove('tm' + k); if (TL.tmB[i]) document.body.classList.add('tm' + TL.tmB[i]); };
+const vbi = e => +e.closest('.vb').id.slice(2);
 // dev yazıyı genişliğe sığdır
 const YT = W > H;
-document.querySelectorAll('.sat').forEach(s => { const tam = !YT || s.closest('.tam'), mx = tam ? W - 120 : 740; let fs = YT ? (tam ? 230 : 170) : 210; s.style.fontSize = fs + 'px'; while (s.scrollWidth > mx && fs > 60) { fs -= 4; s.style.fontSize = fs + 'px'; } });
-document.querySelectorAll('.not span').forEach(sp => { let fs = parseFloat(getComputedStyle(sp.parentNode).fontSize); while (sp.getBoundingClientRect().width > (YT && !sp.closest('.tam') ? 760 : W - 60) && fs > 40) { fs -= 3; sp.parentNode.style.fontSize = fs + 'px'; } });
-document.querySelectorAll('.dev').forEach(d => { const h = d.getBoundingClientRect().height, cy = YT ? (d.closest('.tam') ? 420 : 400) : 330; d.style.top = Math.max(110, cy - h / 2) + 'px'; });
+document.querySelectorAll('.sat').forEach(s => { temaSet(vbi(s)); const tam = !YT || s.closest('.tam'), mx = tam ? W - 120 : 740; let fs = YT ? (tam ? 230 : 170) : 210; s.style.fontSize = fs + 'px'; while (s.scrollWidth > mx && fs > 60) { fs -= 4; s.style.fontSize = fs + 'px'; } });
+document.querySelectorAll('.not span').forEach(sp => { temaSet(vbi(sp)); let fs = parseFloat(getComputedStyle(sp.parentNode).fontSize); while (sp.getBoundingClientRect().width > (YT && !sp.closest('.tam') ? 760 : W - 60) && fs > 40) { fs -= 3; sp.parentNode.style.fontSize = fs + 'px'; } });
+document.querySelectorAll('.dev').forEach(d => { temaSet(vbi(d)); const h = d.getBoundingClientRect().height, cy = YT ? (d.closest('.tam') ? 420 : 400) : 330; d.style.top = Math.max(110, cy - h / 2) + 'px'; });
 // çizgileri hazırla (yerleşim ölçüldükten sonra)
-TL.vurus.forEach((b, i) => {
+TL.vurus.forEach((b, i) => { temaSet(i);
   const p = document.querySelector('#cz' + i + ' path'); let d = '';
   const ik = document.getElementById('ik' + i), nt = document.getElementById('nt' + i), dv = document.getElementById('dv' + i), ui = document.getElementById('ui' + i);
   if (b.cizgi === 'daire' && ui) { const r = ui.querySelector('.tg').getBoundingClientRect(); d = daire(r.left + r.width/2, r.top + r.height/2, r.width*.85, r.height*1.05, i*7+3); }
@@ -157,7 +160,7 @@ if (TL.vurus.some(b => b.ikon && b.tip === 'not')) TL.vurus.forEach((b, i) => { 
 // yorum kutusu sonraki nota yer açsın: not üstte, ok kutuya iner
 TL.vurus.forEach((b, i) => { const pv = TL.vurus[i-1]; if (b.tip === 'not' && pv && pv.tip === 'yorum') { const nt = document.getElementById('nt' + i); nt.style.top = '250px'; const ik = document.getElementById('ik'+i); if (ik) { ik.style.top = '60px'; ik.style.transform = 'scale(.7)'; } } });
   // v6 "tek top": her vuruşun çapası (top buraya iner, öğeyi o başlatır)
-  window.CAPA = TL.vurus.map((b, i) => { const vb = document.getElementById('vb' + i); vb.style.display = 'block'; const R = e => e.getBoundingClientRect(); let p = { x: W / 2, y: 600 };
+  window.CAPA = TL.vurus.map((b, i) => { temaSet(i); const vb = document.getElementById('vb' + i); vb.style.display = 'block'; const R = e => e.getBoundingClientRect(); let p = { x: W / 2, y: 600 };
     const tg = vb.querySelector('.tg'), gn = vb.querySelector('.gn'), ik = vb.querySelector('.ik'), v = vb.querySelectorAll('.h.v'), nt = vb.querySelector('.not span'), rm = vb.querySelector('.rm'), tf = vb.querySelector('.tf'), gz = vb.querySelector('.gz'), kx = vb.querySelector('.kx');
     if (tg) { const r = R(tg); p = { x: r.left + 27, y: r.top + 27, tg: true }; } else if (gn) { const r = R(gn); p = { x: r.left + r.width / 2, y: r.top + r.height / 2 }; }
     else if (ik) { const r = R(ik); p = { x: r.left + r.width / 2, y: r.top - 20 }; } else if (v.length) { const a = R(v[0]), z = R(v[Math.max(0, v.length - 2)]); p = { x: (a.left + z.right) / 2, y: a.top - 30 }; }
@@ -197,6 +200,7 @@ function kontrol(t){
 }
 function frame(t){
   if (!_hz) { _hz = true; hazirla(); }
+  if (TL.tmB) { let ci = 0; TL.vurus.forEach((b, i) => { if (t >= b.t - .05) ci = i; }); const tn = 'tm' + TL.tmB[ci]; if (!document.body.classList.contains(tn)) { for (let k = 1; k <= 5; k++) document.body.classList.remove('tm' + k); document.body.classList.add(tn); } }
   let koyu = false, shake = 0;
   TL.vurus.forEach((b, i) => {
     const vb = document.getElementById('vb' + i), lt = t - b.t, e = bitis(i), out = t - e + .04;
