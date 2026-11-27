@@ -64,12 +64,21 @@
     kart: () => `<g class="kay"><rect x="16" y="46" width="168" height="108" rx="14" fill="${K}"/><rect x="16" y="68" width="168" height="18" fill="${M}"/>
       <rect x="34" y="100" width="34" height="26" rx="5" fill="${Y}"/><rect x="104" y="126" width="62" height="9" rx="4" fill="#fff" opacity=".7"/></g>`,
     el: () => `<path d="M84 196 L84 112 L70 102 C60 94 66 80 78 84 L92 92 L92 28 C92 14 112 14 112 28 L112 86 L112 72 C112 60 130 60 130 72 L130 90 L130 80 C130 68 148 68 148 80 L148 96 L148 90 C148 80 164 80 164 92 L164 138 C164 168 150 196 120 196Z" fill="#fff" ${st(7)}/>`,
+    zil: () => `<g class="sal"><path d="M100 26 C66 26 52 54 52 86 L52 124 L36 146 L164 146 L148 124 L148 86 C148 54 134 26 100 26Z" fill="${Y}" ${st()}/><circle cx="100" cy="22" r="9" fill="${K}"/></g>
+      <g class="dil"><circle cx="100" cy="158" r="14" fill="${K}"/></g><g class="dal" ${st(6)} fill="none" opacity="0"><path d="M30 60 Q18 86 30 112"/><path d="M170 60 Q182 86 170 112"/></g>`,
+    cuzdan: () => `<g class="pr">${[0, 1, 2].map(i => `<g class="cn" data-i="${i}"><circle cx="${74 + i * 26}" cy="40" r="18" fill="${Y}" ${st(5)}/><text x="${74 + i * 26}" y="48" text-anchor="middle" font-family="Archivo,Arial Black" font-weight="900" font-size="22" fill="${K}">₺</text></g>`).join('')}</g>
+      <rect x="26" y="72" width="148" height="104" rx="18" fill="${R}" ${st()}/><path d="M26 96 L174 96" ${st(6)}/><rect class="kapak" x="118" y="108" width="60" height="40" rx="10" fill="#C2311F" ${st(6)}/><circle cx="140" cy="128" r="7" fill="${Y}"/>`,
+    imza: () => `<rect x="20" y="40" width="160" height="120" rx="10" fill="${B}" ${st()}/><rect x="40" y="62" width="90" height="9" rx="4" fill="${M}"/><rect x="40" y="82" width="70" height="9" rx="4" fill="${M}"/>
+      <path class="cizgi" d="M40 136 C58 112 66 146 80 128 C92 112 98 140 112 126 C122 116 128 136 146 124" fill="none" stroke="${R}" stroke-width="6" stroke-linecap="round"/>
+      <g class="kalem"><path d="M0 0 L46 -46 L58 -34 L12 12Z" fill="${K}"/><path d="M0 0 L12 12 L-4 16Z" fill="${Y}" ${st(3)}/></g><line x1="36" y1="150" x2="164" y2="150" ${st(4)}/>`,
+    megafon: () => `<g class="gov"><path d="M40 84 L120 44 L120 156 L40 116Z" fill="${R}" ${st()}/><rect x="22" y="82" width="22" height="36" rx="6" fill="${M}" ${st(6)}/><path d="M60 118 L72 160 L94 160 L84 124" fill="${B}" ${st(6)}/></g>
+      <g class="dalga" fill="none" ${st(7)}><path d="M140 76 Q156 100 140 124"/><path d="M156 60 Q182 100 156 140"/><path d="M172 44 Q206 100 172 156"/></g>`,
     ucak: () => `<path d="M20 98 L180 24 L130 176 L96 120Z" fill="#fff" ${st(7)}/><path d="M96 120 L180 24" ${st(6)}/>`,
   };
   const EMOJI = { '💡': 'ampul', '🔒': 'kilit', '🔐': 'kilit', '🔑': 'kilit', '🛡': 'kalkan', '💰': 'para', '💵': 'para', '🪙': 'para', '🏠': 'ev', '🏘': 'ev', '🏢': 'bina',
     '🏛': 'banka', '🏦': 'banka', '🪪': 'kimlik', '✉': 'zarf', '📩': 'zarf', '📧': 'zarf', '📨': 'zarf', '📮': 'zarf', '📅': 'takvim', '⏱': 'saat', '⏰': 'saat', '⏳': 'saat',
     '⚖': 'terazi', '📜': 'belge', '📄': 'belge', '📝': 'belge', '🧾': 'belge', '📱': 'telefon', '📞': 'telefon', '☎': 'telefon', '🔍': 'buyutec', '🚫': 'yasak', '⚠': 'uyari',
-    '🚨': 'uyari', '📈': 'grafik', '📊': 'grafik', '✅': 'tik', '💸': 'elpara', '💳': 'kart', '💬': 'mesaj', '👇': 'el' };
+    '🚨': 'uyari', '📈': 'grafik', '📊': 'grafik', '✅': 'tik', '💸': 'elpara', '💳': 'kart', '💬': 'mesaj', '👇': 'el', '🔔': 'zil', '👛': 'cuzdan', '✍': 'imza', '📢': 'megafon', '📣': 'megafon' };
   const ad = x => C[x] ? x : EMOJI[String(x).replace(/️/g, '')] || null;
   let sayac = 0;
   function svg(x, boy = 200) { const n = ad(x); if (!n) return ''; const id = n + (sayac++);
@@ -109,9 +118,13 @@
     tokmak(el, t) { const k = (t % 1) / 1, a = k < .7 ? -26 * eo(k / .7) : -26 + 30 * eo((k - .7) / .1); q1(el, '.vur').setAttribute('transform', `rotate(${k < .8 ? a : 4 - 4 * (k - .8) / .2} 150 170)`); q1(el, '.darbe').setAttribute('opacity', k > .8 && k < .95 ? 1 : 0); },
     mesaj(el, t) { q(el, '.nokta circle').forEach((c, i) => c.setAttribute('transform', `translate(0 ${-8 * Math.max(0, Math.sin(t * 8 - i * .8))})`)); },
     kart(el, t) { const k = eo(t / .5); q1(el, '.kay').setAttribute('transform', `translate(${-60 * (1 - k) + Math.sin(t * 2) * 3} 0) rotate(${-6 * (1 - k)} 100 100)`); },
+    zil(el, t) { const a = Math.sin(t * 16) * 18 * Math.max(.15, Math.exp(-((t % 1.4)) * 2.2)); q1(el, '.sal').setAttribute('transform', `rotate(${a} 100 22)`); q1(el, '.dil').setAttribute('transform', `rotate(${-a * 1.4} 100 22)`); q1(el, '.dal').setAttribute('opacity', Math.abs(a) > 8 ? 1 : 0); },
+    cuzdan(el, t) { q(el, '.cn').forEach((c, i) => { const k = ((t + i * .37) % 1.1) / 1.1, y = -40 + 120 * k * k; c.setAttribute('transform', `translate(0 ${y})`); c.setAttribute('opacity', k > .85 ? 0 : 1); }); q1(el, '.kapak').setAttribute('transform', `translate(0 ${Math.sin(t * 9) * 2})`); },
+    imza(el, t) { const p = q1(el, '.cizgi'), L = +p.dataset.L || (p.dataset.L = p.getTotalLength()), k = ((t * .8) % 1.3) / 1.0; ciz(p, k); const pt = p.getPointAtLength(L * cl(k, 0, 1)); q1(el, '.kalem').setAttribute('transform', `translate(${pt.x} ${pt.y})`); },
+    megafon(el, t) { q(el, '.dalga path').forEach((p, i) => p.setAttribute('opacity', .2 + .8 * Math.max(0, Math.sin(t * 7 - i * .9)))); q1(el, '.gov').setAttribute('transform', `rotate(${Math.sin(t * 9) * 2} 60 100)`); },
     el() {}, ucak(el, t) { el.querySelector('path').setAttribute('transform', `translate(${Math.sin(t * 3) * 4} ${Math.cos(t * 3) * 3})`); },
   };
-  function anim(el, lt, o) { const f = A[el.dataset.c]; if (f && lt >= 0) f(el, lt, o); }
+  function anim(el, lt, o) { const f = A[el.dataset.c]; if (f && lt >= 0) { f(el, lt, o); if (lt > .9) el.style.transform = `rotate(${Math.sin(lt * 2.3) * 2.2}deg) scale(${1 + .025 * Math.sin(lt * 3.1)})`; } }
   root.CZ = { svg, anim, ad, ADLAR: Object.keys(C) };
   if (typeof module !== 'undefined') module.exports = root.CZ;
 })(typeof window !== 'undefined' ? window : globalThis);

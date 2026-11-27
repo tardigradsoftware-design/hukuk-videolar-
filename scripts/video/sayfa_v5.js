@@ -15,7 +15,7 @@ function sayfa({ W, H, L, tl }) {
   const ink = b => b.koyu ? '#F2EEE6' : '#151515', acc = '#E8402F';
   const harf = (s, vurgu, cp) => [...s].map(c => `<b class="h${vurgu ? ' v' : ''}${cp && c !== ' ' ? ' c' : ''}">${c === ' ' ? '&nbsp;' : esc(c)}</b>`).join('');
   const html = V.map((b, i) => {
-    let ic = b.ikon ? `<div class="ik" id="ik${i}">${CZ.svg(b.ikon, W > H ? 300 : 210)}</div>` : '';
+    let ic = b.ikon ? `<div class="ik" id="ik${i}">${W > H ? '<svg class="lk2" viewBox="-200 -200 400 400"><path/></svg>' : ''}${CZ.svg(b.ikon, W > H ? 300 : 210)}</div>` : '';
     let x = '';
     if (b.tip === 'dev' || b.tip === 'yorum' || (b.satir && W > H)) x += `<div class="dev" id="dv${i}">${(b.satir || []).map(s => `<div class="sat">${s.split(' ').map(w => harf(w + ' ', w.replace(/["']/g, '') === (b.vurgu || ''), w === b.carpi)).join('')}</div>`).join('')}</div>`;
     if (b.tip === 'not') x += `<div class="not" id="nt${i}"><span>${esc(b.yazi)}</span></div>`;
@@ -29,6 +29,7 @@ function sayfa({ W, H, L, tl }) {
         : `<div class="sc"><h4>${esc(e.baslik)}</h4>${e.arama ? `<div class="ara" data-ara="${esc(e.arama)}"><span class="az"></span><i class="cr"></i></div>` : ''}${e.satirlar.map((r, q) => `<div class="rw${q === e.hedef ? ' hd' : ''}${/iptal/i.test(r) ? ' kr' : ''}">${esc(r)}<i>›</i></div>`).join('')}</div>`).join('')}
       <div class="rp"></div><div class="im">${CZ.svg('el', 76)}</div></div>`;
     if (b.tip === 'grafik' && b.rm) x += `<div class="rm" id="rm${i}" style="left:${W > H ? 590 - b.rm.w / 2 : (W - b.rm.w) / 2}px;width:${b.rm.w}px;height:${b.rm.h}px;top:${b.top ?? (W > H ? 190 : 140)}px">${Array.from({ length: b.rm.n }, (_, q) => `<img src="file://${b.rm.dir}/element-${String(q).padStart(String(b.rm.n - 1).length, '0')}.png">`).join('')}</div>`;
+    if (b.tip === 'abone') x += `<div class="abn" id="ab${i}"><span class="zl">${CZ.svg('zil', 64)}</span><div><b>${esc(b.yazi || 'Abone ol')}</b><small>${esc(b.ek || 'yeni rehberler için')}</small></div><i>ABONE OL</i></div>`;
     if (b.tip === 'kontrol') x += `<div class="kl5" id="kl${i}"><h4>${esc(b.baslik || '')}</h4>${b.maddeler.map((m, j) => `<div class="km"><i>${CZ.svg('tik', 46)}</i><span>${esc(m)}</span></div>`).join('')}</div>`;
     if (b.tip === 'eposta') x += `<div class="ep5" id="ep${i}"><div class="eh"><b>Yeni ileti</b><small>TEMSİLİ</small></div><div class="ef"><span>Kime</span><b data-v="${esc(b.kime || '')}"></b></div><div class="ef"><span>Konu</span><b data-v="${esc(b.konu || '')}"></b></div><div class="eb">${b.satirlar.map(l => `<p data-v="${esc(l)}"></p>`).join('')}</div><div class="egn">Gönder</div></div>`;
     if (b.tip === 'yorum') x += `<div class="yr" id="yr${i}"><div class="av">S</div><div class="kt"><span class="yz"></span><i class="cr"></i></div><div class="gn">${CZ.svg('ucak', 40)}</div></div>`;
@@ -94,6 +95,14 @@ function sayfa({ W, H, L, tl }) {
 .rm{position:absolute;transform-origin:50% 50%}.rm img{position:absolute;inset:0;width:100%;height:100%;visibility:hidden}
 #top{position:absolute;left:0;top:0;width:52px;height:52px;margin:-26px 0 0 -26px;border-radius:50%;background:#E8402F;z-index:6;display:${tl.mod === 'top' ? 'block' : 'none'};box-shadow:0 14px 16px -10px rgba(0,0,0,.35)}
 .cz{position:absolute;left:0;top:0;overflow:visible}
+.ik .lk2{position:absolute;left:50%;top:50%;width:520px;height:520px;margin:-260px 0 0 -260px;z-index:-1;overflow:visible}.ik .lk2 path{fill:var(--leke,#FDE7E3)}
+body.tm1{--leke:#DCEBFF}body.tm2{--leke:#FFE36E}body.tm3{--leke:#F4F1EA}body.tm4{--leke:#E5DCFF}body.tm5{--leke:#FBDCCD}
+.abn{position:absolute;right:60px;top:120px;display:flex;align-items:center;gap:18px;background:#fff;border-radius:22px;padding:14px 18px 14px 14px;box-shadow:0 0 0 3px #151515,8px 8px 0 #151515;z-index:9}
+.abn b{display:block;font:800 30px Geist;color:#151515}.abn small{font:600 20px Geist;color:#8B8E95}.abn i{font-style:normal;background:#E8402F;color:#fff;font:800 22px Geist;padding:12px 20px;border-radius:12px}
+.abn .zl{width:64px;height:64px;display:block}
+#ray{position:absolute;left:1110px;top:640px;width:760px;height:180px;z-index:5;display:none}body.yatay #ray{display:block}
+#ray .cp{position:absolute;left:0;top:0;white-space:nowrap;font:700 30px GM;letter-spacing:.02em;color:#151515;background:#fff;border-radius:999px;padding:10px 22px;box-shadow:0 0 0 2.5px #151515,5px 5px 0 #151515}
+#ray .cp::before{content:'';display:inline-block;width:12px;height:12px;border-radius:50%;background:#E8402F;margin-right:12px;vertical-align:1px}
 .ara{display:flex;align-items:center;margin:0 6px 16px;height:62px;border-radius:16px;border:3px solid #151515;padding:0 18px;font:700 24px Geist;color:#151515;background:#fff}.ara .cr{width:3px;height:28px;background:#E8402F;margin-left:3px}
 .tf.pc{width:1000px;height:640px;border-radius:18px;box-shadow:0 0 0 3px #151515,10px 10px 0 #151515,0 50px 70px -30px rgba(0,0,0,.4)}
 .pcb{display:flex;align-items:center;gap:10px;padding:14px 18px;background:#151515;color:#fff}.pcb i{width:14px;height:14px;border-radius:50%;background:#555}.pcb .url{flex:1;margin-left:12px;background:#2b2b2b;border-radius:10px;padding:8px 16px;font:600 20px GM}.pcb small{font:700 14px GM;letter-spacing:.14em;color:#F6B92B}
@@ -121,11 +130,11 @@ body.k #sub span{color:#F2EEE6;text-shadow:none}body.k #sub span.on{background:#
 ${TM.CSS()}</style></head><body class="${W > H ? 'yatay' : ''} ${(tl.tmB || [])[0] ? 'tm' + tl.tmB[0] : ''}">
 <svg width="0" height="0" style="position:absolute"><filter id="kg"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="11"/><feColorMatrix values="0 0 0 0 .55  0 0 0 0 .48  0 0 0 0 .38  0 0 0 .22 0"/></filter></svg>
 <div id="zemin"></div><div id="doku"></div><div id="koyu"></div><div id="vin"></div>${TM.KOSE}
-<div id="cam">${html}<div id="top"></div></div>${V.some(b => b.adim) ? `<div id="adim">${[1, 2, 3, 4, 5].slice(0, Math.max(...V.map(b => b.adim || 0))).map(n => `<i>${n}</i>`).join('')}<span></span></div>` : ''}<div id="sub"></div><canvas id="gren" width="${W >> 1}" height="${H >> 1}"></canvas>
+<div id="cam">${html}<div id="top"></div><div id="ray"></div></div>${V.some(b => b.adim) ? `<div id="adim">${[1, 2, 3, 4, 5].slice(0, Math.max(...V.map(b => b.adim || 0))).map(n => `<i>${n}</i>`).join('')}<span></span></div>` : ''}<div id="sub"></div><canvas id="gren" width="${W >> 1}" height="${H >> 1}"></canvas>
 <script>${fs.readFileSync(path.join(__dirname, 'hareket.js'), 'utf8')}</script>
 <script>${fs.readFileSync(path.join(__dirname, 'cizimler.js'), 'utf8')}</script>
 <script>
-const TL = ${JSON.stringify({ tmB: tl.tmB || null, mod: tl.mod || null, vurus: V, kelimeler: tl.kelimeler, parcalar: tl.parcalar, duration: tl.duration })};
+const TL = ${JSON.stringify({ cips: tl.cips || null, tmB: tl.tmB || null, mod: tl.mod || null, vurus: V, kelimeler: tl.kelimeler, parcalar: tl.parcalar, duration: tl.duration })};
 const W = ${W}, H = ${H};
 const cl = (v,a,b) => Math.max(a, Math.min(b, v));
 const eo = k => 1 - Math.pow(1 - cl(k,0,1), 3), ei = k => Math.pow(cl(k,0,1), 3);
@@ -143,7 +152,7 @@ const vbi = e => +e.closest('.vb').id.slice(2);
 const YT = W > H;
 document.querySelectorAll('.sat').forEach(s => { temaSet(vbi(s)); const tam = !YT || s.closest('.tam'), mx = tam ? W - 120 : 740; let fs = YT ? (tam ? 230 : 170) : 210; s.style.fontSize = fs + 'px'; while (s.scrollWidth > mx && fs > 60) { fs -= 4; s.style.fontSize = fs + 'px'; } });
 document.querySelectorAll('.not span').forEach(sp => { temaSet(vbi(sp)); let fs = parseFloat(getComputedStyle(sp.parentNode).fontSize); while (sp.getBoundingClientRect().width > (YT && !sp.closest('.tam') ? 760 : W - 60) && fs > 40) { fs -= 3; sp.parentNode.style.fontSize = fs + 'px'; } });
-document.querySelectorAll('.dev').forEach(d => { temaSet(vbi(d)); const h = d.getBoundingClientRect().height, cy = YT ? (d.closest('.tam') ? 420 : 400) : 330; d.style.top = Math.max(110, cy - h / 2) + 'px'; });
+document.querySelectorAll('.dev').forEach(d => { temaSet(vbi(d)); const h = d.getBoundingClientRect().height, cy = YT ? (d.closest('.tam') ? 420 : 380) : 330; d.style.top = Math.max(110, cy - h / 2) + 'px'; });
 // çizgileri hazırla (yerleşim ölçüldükten sonra)
 TL.vurus.forEach((b, i) => { temaSet(i);
   const p = document.querySelector('#cz' + i + ' path'); let d = '';
@@ -173,7 +182,11 @@ const G = document.getElementById('gren'), gx = G.getContext('2d'), GI = gx.crea
 const GC = [];
 function gren(f){ const c = f % 8; if (GC[c]) { gx.putImageData(GC[c], 0, 0); return; } const GI = gx.createImageData(G.width, G.height); GC[c] = GI; let s = ((c + 1) * 2654435761) >>> 0; const d = GI.data; for (let i = 0; i < d.length; i += 4) { s = (Math.imul(s, 1664525) + 1013904223) >>> 0; const v = 96 + (s >>> 24) * .25; d[i] = d[i+1] = d[i+2] = v; d[i+3] = 255; } gx.putImageData(GI, 0, 0); }
 const N = TL.vurus.length;
-const bitis = i => { const b = TL.vurus[i]; if (b.tip === 'yorum' && i >= N - 2) return TL.duration + 9; return i + 1 < N ? TL.vurus[i+1].t : TL.duration + 9; };
+const YTY = W > H, OVL = b => b.tip === 'abone';
+const gorselli = b => !!(b.ikon || b.etiketler || ['telefon', 'gazete', 'ui', 'kontrol', 'eposta', 'grafik', 'yorum', 'karisim'].includes(b.tip));
+const sonrakiT = (i, f) => { for (let j = i + 1; j < N; j++) { const c = TL.vurus[j]; if (!OVL(c) && f(c)) return c.t; } return TL.duration + 9; };
+const bitisV = i => { const b = TL.vurus[i]; if (OVL(b)) return b.t + (b.sure || 3.4); if (!YTY || !gorselli(b)) return bitis(i); if (b.tip === 'yorum' && i >= N - 2) return TL.duration + 9; return sonrakiT(i, c => gorselli(c) || c.tam); };
+const bitis = i => { const b = TL.vurus[i]; if (OVL(b)) return b.t + (b.sure || 3.4); if (b.tip === 'yorum' && i >= N - 2) return TL.duration + 9; return sonrakiT(i, () => true) < TL.duration + 9 ? sonrakiT(i, () => true) : TL.duration + 9; };
 function harfler(el, lt, out){
   if (TL.mod === 'top') { [...el.querySelectorAll('.sat')].forEach(sa => sa.style.overflow = 'hidden'); [...el.querySelectorAll('.h')].forEach((h, j) => { const k = (lt - j * .014) / .3;
     let y = k < 0 ? 105 : 105 * (1 - window.H.backOut(Math.min(1, k), .9)); let op = k < 0 ? 0 : 1; if (out >= 0) { const q = ei(out / .16); y = -105 * q; }
@@ -203,10 +216,10 @@ function frame(t){
   if (TL.tmB) { let ci = 0; TL.vurus.forEach((b, i) => { if (t >= b.t - .05) ci = i; }); const tn = 'tm' + TL.tmB[ci]; if (!document.body.classList.contains(tn)) { for (let k = 1; k <= 5; k++) document.body.classList.remove('tm' + k); document.body.classList.add(tn); } }
   let koyu = false, shake = 0;
   TL.vurus.forEach((b, i) => {
-    const vb = document.getElementById('vb' + i), lt = t - b.t, e = bitis(i), out = t - e + .04;
-    const on = lt >= 0 && out < .3; vb.style.opacity = on ? 1 : 0; const czg = document.getElementById('cz' + i); czg.style.opacity = out >= 0 ? 1 - ei(out / .15) : 1; vb.style.display = on ? 'block' : 'none'; if (!on) return;
-    if (lt >= 0 && t < e) koyu = !!b.koyu;
-    const dv = document.getElementById('dv' + i); if (dv) harfler(dv, lt, b.tip === 'yorum' ? t - (i + 1 < N ? TL.vurus[i+1].t : 99) + .04 : out);
+    const vb = document.getElementById('vb' + i), lt = t - b.t, e = bitis(i), outT = t - e + .04, eV = bitisV(i); let out = t - eV + .04;
+    const on = lt >= 0 && Math.min(outT, out) < .3; vb.style.opacity = on ? 1 : 0; const czg = document.getElementById('cz' + i); czg.style.opacity = outT >= 0 ? 1 - ei(outT / .15) : 1; vb.style.display = on ? 'block' : 'none'; if (!on) return;
+    if (lt >= 0 && t < e && !OVL(b)) koyu = !!b.koyu;
+    const dv = document.getElementById('dv' + i); if (dv) harfler(dv, lt, b.tip === 'yorum' ? t - (i + 1 < N ? TL.vurus[i+1].t : 99) + .04 : outT);
     if (lt >= .16 && lt < .4 && b.tip === 'dev') shake = Math.max(shake, 1 - (lt - .16) / .24);
     const ik = document.getElementById('ik' + i);
     if (ik) { const k = (lt - .18) / .52; let y = -620, sx = 1, sy = 1, r = 0, op = 0;
@@ -219,7 +232,12 @@ function frame(t){
     const nt = document.getElementById('nt' + i);
     if (nt) { const sp = nt.querySelector('span'), dur = Math.min(.9, (b.yazi || b.not).length * .035), k = eo(lt / dur);
       sp.style.clipPath = 'inset(-20% ' + ((1 - k) * 100) + '% -20% -5%)'; sp.style.transform = 'rotate(-3deg) translateY(' + (Math.sin(lt * 2.4) * 3) + 'px)';
-      const q = out >= 0 ? ei(out / .2) : 0; nt.style.opacity = 1 - q; nt.style.transform = 'translateX(' + (-260 * q) + 'px)'; }
+      const q = outT >= 0 ? ei(outT / .2) : 0; nt.style.opacity = 1 - q; nt.style.transform = 'translateX(' + (-260 * q) + 'px)'; }
+    // canlı leke: ikonun arkasında sürekli şekil değiştirir (hiç durmaz)
+    const lk = vb.querySelector('.lk2 path'); if (lk) { let d = ''; const ks = backOut(cl((lt - .1) / .4, 0, 1)) * (out >= 0 ? 1 - ei(out / .2) : 1); for (let a = 0; a <= 64; a++) { const an = a / 64 * Math.PI * 2, rr = ks * (150 + 16 * Math.sin(an * 3 + t * 2.2) + 10 * Math.sin(an * 5 - t * 1.7)); d += (a ? 'L' : 'M') + (Math.cos(an) * rr).toFixed(1) + ' ' + (Math.sin(an) * rr).toFixed(1); } lk.setAttribute('d', d + 'Z'); }
+    // abone bandı: içerik akarken köşeden girer, zil sallanır, çıkar
+    const ab = document.getElementById('ab' + i); if (ab) { const k = backOut(lt / .35), q = out >= 0 ? ei(out / .25) : 0; ab.style.opacity = cl(lt / .1, 0, 1) * (1 - q); ab.style.transform = 'translateX(' + ((1 - k) * 520 + 520 * q) + 'px)';
+      const zl = ab.querySelector('.zl'); zl.style.transform = 'rotate(' + (Math.sin(t * 18) * 14 * Math.exp(-((lt % 1.2)) * 2)) + 'deg)'; const bt = ab.querySelector('i'); bt.style.transform = 'scale(' + (lt > 1 && lt < 1.25 ? .9 : 1) + ')'; bt.style.background = lt > 1.1 ? '#151515' : '#E8402F'; bt.textContent = lt > 1.1 ? 'ABONE OLUNDU ✓' : 'ABONE OL'; }
     b.etiketler && b.etiketler.forEach((x, j) => { const el = document.getElementById('et' + i + '_' + j), st = b.altT[j] ?? b.t + .2 * j, l = t - st;
       const fx = W > H ? (j ? 780 : 400) : (j ? 470 : 250), fy = W > H ? 760 : 660, w = el.offsetWidth, hh = el.offsetHeight; let y = -900, r = j ? 10 : -9, sy = 1, op = 0;
       if (l >= 0) { op = 1; if (l < .42) { const q = l / .42; y = -900 + 900 * q * q; r *= (1 - q) * 3 + 1; }
@@ -257,6 +275,7 @@ function frame(t){
         if (t >= ET[j] && t < ET[j + 1]) { const m = eo((t - Math.max(ET[j], tap - .5)) / .45); px = px0 + (gx - px0) * m; py = py0 + (gy - py0) * m; if (t > tap) { bas = Math.sin(cl((t - tap) / .16, 0, 1) * Math.PI); rk = (t - tap) / .4; hd.classList.add('sec'); } else hd.classList.remove('sec'); } }
       if (E.at(-1).basarili && t >= ET.at(-1)) { px = PW * .5; py = PH * 1.2; }
       im.style.transform = 'translate(' + (px - 20) + 'px,' + (py - 8) + 'px) scale(' + (1 - .15 * bas) + ')'; rp.style.left = px + 'px'; rp.style.top = py + 'px'; rp.style.opacity = rk >= 0 && rk < 1 ? 1 - rk : 0; rp.style.transform = 'scale(' + (.3 + Math.max(0, rk) * 1.2) + ')'; }
+    if (YTY) vb.querySelectorAll('.gz,.kl5,.ep5,.tf,.ui,.yr,.rm').forEach((c, j) => { if (lt < .5) return; const f = Math.sin(t * 1.6 + i + j), g = Math.cos(t * 1.1 + i * 2); c.style.translate = (g * 3).toFixed(2) + 'px ' + (f * 5).toFixed(2) + 'px'; c.style.rotate = (f * .25).toFixed(3) + 'deg'; });
     const kl = document.getElementById('kl' + i);
     if (kl) { const k = backOut(lt / .3), q = out >= 0 ? ei(out / .2) : 0; kl.style.opacity = cl(lt / .08, 0, 1) * (1 - q); kl.style.transform = 'translateY(' + ((1 - k) * 200 - 260 * q) + 'px)';
       kl.querySelectorAll('.km').forEach((m, j) => { const st = (b.altT || [])[j] ?? b.t + .3 + j * .2, kk = cl((t - st) / .22, 0, 1); m.style.opacity = .25 + .75 * kk; m.style.transform = 'translateX(' + ((1 - backOut(kk)) * -40) + 'px)';
@@ -283,6 +302,9 @@ function frame(t){
     const tp = document.getElementById('top'); tp.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + sx + ',' + sy + ')'; tp.style.background = document.body.classList.contains('k') ? '#F2EEE6' : '#E8402F'; window._top = { x, y }; }
   const AD = document.getElementById('adim'); if (AD) { let cur = 0, ad = ''; TL.vurus.forEach(b => { if (b.adim && t >= b.t) { cur = b.adim; ad = b.adimAd || ad; } }); AD.style.opacity = cur ? 1 : 0;
     [...AD.querySelectorAll('i')].forEach((c, j) => { c.className = j + 1 === cur ? 'on' : j + 1 < cur ? 'ok' : ''; }); AD.querySelector('span').textContent = ad; }
+  const RY = document.getElementById('ray'); if (RY && TL.cips && TL.cips.length) { const tamNow = TL.vurus.some((b, i) => b.tam && t >= b.t && t < bitis(i)); RY.style.opacity = tamNow ? 0 : 1;
+    const g = TL.cips.filter(c => c.t <= t && t < c.t + 4.2).slice(-3); if (RY.dataset.k !== g.map(c => c.t).join()) { RY.dataset.k = g.map(c => c.t).join(); RY.innerHTML = g.map(c => '<span class="cp">' + c.x + '</span>').join(''); }
+    [...RY.children].forEach((el, j) => { const c = g[j], l = t - c.t, k = backOut(l / .3), yo = (g.length - 1 - j) * 66, q = cl((l - 3.9) / .3, 0, 1); el.style.opacity = cl(l / .08, 0, 1) * (1 - q); el.style.transform = 'translate(' + ((1 - k) * 260) + 'px,' + (54 + yo) + 'px) rotate(' + ((1 - k) * 6) + 'deg)'; }); }
   document.body.classList.toggle('k', !!(kd && t >= kd.t0 + .12 && (kd.kapan == null || t < kd.kapan + .15)));
   // altyazı: v3 ile aynı stil
   const Wd = TL.kelimeler, sub = document.getElementById('sub'), P = TL.parcalar.find(p => t >= p.t0 && t < p.t1);

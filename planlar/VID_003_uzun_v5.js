@@ -29,7 +29,7 @@ module.exports = {
       { k: 140, baslik: 'Poliçe detayı', satirlar: ['Poliçe no  •••', 'Başlangıç  ••.••.••••', 'Şirket  •••'] } ] },
     { k: 151, adim: 2, tip: 'dev', satir: ['"KREDİ ŞARTI"', 'DERSE'], vurgu: 'DERSE', ikon: 'mesaj' },
     { k: 161, adim: 2, tip: 'not', yazi: '6502 sayılı kanun: zorunlu değil', ikon: 'terazi', cizgi: 'alt' },
-    { k: 172, adim: 2, tip: 'dev', satir: ['YAZILI', 'TALEP ET'], vurgu: 'TALEP', ikon: 'belge' },
+    { k: 172, adim: 2, tip: 'dev', satir: ['YAZILI', 'TALEP ET'], vurgu: 'TALEP', ikon: 'imza' },
     // 3. ADIM
     { k: 186, adim: 3, adimAd: 'YAZILI BAŞVURU', tip: 'dev', satir: ['BANKAYI ARAMA', 'YAZILI YAZ'], vurgu: 'YAZ', carpi: 'ARAMA', carpiK: 196, ikon: 'telefon' },
     { k: 200, adim: 3, tip: 'telefon', satir: ['POLİÇE', 'İŞLEMLERİ'], vurgu: 'İŞLEMLERİ', ekranlar: [
@@ -41,13 +41,13 @@ module.exports = {
       alt: [218, 219, 219, 222, 226, 236], satir: ['METNE', 'BUNLARI YAZ'], vurgu: 'YAZ' },
     { k: 248, adim: 3, tip: 'yorum', satir: ['BANKAN', 'NE DEDİ?'], vurgu: 'DEDİ?', yaz: 'Faiz artar dediler', yazK: 262 },
     // 4. ADIM
-    { k: 273, adim: 4, adimAd: 'FAİZ BLÖFÜ', tip: 'dev', satir: ['"FAİZ ARTAR"', 'BLÖFÜ'], vurgu: 'BLÖFÜ', ikon: 'uyari', koyu: true },
+    { k: 273, adim: 4, adimAd: 'FAİZ BLÖFÜ', tip: 'dev', satir: ['"FAİZ ARTAR"', 'BLÖFÜ'], vurgu: 'BLÖFÜ', ikon: 'megafon', koyu: true },
     { k: 289, adim: 4, tip: 'dev', satir: ['SÖZLEŞMENİ', 'KONTROL ET'], vurgu: 'KONTROL', ikon: 'belge' },
     { k: 293, adim: 4, tip: 'gazete', ust: 'KREDİ SÖZLEŞMESİ', baslik: 'Faiz oranı', satirlar: [['Sigortalı faiz', '%•••'], ['Sigortasız faiz', 'yazmıyor']], alt: [294, 295], hl: 1, hlK: 298, satir: ['YAZMIYORSA', 'DEĞİŞTİREMEZ'], vurgu: 'DEĞİŞTİREMEZ' },
     { k: 301, adim: 4, tip: 'dev', satir: ['DIŞARIDAN', 'UCUZ POLİÇE'], vurgu: 'UCUZ', ikon: 'kalkan' },
     { k: 321, adim: 4, tip: 'not', yazi: 'dain-i mürtehin şerhiyle bankaya sun', ikon: 'banka', cizgi: 'alt' },
     { k: 326, adim: 4, tip: 'kontrol', baslik: 'KREDİ SİGORTASI İADE · ÖZET', maddeler: ['İlk 30 gün: primin %100’ü iade', '30 gün sonrası: kalan günler iade', 'Poliçe no: e-Devlet › SBM', 'Yazılı başvuru: uygulama / e-posta', 'Faiz farkı yazmıyorsa faiz değişmez'], alt: [336, 339, 342, 346, 352], satir: ['EKRAN', 'GÖRÜNTÜSÜ AL'], vurgu: 'AL' },
-    { k: 357, adim: 4, tip: 'dev', tam: true, satir: ['ABONE', 'OL'], vurgu: 'OL' },
+    { k: 357, adim: 4, tip: 'abone', yazi: 'Abone ol', ek: 'hak kaybetme, rehberi kaçırma' },
     // 5. ADIM
     { k: 372, adim: 4, tip: 'dev', satir: ['15 İŞ GÜNÜNDE', 'ÖDEMEZSE?'], vurgu: 'ÖDEMEZSE?', ikon: 'saat' },
     { k: 387, adim: 5, adimAd: 'B PLANI', tip: 'dev', tam: true, satir: ['B', 'PLANI'], vurgu: 'PLANI' },
@@ -60,7 +60,7 @@ module.exports = {
     { k: 424, adim: 5, tip: 'grafik', comp: 'Zaman', props: { adimlar: [{ ust: '0', alt: 'yazılı başvuru' }, { ust: '15', alt: 'iş günü: iade' }, { ust: '2–4', alt: 'ay: tahkim kararı' }], vurgu: 1 }, top: 260, satir: ['SÜREÇ', 'TAKVİMİ'], vurgu: 'TAKVİMİ' },
     // KAPANIŞ
     { k: 453, tip: 'dev', satir: ['PARAN', 'BANKADA KALMADI'], vurgu: 'KALMADI', ikon: 'tik' },
-    { k: 459, tip: 'dev', satir: ['BES VE SGK', 'PARAN BEKLİYOR'], vurgu: 'BEKLİYOR', ikon: 'para' },
+    { k: 459, tip: 'dev', satir: ['BES VE SGK', 'PARAN BEKLİYOR'], vurgu: 'BEKLİYOR', ikon: 'cuzdan' },
     { k: 477, tip: 'not', tam: true, yazi: 'sıradaki videoya geç', cizgi: 'ok' },
   ],
   son: { uzat: 6 },

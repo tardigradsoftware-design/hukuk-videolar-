@@ -133,6 +133,18 @@ tl.zipla.forEach(t => ev(t + .1, 'boing'));
 // v5 vuruşları: her vuruşta bir ses
 if (plan.vuruslar) {
   tl.vurus = plan.vuruslar.map(b => Object.assign({}, b, { t: Math.max(0, T(b.k)), altT: (b.alt || []).map(T), yazT: b.yazK != null ? T(b.yazK) : null, acT: b.acK != null ? T(b.acK) : null, carpiT: b.carpiK != null ? T(b.carpiK) : null, hlT: b.hlK != null ? T(b.hlK) : null, ekranT: (b.ekranlar || []).map(e => T(e.k)), aramaT: (b.ekranlar || []).map(e => e.aramaK != null ? T(e.aramaK) : null) }));
+  // anahtar kelime kartları (yatay): cümle başı olmayan büyük harfli terimler, sayılar; söylendiği an sağda belirir
+  if (!KISA) { const DUR = new Set(['Birinci', 'İkinci', 'Üçüncü', 'Dördüncü', 'Beşinci', 'Şimdi', 'Peki', 'Ama', 'Çoğu', 'Süreç', 'Tek', 'Yazılı']), C = []; let son = -9;
+    const temiz = w => w.replace(/[’'](?:[a-zçğıöşü]+)$/i, '').replace(/[,.;:!?"“”()]/g, '');
+    for (let i = 0; i < kel.length; i++) { const w = kel[i].w, ilk = i === 0 || /[.!?:;]["”]?$/.test(kel[i - 1].w), tw = temiz(w);
+      const buyuk = /^[A-ZÇĞİÖŞÜ]/.test(tw) && !ilk && !DUR.has(tw), sayi = /\d/.test(tw);
+      if (!buyuk && !sayi) continue; let ph = [tw], j = i;
+      while (j + 1 < kel.length && !/[,.;:!?]$/.test(kel[j].w)) { const n = temiz(kel[j + 1].w); if (/^[A-ZÇĞİÖŞÜ0-9]/.test(n) || (['ve', 'ile', 'iş', 'gün', 'günü', 'ay', 'sayılı'].includes(n) && j + 2 < kel.length && /^[A-ZÇĞİÖŞÜa-zçğıöşü0-9]/.test(temiz(kel[j + 2].w)) && sayi)) { ph.push(n); j++; } else break; }
+      if (sayi && j + 1 < kel.length && /^(gün|günü|ay|ayda|yıl|sayılı|iş|TL|lira)$/.test(temiz(kel[j + 1].w))) { ph.push(temiz(kel[j + 1].w)); j++; }
+      const x = ph.join(' ').trim(); i = j; if (x.length < 2 || x.length > 34 || kel[i].t0 - son < .9 || C.some(c => c.x === x && kel[i].t0 - c.t < 25)) continue;
+      C.push({ t: +kel[i - ph.length + 1].t0.toFixed(2), x }); son = kel[i].t0; }
+    tl.cips = C; C.forEach(c => ev(c.t, 'tik', .5)); console.error('anahtar kart:', C.length); }
+  tl.vurus.forEach(b => { if (b.tip === 'abone') { ev(b.t, 'whoosh', .5); ev(b.t + 1.1, 'ding', .8); } });
   { const tv = (process.argv.find(a => a.startsWith('--tema=')) || '').slice(7), TMm = require('./temalar');
     if (tv) tl.tmB = tl.vurus.map(b => tv === 'karma' ? TMm.KARMA[b.adim || 0] : +tv); tl.temaAd = tv ? TMm.ADLAR[tv] : null; }
   // Remotion: sayı/grafik vuruşlarını şeffaf kare dizisine render et (v5'te <img> olarak oynar)
@@ -219,6 +231,8 @@ const META_TXT = (outDir, ad) => fs.writeFileSync(path.join(outDir, ad.replace(/
   const kdir = path.join(KOK, 'kontrol'); fs.mkdirSync(kdir, { recursive: true });
   const kad = `${ID}_${TUR}`;
   execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', outPath, '-vf', `fps=2,scale=${KISA ? 160 : 320}:-1,tile=${KISA ? 12 : 8}x${Math.ceil(tl.duration * 2 / (KISA ? 12 : 8))}`, '-frames:v', '1', path.join(kdir, kad + '.jpg')]);
+  const don = (require('child_process').spawnSync('ffmpeg', ['-i', outPath, '-vf', 'freezedetect=n=0.0015:d=1', '-map', '0:v', '-f', 'null', '-'], { encoding: 'utf8' }).stderr.match(/freeze_start: [\d.]+/g) || []).map(x => (+x.split(': ')[1]).toFixed(1));
+  console.error(don.length ? `  - DONMA (>1 sn hareketsiz): ${don.join(', ')} sn` : '  donma yok (her saniye hareket var)');
   const sil = (require('child_process').spawnSync('ffmpeg', ['-i', ses, '-af', 'silencedetect=n=-38dB:d=0.25', '-f', 'null', '-'], { encoding: 'utf8' }).stderr.match(/silence_duration: [\d.]+/g) || []).length;
   const satir = Object.entries(rapor).map(([m, ts]) => `  - ${m} @ ${ts.slice(0, 6).join(', ')}${ts.length > 6 ? ' …' : ''}`);
   console.error(`KONTROL ${kad}: ${satir.length ? '\n' + satir.join('\n') : 'görsel sorun yok'}\n  sessizlik (>0.25 sn, seslendirmenin kendi duraklamaları): ${sil}\n  kontrol görseli: kontrol/${kad}.jpg`);
