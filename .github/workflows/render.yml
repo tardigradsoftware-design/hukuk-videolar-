@@ -1,0 +1,83 @@
+# Dağıtık video render: istek/*.json dosyası push edilince video N dilime bölünür, dilimler paralel makinelerde
+# render edilir, son iş birleştirip ses ile birleştirir ve mp4'ü aynı dala commit eder.
+# Girdiler (ses, metin, senaryo) 'girdi' dalındaki veri/ klasöründen alınır.
+name: render
+on:
+  push:
+    paths: ['istek/*.json']
+  workflow_dispatch:
+    inputs:
+      istek: { description: 'istek dosyası (istek/XXX.json)', required: true }
+permissions:
+  contents: write
+concurrency: { group: render-${{ github.ref }}, cancel-in-progress: false }
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      dosya: ${{ steps.p.outputs.dosya }}
+      dilimler: ${{ steps.p.outputs.dilimler }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 2 }
+      - id: p
+        run: |
+          F="${{ github.event.inputs.istek }}"
+          if [ -z "$F" ]; then F=$(git diff --name-only HEAD~1 HEAD -- 'istek/*.json' | tail -1); fi
+          echo "dosya=$F" >> $GITHUB_OUTPUT
+          N=$(python3 -c "import json;print(json.load(open('$F')).get('dilim',12))")
+          echo "dilimler=$(python3 -c "print(list(range($N)))")" >> $GITHUB_OUTPUT
+          cat "$F"
+  render:
+    needs: plan
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix: { d: '${{ fromJSON(needs.plan.outputs.dilimler) }}' }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: kurulum
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null
+          pip install -q numpy
+          npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.63.0 @fontsource-variable/archivo @fontsource-variable/geist @fontsource-variable/geist-mono @fontsource/instrument-serif @fontsource/caveat @fontsource/playfair-display @fontsource/anton @fontsource/inter @fontsource/jetbrains-mono @fontsource-variable/bricolage-grotesque @fontsource-variable/inter-tight
+          git fetch -q origin girdi && git checkout origin/girdi -- veri
+      - name: dilim
+        env: { CHROME_YOL: /usr/bin/google-chrome }
+        run: |
+          F="${{ needs.plan.outputs.dosya }}"
+          ARGS=$(python3 -c "import json;j=json.load(open('$F'));print(j['id'],j['tur'],*j.get('arg',[]))")
+          N=$(python3 -c "import json;print(json.load(open('$F')).get('dilim',12))")
+          node scripts/video/uret.js $ARGS --par=3 --dilim=${{ matrix.d }}/$N --cikti=dilim/d${{ matrix.d }}.mp4
+      - uses: actions/upload-artifact@v4
+        with: { name: 'dilim-${{ matrix.d }}', path: 'dilim/d${{ matrix.d }}.mp4', retention-days: 2 }
+  birlestir:
+    needs: [plan, render]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: kurulum
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null
+          pip install -q numpy
+          npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.63.0 @fontsource-variable/archivo @fontsource-variable/geist @fontsource-variable/geist-mono @fontsource/instrument-serif
+          git fetch -q origin girdi && git checkout origin/girdi -- veri
+      - uses: actions/download-artifact@v4
+        with: { pattern: 'dilim-*', path: dilim, merge-multiple: true }
+      - name: birlestir
+        env: { CHROME_YOL: /usr/bin/google-chrome }
+        run: |
+          F="${{ needs.plan.outputs.dosya }}"
+          ARGS=$(python3 -c "import json;j=json.load(open('$F'));print(j['id'],j['tur'],*j.get('arg',[]))")
+          ls -la dilim
+          node scripts/video/uret.js $ARGS --birlestir=dilim 2>&1 | tee rapor.txt
+      - name: commit
+        run: |
+          git config user.name "render-bot"; git config user.email "render-bot@users.noreply.github.com"
+          git add videolar/
+          git commit -m "Render: $(basename ${{ needs.plan.outputs.dosya }} .json) (GitHub Actions)" || exit 0
+          for i in 1 2 3 4; do git pull -q --rebase origin "${GITHUB_REF_NAME}" && git push -q origin "HEAD:${GITHUB_REF_NAME}" && break; sleep $((i*5)); done

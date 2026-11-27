@@ -209,15 +209,18 @@ const META_TXT = (outDir, ad) => fs.writeFileSync(path.join(outDir, ad.replace(/
   const outPath = path.join(outDir, ad);
   if (process.argv.includes('--sadece-meta')) { META_TXT(outDir, ad); console.error('✔ meta: ' + ad.replace(/\.mp4$/, '.txt')); return; }
   const tmp = path.join(outDir, `.${ID}.html`); fs.writeFileSync(tmp, html);
-  const browser = await chromium.launch();
+  const browser = await chromium.launch(process.env.CHROME_YOL ? { executablePath: process.env.CHROME_YOL } : {});
   const TASLAK = process.argv.includes('--taslak');   // test: yarım çözünürlük, 15 fps, hızlı kodlama (~5x hızlı)
   const FPS = TASLAK ? 15 : 30, n = Math.ceil(tl.duration * FPS), BLUR = process.argv.includes('--blur') && !TASLAK;   // --blur: 3 alt kare + tmix (gerçek hareket bulanıklığı)
   // paralel render: kareler PAR parçaya bölünür, her parça kendi sayfası + kodlayıcısıyla işlenir, sonra birleştirilir (kayıpsız kopya)
   const PAR = +((process.argv.find(a => a.startsWith('--par=')) || '').slice(6) || Math.max(1, Math.min(3, require('os').cpus().length - 1)));
-  const segDir = path.join(KOK, 'veri', 'parca', ID + '_' + TUR); fs.rmSync(segDir, { recursive: true, force: true }); fs.mkdirSync(segDir, { recursive: true });
+  // dağıtık render (GitHub Actions): --dilim=k/N yalnız k. dilimin karelerini üretir; --birlestir=KLASÖR dilimleri ses ile birleştirir
+  const DIL = (process.argv.find(a => a.startsWith('--dilim=')) || '').slice(8), BIR = (process.argv.find(a => a.startsWith('--birlestir=')) || '').slice(12);
+  const [dk, dN] = DIL ? DIL.split('/').map(Number) : [0, 1], A0 = Math.floor(n * dk / dN), A1 = Math.floor(n * (dk + 1) / dN);
+  const segDir = path.join(KOK, 'veri', 'parca', ID + '_' + TUR + (DIL ? '_' + dk : '')); fs.rmSync(segDir, { recursive: true, force: true }); fs.mkdirSync(segDir, { recursive: true });
   const rapor = {}, Q = TASLAK ? 70 : 93; let bitti = 0;
   const parca = async (k) => {
-    const a0 = Math.floor(n * k / PAR), a1 = Math.floor(n * (k + 1) / PAR), seg = path.join(segDir, `p${k}.mp4`);
+    const a0 = A0 + Math.floor((A1 - A0) * k / PAR), a1 = A0 + Math.floor((A1 - A0) * (k + 1) / PAR), seg = path.join(segDir, `p${k}.mp4`);
     const p = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: TASLAK ? .5 : 1 });
     await p.goto('file://' + tmp); await p.evaluate(() => document.fonts.ready);
     const ff = spawn('ffmpeg', ['-y', '-v', 'error', '-f', 'image2pipe', '-framerate', String(BLUR ? FPS * 3 : FPS), '-i', '-',
@@ -234,7 +237,10 @@ const META_TXT = (outDir, ad) => fs.writeFileSync(path.join(outDir, ad.replace(/
     }
     ff.stdin.end(); await new Promise(r => ff.on('close', r)); await p.close(); return seg;
   };
-  const segler = await Promise.all(Array.from({ length: PAR }, (_, k) => parca(k)));
+  const segler = BIR ? fs.readdirSync(BIR).filter(f => /^d\d+\.mp4$/.test(f)).sort((x, y) => parseInt(x.slice(1)) - parseInt(y.slice(1))).map(f => path.resolve(BIR, f)) : await Promise.all(Array.from({ length: PAR }, (_, k) => parca(k)));
+  if (DIL) { const cik = (process.argv.find(a => a.startsWith('--cikti=')) || '').slice(8) || path.join(KOK, 'veri', 'dilim', `d${dk}.mp4`); fs.mkdirSync(path.dirname(cik), { recursive: true });
+    fs.writeFileSync(path.join(segDir, 'liste.txt'), segler.map(f => `file '${f}'`).join('\n')); execFileSync('ffmpeg', ['-y', '-v', 'error', '-f', 'concat', '-safe', '0', '-i', path.join(segDir, 'liste.txt'), '-c', 'copy', cik]);
+    fs.rmSync(segDir, { recursive: true, force: true }); await browser.close(); fs.unlinkSync(tmp); console.error(`\n✔ dilim ${dk}/${dN}: ${cik}`); return; }
   fs.writeFileSync(path.join(segDir, 'liste.txt'), segler.map(f => `file '${f}'`).join('\n'));
   execFileSync('ffmpeg', ['-y', '-v', 'error', '-f', 'concat', '-safe', '0', '-i', path.join(segDir, 'liste.txt'), '-i', tl.audio, '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-t', String(tl.duration), '-movflags', '+faststart', outPath]);
   fs.rmSync(segDir, { recursive: true, force: true });

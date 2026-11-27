@@ -3,7 +3,7 @@
 // Amaç: izleyici ANLASIN — kural, süre, oran görsel olarak kurulur. Deterministik; her kare zamanın saf fonksiyonu.
 const fs = require('fs'), path = require('path');
 const FN = p => 'file://' + path.join(__dirname, '..', '..', 'node_modules', p);
-const MOD = ['mavi', 'celld', 'distil', 'flow'].map(n => require('./sahne/' + n));
+const MOD = ['mavi', 'celld', 'distil', 'flow', 'sema'].map(n => require('./sahne/' + n));
 const esc = x => String(x == null ? '' : x).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 
 // --- sahne stilleri (prompt-motion referanslarından uyarlama): renk + yazı + kart dili + geçiş + dekor
