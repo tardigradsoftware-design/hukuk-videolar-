@@ -10,7 +10,9 @@ on:
       istek: { description: 'istek dosyası (istek/XXX.json)', required: true }
 permissions:
   contents: write
-concurrency: { group: render-${{ github.ref }}, cancel-in-progress: false }
+concurrency:
+  group: render-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
   plan:
     runs-on: ubuntu-latest
@@ -33,7 +35,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
-      matrix: { d: '${{ fromJSON(needs.plan.outputs.dilimler) }}' }
+      matrix:
+        d: ${{ fromJSON(needs.plan.outputs.dilimler) }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -45,7 +48,8 @@ jobs:
           npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.63.0 @fontsource-variable/archivo @fontsource-variable/geist @fontsource-variable/geist-mono @fontsource/instrument-serif @fontsource/caveat @fontsource/playfair-display @fontsource/anton @fontsource/inter @fontsource/jetbrains-mono @fontsource-variable/bricolage-grotesque @fontsource-variable/inter-tight
           git fetch -q origin girdi && git checkout origin/girdi -- veri
       - name: dilim
-        env: { CHROME_YOL: /usr/bin/google-chrome }
+        env:
+          CHROME_YOL: /usr/bin/google-chrome
         run: |
           F="${{ needs.plan.outputs.dosya }}"
           ARGS=$(python3 -c "import json;j=json.load(open('$F'));print(j['id'],j['tur'],*j.get('arg',[]))")
@@ -69,7 +73,8 @@ jobs:
       - uses: actions/download-artifact@v4
         with: { pattern: 'dilim-*', path: dilim, merge-multiple: true }
       - name: birlestir
-        env: { CHROME_YOL: /usr/bin/google-chrome }
+        env:
+          CHROME_YOL: /usr/bin/google-chrome
         run: |
           F="${{ needs.plan.outputs.dosya }}"
           ARGS=$(python3 -c "import json;j=json.load(open('$F'));print(j['id'],j['tur'],*j.get('arg',[]))")
