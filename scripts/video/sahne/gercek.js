@@ -19,6 +19,15 @@ const css = PCSS + `
 .gr .ray .kt{margin-top:26px;padding:20px 22px;background:#fff;border-radius:12px;box-shadow:0 20px 40px -24px rgba(15,27,51,.45);font:600 28px/1.25 G;color:var(--lac)}
 .gr .ray .kt small{display:block;margin-bottom:6px;font:700 15px GM;letter-spacing:.18em;color:var(--mav)}
 .gr .ray.sol{left:130px;right:auto;top:210px;width:700px}.gr .ray.sol .an{font-size:72px}.gr .ray.sol .kt{font-size:42px;padding:26px 30px}.gr .ray.sol .kt small{font-size:18px}
+.gr .bk{position:absolute;left:140px;width:1340px}.gr .sl.bl .bk{left:870px;width:660px}
+.gr .bk div{position:absolute;left:0;top:0;width:100%}.gr .bk b{display:block;font:800 150px/1 G;letter-spacing:-.06em;color:var(--mav)}.gr .bk.kr b{color:var(--kir)}.gr .bk span{display:block;margin-top:8px;font:600 40px/1.2 G;color:var(--lac)}
+.gr .son{position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,#16264A 0,#0B1530 70%)}
+.gr .son .vk{position:absolute;left:130px;top:250px;width:960px;height:540px;border-radius:18px;border:3px dashed rgba(255,255,255,.28);background:rgba(255,255,255,.04)}
+.gr .son .vk i{position:absolute;left:50%;top:50%;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;background:rgba(255,255,255,.12)}.gr .son .vk i:after{content:'';position:absolute;left:46px;top:36px;border-left:42px solid rgba(255,255,255,.7);border-top:24px solid transparent;border-bottom:24px solid transparent}
+.gr .son .pr{position:absolute;left:1250px;top:250px;width:330px;height:330px;border-radius:50%;border:3px dashed rgba(255,255,255,.28);background:rgba(255,255,255,.04)}
+.gr .son .ab5{position:absolute;left:1265px;top:620px;width:300px;height:76px;border-radius:999px;background:#C8102E;color:#fff;font:800 32px G;display:flex;align-items:center;justify-content:center;gap:12px}
+.gr .son .ik{position:absolute;top:840px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center}
+.gr .son .ik svg{width:72px;height:72px;overflow:visible}
 .gr .fl{position:absolute;inset:0;background:#fff;z-index:40;pointer-events:none}
 .gr .th{position:absolute;right:70px;bottom:90px;width:360px;height:220px;border-radius:12px;background:#fff;border:6px solid #fff;box-shadow:0 30px 60px -20px rgba(0,0,0,.45);z-index:41;overflow:hidden}
 .gr .th i{display:block;height:20px;background:#1C1D21}.gr .th em{display:block;margin:10px;height:24px;border-radius:6px;background:#E8EBF1}.gr .th u{display:block;margin:8px 10px;height:12px;border-radius:6px;background:#EEF0F4}
@@ -60,8 +69,17 @@ const BELGE = {
   plan: b => `<div class="bh"><b>${esc(b.baslik || 'Kredi Ödeme Planı')}</b><small>TEMSİLİ<br>••• BANKASI</small></div><div class="bm">Müşteri: ••• ••• · Kredi no: •••••••</div>${b.satirlar.map(([a, c, k, v], n) => `<div class="rw" data-rw="${n}">${v != null ? '<i></i>' : ''}<span>${esc(a)}</span><em>${esc(c)}</em></div>`).join('')}${Array.from({ length: 6 }, (_, n) => `<div class="ln" style="width:${90 - n * 9}%"></div>`).join('')}${b.damga ? `<div class="dm" data-bd="1">${esc(b.damga)}</div>` : ''}`,
 };
 BELGE.police = BELGE.plan; BELGE.sozlesme = BELGE.plan;
+const IKON = {
+  begen: '<svg viewBox="0 0 72 72"><g data-ik="begen"><path d="M8 32 h12 v30 h-12z" fill="#fff"/><path d="M24 62 V32 L38 8 c6 0 9 4 8 10 l-3 12 h17 c5 0 8 4 7 9 l-5 18 c-1 3-4 5-7 5z" fill="#fff"/></g></svg>',
+  yorum: '<svg viewBox="0 0 72 72"><path d="M8 14 h56 a6 6 0 0 1 6 6 v30 a6 6 0 0 1 -6 6 h-30 l-14 12 v-12 h-12 a6 6 0 0 1 -6 -6 v-30 a6 6 0 0 1 6 -6z" fill="#fff"/><g data-ik="yorum">' + [22, 36, 50].map(x => `<circle cx="${x}" cy="35" r="5" fill="#0B1530"/>`).join('') + '</g></svg>',
+  kaydet: '<svg viewBox="0 0 72 72"><path d="M16 6 h40 v60 l-20 -14 l-20 14z" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/><path data-ik="kaydet" d="M16 6 h40 v60 l-20 -14 l-20 14z" fill="#fff"/></svg>',
+  paylas: '<svg viewBox="0 0 72 72"><g data-ik="paylas"><path d="M40 10 l26 22 l-26 22 v-13 c-16 0-26 5-34 17 c3-19 14-31 34-33z" fill="#fff"/></g></svg>',
+  zil: '<svg viewBox="0 0 72 72"><g data-ik="zil"><path d="M36 6 c-12 0-20 9-20 22 v14 l-7 10 h54 l-7-10 v-14 c0-13-8-22-20-22z" fill="#fff"/><circle cx="36" cy="60" r="7" fill="#fff"/></g></svg>',
+};
 const mark = {
   g_ekran: s => `${PANEL.html(Object.assign({}, s.panel, { tip: 'panel' }), 'g' + s.a)}${s.panel.cihaz === 'tel' ? ray(s).replace('class="ray"', 'class="ray sol"') : ray(s)}${(s.altbant || []).map((a, n) => `<div class="ab${a.uy ? ' uy' : ''}" data-ab="${n}"><b>${esc(a.ust)}</b><span>${esc(a.metin)}</span></div>`).join('')}${(s.ss || []).map((k, n) => ss(n)).join('')}`,
+  g_son: s => `<div class="son"><div class="vk" data-r="vk"><i></i></div><div class="pr" data-r="pr"></div><div class="ab5" data-r="ab5">Abone ol</div>
+    ${['begen', 'yorum', 'kaydet', 'paylas', 'zil'].map((n, j) => `<div class="ik" data-ik5="${j}" style="left:${300 + j * 190}px">${IKON[n]}</div>`).join('')}</div>`,
   g_slayt: s => `<div class="sl${s.belge ? ' bl' : ''}">${s.belge ? `<div class="bel" data-r="bel">${BELGE[s.belge.tur || 'plan'](s.belge)}</div>` : ''}
     <div class="ust" data-r="u">${esc(s.ust || '')}</div><h1 data-r="h">${esc(s.baslik || '')}</h1>
     ${(s.maddeler || []).map(([m, k, v, tip], n) => `<div class="md${tip ? ' ' + tip : ''}" data-md="${n}" style="top:${(s.mdY || 400) + n * (s.mdAra || 110)}px"><i>${tip === 'uy' ? '!' : tip === 'ok' ? '✓' : n + 1}</i><span>${v ? esc(m).replace(esc(v), '<mark>' + esc(v) + '</mark>') : esc(m)}</span></div>`).join('')}
@@ -69,6 +87,7 @@ const mark = {
     ${s.cevap ? `<div class="al cv" data-r="cv" style="top:${s.cevap.y || 620}px"><small>${esc(s.cevap.ust)}</small>${esc(s.cevap.metin)}</div>` : ''}
     ${(s.zaman || []).map((z, n) => `<div class="zm" data-zm="${n}" style="top:${z.y}px"><div class="et"><span>${esc(z.sol)}</span><b>${esc(z.orta)}</b><span>${esc(z.sag)}</span></div><div class="ax"><i data-zi="${n}" style="left:${z.a / z.n * 100}%"></i></div><div class="tk">${Array.from({ length: z.n + 1 }, (_, m) => m % (z.adim || 1) === 0 ? `<span>${m}</span>` : '').join('')}</div></div>`).join('')}
     ${s.kart ? `<div class="kart" data-r="kt"><h3>${esc(s.kart.ust)}</h3>${s.kart.satirlar.map(([m, k], n) => `<div class="r" data-kr="${n}"><i>✓</i>${esc(m)}</div>`).join('')}</div>` : ''}
+    ${s.buyuk ? `<div class="bk${s.buyuk.kirmizi ? ' kr' : ''}" style="top:${s.buyuk.y}px">${s.buyuk.liste.map(([k, b, a], n) => `<div data-bk="${n}"><b>${esc(b)}</b><span>${esc(a || '')}</span></div>`).join('')}</div>` : ''}
     ${s.abone ? `<div class="ab3" data-r="abn" style="left:${s.abone.x || 140}px;top:${s.abone.y || 760}px"><div><b>${esc(s.abone.yazi)}</b><small>${esc(s.abone.ek)}</small></div><em>Abone ol</em></div>` : ''}
     ${ray(Object.assign({}, s, { yan: [] })).replace('class="ray"', 'class="ray" style="display:' + (s.adim ? 'block' : 'none') + '"')}
     ${(s.altbant || []).map((a, n) => `<div class="ab${a.uy ? ' uy' : ''}" data-ab="${n}"><b>${esc(a.ust)}</b><span>${esc(a.metin)}</span></div>`).join('')}
@@ -85,6 +104,14 @@ function gOrtak(s, el, t) {
     const k1 = eio(cl(d / .45, 0, 1)), out = ei(cl((d - 1.9) / .5, 0, 1)); th.style.transform = 'translate(' + (-(1 - k1) * 700 + out * 420) + 'px,' + (-(1 - k1) * 380) + 'px) scale(' + (2.4 - 1.4 * k1) + ') rotate(' + (-(1 - k1) * 2) + 'deg)'; th.style.opacity = 1 - out; ts.style.opacity = cl((d - .4) / .2, 0, 1) * (1 - out); });
 }
 Object.assign(D, {
+  g_son(s, lt, o, t) { const el = s.el; const vk = q(el, '[data-r=vk]'), pr = q(el, '[data-r=pr]'), ab = q(el, '[data-r=ab5]'); gir(vk, s.t + .1, t, 'x'); gir(pr, s.t + .25, t, 's'); gir(ab, s.t + .4, t, 'y');
+    pr.style.transform += ' scale(' + (1 + .02 * Math.sin(t * 3)) + ')'; ab.style.transform += ' scale(' + (1 + .04 * Math.max(0, Math.sin(t * 4))) + ')';
+    qa(el, '[data-ik5]').forEach((e, j) => { const t0 = s.t + .6 + j * .15; gir(e, t0, t, 's'); const lt2 = t - t0, f = lt2 % 2.5, g = e.querySelector('[data-ik]'); if (!g || lt2 < 0) return; const n = g.dataset.ik;
+      if (n === 'begen') g.setAttribute('transform', 'rotate(' + (f < .5 ? -18 * Math.sin(f / .5 * Math.PI) : 0) + ' 36 40) translate(0 ' + (f < .5 ? -6 * Math.sin(f / .5 * Math.PI) : 0) + ')');
+      else if (n === 'yorum') [...g.children].forEach((c, i) => c.setAttribute('cy', 35 - 6 * Math.max(0, Math.sin(t * 7 - i * .8))));
+      else if (n === 'kaydet') { const k = cl((f - .3) / .4, 0, 1) * (1 - cl((f - 2) / .3, 0, 1)); g.style.clipPath = 'inset(' + ((1 - k) * 100) + '% 0 0 0)'; }
+      else if (n === 'paylas') g.setAttribute('transform', 'translate(' + (f < .6 ? 8 * Math.sin(f / .6 * Math.PI) : 0) + ' ' + (f < .6 ? -6 * Math.sin(f / .6 * Math.PI) : 0) + ')');
+      else if (n === 'zil') g.setAttribute('transform', 'rotate(' + (f < .8 ? 20 * Math.sin(f * 30) * (1 - f / .8) : 0) + ' 36 8)'); }); },
   g_ekran(s, lt, o, t) { const el = s.el, pp = el.querySelector('.pp'), b = gPanel(s), tel = s.panel.cihaz === 'tel';
     const sc = s.olcek || (tel ? 1.05 : 1.3), x0 = s.x != null ? s.x : (tel ? 520 : 70), y0 = s.y != null ? s.y : (tel ? 80 : 70), k = eio(cl(lt / .55, 0, 1));
     pp.style.transform = 'translate(' + x0 + 'px,' + (y0 + (1 - k) * 80) + 'px) scale(' + (sc * (.94 + .06 * k)) + ')'; pp.style.opacity = cl(lt / .2, 0, 1); window.PANEL.kare(pp, b, t); gOrtak(s, el, t);
@@ -99,6 +126,7 @@ Object.assign(D, {
     (s.zaman || []).forEach((z, n) => { gir(q(el, '[data-zm="' + n + '"]'), gKT(z.k), t, 'y'); const p = eio(cl((t - gKT(z.dolK)) / 1, 0, 1)); q(el, '[data-zi="' + n + '"]').style.width = ((z.b - z.a) / z.n * 100 * p) + '%'; });
     const kt = q(el, '[data-r=kt]'); if (kt) { gir(kt, gKT(s.kart.k), t, 'y'); s.kart.satirlar.forEach(([m, kk], n) => { const r = q(kt, '[data-kr="' + n + '"]'); r.style.opacity = t < gKT(kk) ? .25 : 1; r.querySelector('i').style.transform = 'scale(' + (t < gKT(kk) ? 0 : bo(cl((t - gKT(kk)) / .3, 0, 1))) + ')'; }); if (s.kart.cik != null && t > gKT(s.kart.cik)) { const z = eio(cl((t - gKT(s.kart.cik)) / .4, 0, 1)); kt.style.opacity = 1 - z; } }
     const ab = q(el, '[data-r=abn]'); if (ab) gir(ab, gKT(s.abone.k), t, 'y');
+    if (s.buyuk) s.buyuk.liste.forEach(([k, b, a, c], n) => { const e = q(el, '[data-bk="' + n + '"]'), nx = s.buyuk.liste[n + 1], t1 = c != null ? gKT(c) : nx ? gKT(nx[0]) : 1e9; if (t < gKT(k) - .05 || t > t1 + .3) { e.style.display = 'none'; return; } e.style.display = ''; gir(e, gKT(k), t, 's'); if (t > t1) { const z = cl((t - t1) / .3, 0, 1); e.style.opacity = 1 - z; e.style.transform = 'translateY(' + (-60 * ei(z)) + 'px)'; } });
     gOrtak(s, el, t); },
 });`;
 module.exports = { css, mark, rt };

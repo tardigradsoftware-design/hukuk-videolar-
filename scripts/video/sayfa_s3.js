@@ -253,13 +253,18 @@ function frame(t) {
     if (t > s.son) { const o = cl((t - s.son) / .4, 0, 1);   // çıkış: SONRAKİ sahnenin stiline göre
       if (ntm === 2) tr = 'translateX(' + (-eio(o) * W) + 'px) rotate(' + (-o * 3) + 'deg)';
       else if (ntm === 1 || ntm === 3) { f = o > .02 ? 'blur(' + (ei(o) * 14).toFixed(1) + 'px)' : 'none'; tr = 'scale(' + (1 + ei(o) * .25) + ')'; op = 1 - ei(o); }
-      else tr = 'scale(' + (1 - .08 * eo(o)) + ')'; }
+      else { tr = 'scale(' + (1 - .08 * eo(o)) + ')'; f = o > .05 ? 'blur(' + (o * 6).toFixed(1) + 'px)' : 'none'; } }
     if (lt < .45 && s.i > 0) { const k = lt / .45;   // giriş
       const gm = s.gir || ({ 1: 'zoom', 2: 'kay', 4: 'daire', 5: 'perde' })[s.tm];
       if (gm === 'kay') tr = 'translateX(' + ((1 - bo(k)) * W) + 'px) rotate(' + ((1 - eo(k)) * 4) + 'deg)';
       else if (gm === 'daire') cp = 'circle(' + (eo(k) * 130) + '% at 50% 55%)';
       else if (gm === 'perde') cp = 'inset(0 0 ' + ((1 - eio(k)) * 100) + '% 0)';
-      else if (gm === 'zoom') { tr = 'scale(' + (.92 + .08 * eo(k)) + ')'; op = eo(k * 1.6); } }
+      else if (gm === 'zoom') { tr = 'scale(' + (.92 + .08 * eo(k)) + ')'; op = eo(k * 1.6); }
+      else if (gm === 'yukari') tr = 'translateY(' + ((1 - bo(k)) * H) + 'px)';
+      else if (gm === 'capraz') { const p = eio(k) * 150; cp = 'polygon(0 0,' + p + '% 0,' + (p - 40) + '% 100%,0 100%)'; }
+      else if (gm === 'bulanik') { f = k < .98 ? 'blur(' + ((1 - eo(k)) * 24).toFixed(1) + 'px)' : 'none'; tr = 'scale(' + (1.15 - .15 * eo(k)) + ')'; op = eo(k * 1.4); }
+      else if (gm === 'itme') { tr = 'translateX(' + ((1 - eio(k)) * W) + 'px)'; const pr = SC[s.i - 1]; if (pr && pr.el.style.display !== 'none') pr.el.style.translate = (-eio(k) * W * .35) + 'px 0'; }
+      else if (gm === 'serit') cp = 'inset(' + ((1 - eio(k)) * 50) + '% 0 ' + ((1 - eio(k)) * 50) + '% 0)'; }
     s.el.style.filter = f; s.el.style.transform = tr; s.el.style.clipPath = cp; s.el.style.opacity = op; s.el.style.zIndex = s.i;
     const ln = document.getElementById('wl'); if ((s.gir || (s.tm === 5 ? 'perde' : '')) === 'perde' && lt < .45 && s.i > 0) { ln.style.display = 'block'; ln.style.top = (eio(lt / .45) * H) + 'px'; } else if (s === cs0) ln.style.display = 'none';
     D[s.tur] && D[s.tur](s, lt, 0, t); });

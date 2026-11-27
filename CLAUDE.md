@@ -22,6 +22,8 @@
 ## Görsel
 - Örnek kanal stili: noktalı açık zemin, siyah+kırmızı kalın başlık, kalın kontur kartlar, kelime vurgulu altyazı.
 - **İlerleme çubuğu yok.** Uzun videoda 1–5 adım göstergesi var.
+- **Uzun videoda altyazı yok** (kullanıcı isteği); ekranda konuşulan her önemli bilgi yazı/görselle karşılık bulur, ekran boş kalmaz. Sahne geçişleri hızlı ve çeşitli (kay, daire, perde, çapraz, bulanık, itme, şerit, yukarı).
+- **Uzun video bitişi: bitiş ekranı** (`g_son`): yazıyla anlatım yok; hareketli beğen/yorum/kaydet/paylaş/zil ikonları + kullanıcının YouTube'da ekleyeceği abone (profil) dairesi ve ilgili video kutusu için boş alanlar. Son 5–20 sn.
 - Dosyadan nesne çıkarma videoda 1–3 kez, kilit anlarda: `firlat: true` (fırlar) veya `firlat: 'el'` (elle çeker).
 - Uzun videolarda portal ekranları (imleç, daktilo, tıklama) temsilidir; resmi logo yok, "TEMSİLİ GÖRÜNTÜ" etiketi kalır, kişisel veri/tutar "•••".
 - Yorum çağrısı: anahtar kelime ("PARA yaz") + soru CTA'sı.
