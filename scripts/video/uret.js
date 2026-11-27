@@ -204,7 +204,7 @@ const META_TXT = (outDir, ad) => fs.writeFileSync(path.join(outDir, ad.replace(/
 
 (async () => {
   const outDir = path.join(KOK, 'videolar', TUR); fs.mkdirSync(outDir, { recursive: true });
-  const ad = `${ID} - ${baslik.replace(/[\/\\:*?"<>|]/g, '').trim()}${tl.stil === 'yapaytu' ? ' (v2)' : tl.stil === 'v4' ? ' (v4)' : tl.stil === 'v5' ? ' (v5)' : tl.stil === 'v6' ? ' (v6)' : tl.stil === 's3' ? ' (stil 3 sahne)' : ''}${tl.temaAd ? ` (stil ${(process.argv.find(a => a.startsWith('--tema=')) || '').slice(7).replace('karma', '6')} ${tl.temaAd})` : ''}${process.argv.includes('--taslak') ? ' (taslak)' : ''}.mp4`;
+  const ad = `${ID} - ${baslik.replace(/[\/\\:*?"<>|]/g, '').trim()}${tl.stil === 'yapaytu' ? ' (v2)' : tl.stil === 'v4' ? ' (v4)' : tl.stil === 'v5' ? ' (v5)' : tl.stil === 'v6' ? ' (v6)' : tl.stil === 's3' ? (() => { const v = (process.argv.find(a => a.startsWith('--tema=')) || '').slice(7) || '3'; return ` (sahne stil ${v.replace('karma', '6')} ${({ 1: 'Mavi Ferah', 2: 'Pastel Brutal', 3: 'Kağıt Serif', 4: 'Renkli Hap', 5: 'Turuncu Editoryal', karma: 'Karma' })[v]})`; })() : ''}${tl.temaAd ? ` (stil ${(process.argv.find(a => a.startsWith('--tema=')) || '').slice(7).replace('karma', '6')} ${tl.temaAd})` : ''}${process.argv.includes('--taslak') ? ' (taslak)' : ''}.mp4`;
   const outPath = path.join(outDir, ad);
   if (process.argv.includes('--sadece-meta')) { META_TXT(outDir, ad); console.error('✔ meta: ' + ad.replace(/\.mp4$/, '.txt')); return; }
   const tmp = path.join(outDir, `.${ID}.html`); fs.writeFileSync(tmp, html);
