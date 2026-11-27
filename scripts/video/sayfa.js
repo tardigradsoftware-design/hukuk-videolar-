@@ -352,4 +352,4 @@ function frame(t){
 }
 </script></body></html>`;
 }
-module.exports = { sayfa };
+module.exports = { sayfa, CSS, TIPLER, STIL_V3 };

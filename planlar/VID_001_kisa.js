@@ -9,18 +9,18 @@ module.exports = {
       k: 0, baslik: ["E-DEVLET'TE", 'UNUTULAN PARAN'],
       mimik: [[0, 'saskin', 'isaret'], [4, 'dusunceli', 'dusun'], [9, 'emin', 'anlat'], [12, 'mutlu', 'eller_yukari']],
       ogeler: [
-        { tip: 'edevlet', k: 0, x: 360, y: 450, satirlar: [{ t: 'Şahıs ödemeleri', sag: 'sorgulandı' }, { t: 'Adına bekleyen ödeme', rozet: 'VAR ✓' }], alt: [1, 7], rozetK: [9] },
-        { tip: 'ikon', k: 12, x: 560, y: 660, e: '💰', yazi: 'PARA', rot: 6, firlat: 'el' },
+        { tip: 'edevlet', k: 0, x: 360, y: 430, satirlar: [{ t: 'Şahıs ödemeleri', sag: 'sorgulandı' }, { t: 'Adına bekleyen ödeme', rozet: 'VAR ✓' }], alt: [1, 7], rozetK: [9] },
+        { tip: 'ikon', k: 12, x: 545, y: 662, e: '💰', yazi: 'PARA', rot: 6, firlat: 'el' },
       ],
     },
     {
       k: 14, baslik: ['ZAMANINDA ÇEKMEZSEN', 'DEVLETE GEÇİYOR'],
       mimik: [[14, 'notr', 'anlat'], [24, 'korkmus', 'eller_yukari'], [28, 'bitkin', 'omuz']],
       ogeler: [
-        { tip: 'liste', k: 14, k1: 26, x: 360, y: 435, ogeler: [{ e: '🏥', t: 'Sağlık iadeleri' }, { e: '🛡️', t: 'Eski sigorta alacakları' }, { e: '🐷', t: 'Otomatik BES kesintisi' }], alt: [14, 16, 20] },
-        { tip: 'damga', k: 26, x: 360, y: 450, yazi: '✗ ZAMANAŞIMI', rot: -9 },
-        { tip: 'ok', k: 28, x: 240, y: 690 },
-        { tip: 'ikon', k: 28, x: 430, y: 690, e: '🏛️', yazi: 'DEVLET' },
+        { tip: 'liste', k: 14, k1: 26, x: 360, y: 490, ogeler: [{ e: '🏥', t: 'Sağlık iadeleri' }, { e: '🛡️', t: 'Eski sigorta alacakları' }, { e: '🐷', t: 'Otomatik BES kesintisi' }], alt: [14, 16, 20] },
+        { tip: 'damga', k: 26, x: 360, y: 470, yazi: '✗ ZAMANAŞIMI', rot: -9 },
+        { tip: 'ok', k: 28, x: 240, y: 640 },
+        { tip: 'ikon', k: 28, x: 430, y: 640, e: '🏛️', yazi: 'DEVLET' },
       ],
     },
     {
