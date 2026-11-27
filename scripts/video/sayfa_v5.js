@@ -27,7 +27,7 @@ function sayfa({ W, H, L, tl }) {
         ? `<div class="sc ok"><div class="ck">${CZ.svg('tik', 120)}</div><b>${esc(e.basarili)}</b><small>${esc(e.alt || '')}</small></div>`
         : `<div class="sc"><h4>${esc(e.baslik)}</h4>${e.arama ? `<div class="ara" data-ara="${esc(e.arama)}"><span class="az"></span><i class="cr"></i></div>` : ''}${e.satirlar.map((r, q) => `<div class="rw${q === e.hedef ? ' hd' : ''}${/iptal/i.test(r) ? ' kr' : ''}">${esc(r)}<i>›</i></div>`).join('')}</div>`).join('')}
       <div class="rp"></div><div class="im">${CZ.svg('el', 76)}</div></div>`;
-    if (b.tip === 'grafik' && b.rm) x += `<div class="rm" id="rm${i}" style="left:${W > H ? 590 - b.rm.w / 2 : (W - b.rm.w) / 2}px;width:${b.rm.w}px;height:${b.rm.h}px;top:${b.top ?? 140}px">${Array.from({ length: b.rm.n }, (_, q) => `<img src="file://${b.rm.dir}/element-${String(q).padStart(String(b.rm.n - 1).length, '0')}.png">`).join('')}</div>`;
+    if (b.tip === 'grafik' && b.rm) x += `<div class="rm" id="rm${i}" style="left:${W > H ? 590 - b.rm.w / 2 : (W - b.rm.w) / 2}px;width:${b.rm.w}px;height:${b.rm.h}px;top:${b.top ?? (W > H ? 190 : 140)}px">${Array.from({ length: b.rm.n }, (_, q) => `<img src="file://${b.rm.dir}/element-${String(q).padStart(String(b.rm.n - 1).length, '0')}.png">`).join('')}</div>`;
     if (b.tip === 'kontrol') x += `<div class="kl5" id="kl${i}"><h4>${esc(b.baslik || '')}</h4>${b.maddeler.map((m, j) => `<div class="km"><i>${CZ.svg('tik', 46)}</i><span>${esc(m)}</span></div>`).join('')}</div>`;
     if (b.tip === 'eposta') x += `<div class="ep5" id="ep${i}"><div class="eh"><b>Yeni ileti</b><small>TEMSİLİ</small></div><div class="ef"><span>Kime</span><b data-v="${esc(b.kime || '')}"></b></div><div class="ef"><span>Konu</span><b data-v="${esc(b.konu || '')}"></b></div><div class="eb">${b.satirlar.map(l => `<p data-v="${esc(l)}"></p>`).join('')}</div><div class="egn">Gönder</div></div>`;
     if (b.tip === 'yorum') x += `<div class="yr" id="yr${i}"><div class="av">S</div><div class="kt"><span class="yz"></span><i class="cr"></i></div><div class="gn">${CZ.svg('ucak', 40)}</div></div>`;
@@ -105,11 +105,11 @@ function sayfa({ W, H, L, tl }) {
 #adim i.on{background:#E8402F;border-color:#E8402F;color:#fff;transform:scale(1.15)}#adim i.ok{background:#151515;color:#fff}#adim span{margin-left:10px;font:800 24px GM;letter-spacing:.12em;color:#151515}
 body.yatay .dev{left:1110px;right:70px}body.yatay .vb.tam .dev{left:0;right:0}
 body.yatay .sat{margin:0}body.yatay .vb.tam .sat{margin:0 auto}
-body.yatay .ik{left:440px;top:300px;width:300px;height:300px}body.yatay .vb.tam .ik{left:810px;top:560px}
+body.yatay .ik{left:440px;top:330px;width:300px;height:300px}body.yatay .vb.tam .ik{left:810px;top:560px}
 body.yatay .not{left:1110px;right:60px;top:640px;text-align:left}body.yatay .vb.tam .not{left:0;right:0;text-align:center;top:300px}
 body.yatay .not.tn{top:690px}
-body.yatay .gz{left:130px;top:170px;zoom:1.3}body.yatay .ui{left:90px;top:230px;zoom:1.4}body.yatay .yr{left:90px;top:300px;zoom:1.35}
-body.yatay .tf:not(.pc){left:400px;top:70px}body.yatay .tf.pc{left:80px;top:140px}
+body.yatay .gz{left:70px;top:160px;zoom:1.45}body.yatay .ui{left:75px;top:250px;zoom:1.45}body.yatay .yr{left:80px;top:330px;zoom:1.4}body.yatay .kl5{left:90px;top:260px;zoom:1.08}body.yatay .ep5{left:80px;top:200px;zoom:1.05}
+body.yatay .tf:not(.pc){left:400px;top:140px}body.yatay .tf.pc{left:70px;top:175px}
 body.yatay .ks{top:360px}body.yatay #sub span{font-size:58px}.cz path{fill:none;stroke:#E8402F;stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
 .vb[data-koyu="1"] .cz path{stroke:#F6B92B}
 #sub{position:absolute;left:${L.sub[0]}px;top:${L.sub[1]}px;width:${L.sub[2]}px;text-align:center;white-space:normal;z-index:8}
@@ -239,7 +239,7 @@ function frame(t){
     if (ks) { const sd = window.H.tohum(i * 13 + 5), AB = 'ABCDEFGHIJKLMNOPRSTUVYZ#%&?'; const q = out >= 0 ? ei(out / .2) : 0; ks.style.opacity = cl(lt / .06, 0, 1) * (1 - q); ks.style.transform = 'scale(' + (1 + .25 * q) + ')';
       [...ks.querySelectorAll('.kx b')].forEach((c, j) => { const yer = .12 + j * .07; if (lt < yer) { const r = window.H.tohum(Math.floor(lt * 30) * 31 + j * 7)(); c.textContent = AB[Math.floor(r * AB.length)]; c.style.color = '#8B8E95'; c.style.transform = 'translateY(' + ((r - .5) * 20) + 'px)'; } else { c.textContent = c.dataset.c; c.style.color = c.dataset.c === '?' ? '#E8402F' : '#F2EEE6'; const kk = cl((lt - yer) / .2, 0, 1); c.style.transform = 'translateY(' + (-14 * Math.sin(kk * Math.PI)) + 'px) scale(' + (1 + .15 * Math.sin(kk * Math.PI)) + ')'; } }); }
     const tf = document.getElementById('tf' + i);
-    if (tf) { const k = backOut(lt / .36), q = out >= 0 ? ei(out / .22) : 0; tf.style.opacity = cl(lt / .08, 0, 1) * (1 - q); const tsc = tf.classList.contains('pc') ? 1 : W > H ? 1.18 : .86; tf.style.transform = 'translateY(' + ((1 - k) * 700 + 400 * q) + 'px) scale(' + tsc + ') rotate(' + ((1 - k) * 8) + 'deg)';
+    if (tf) { const k = backOut(lt / .36), q = out >= 0 ? ei(out / .22) : 0; tf.style.opacity = cl(lt / .08, 0, 1) * (1 - q); const tsc = tf.classList.contains('pc') ? 1 : W > H ? 1 : .86; tf.style.transform = 'translateY(' + ((1 - k) * 700 + 400 * q) + 'px) scale(' + tsc + ') rotate(' + ((1 - k) * 8) + 'deg)';
       const E = b.ekranlar, ET = b.ekranT; let cur = 0; ET.forEach((tt, j) => { if (t >= tt) cur = j; });
       const scs = [...tf.querySelectorAll('.sc')]; scs.forEach((sc, j) => { const st = ET[j], kk = j === 0 ? 1 : eo((t - st) / .28); const on = j === cur, prev = j === cur - 1 && t - ET[cur] < .28;
         sc.style.opacity = on || prev ? 1 : 0; sc.style.transform = on ? 'translateX(' + ((1 - kk) * tf.offsetWidth) + 'px)' : prev ? 'translateX(' + (-120 * eo((t - ET[cur]) / .28)) + 'px)' : 'none';
