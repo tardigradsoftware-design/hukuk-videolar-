@@ -10,12 +10,12 @@ const esc = x => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 const tem = x => esc(IK.degistir(String(x), 0)).replace(/&lt;svg[\s\S]*?&lt;\/svg>/g, '').trim();   // metinden emojiyi at
 // v4 öğeleri: kutu yok; düz illüstrasyon (Fluent Emoji Flat) + tipografi
 const V4T = {
-  liste: p => `<div class="v4ls">${p.ogeler.map((r, i) => `<div class="it" data-sub="${i}"><span class="blob b${i % 3}">${IK.svg(r.e, 78)}</span><b>${tem(r.t)}</b></div>`).join('')}</div>`,
-  ikon: p => `<div class="v4ik"><div class="ill">${IK.svg(p.e, 140)}</div><i class="gol"></i>${p.yazi ? `<b class="tag">${tem(p.yazi)}</b>` : ''}</div>`,
-  rozet: p => `<div class="v4pl r-${p.renk || 'k'}">${p.e ? IK.svg(p.e, 46) : ''}<span>${tem(p.yazi)}</span></div>`,
-  soru: p => `<div class="v4sr"><div class="ill">${IK.svg(p.e || '💬', 92)}</div><div class="tx"><small>${tem(p.ust || 'YORUMLARA YAZ')}</small>${tem(p.yazi)}</div></div>`,
+  liste: p => `<div class="v4ls">${p.ogeler.map((r, i) => `<div class="it" data-sub="${i}">${IK.karo(r.e, 96, i)}<b>${tem(r.t)}</b></div>`).join('')}</div>`,
+  ikon: p => `<div class="v4ik"><div class="ill">${IK.karo(p.e, 150, 0)}</div><i class="gol"></i>${p.yazi ? `<b class="tag">${tem(p.yazi)}</b>` : ''}</div>`,
+  rozet: p => `<div class="v4pl r-${p.renk || 'k'}">${p.e ? IK.svg(p.e, 40, (p.renk === 'y' || p.renk === 'b') ? '#151515' : '#fff') : ''}<span>${tem(p.yazi)}</span></div>`,
+  soru: p => `<div class="v4sr"><div class="ill">${IK.karo(p.e || '💬', 84, 0)}</div><div class="tx"><small>${tem(p.ust || 'YORUMLARA YAZ')}</small>${tem(p.yazi)}</div></div>`,
 };
-const oge = o => V4T[o.tip] ? V4T[o.tip](o) : IK.degistir(TIPLER[o.tip](o), 34);
+const oge = o => V4T[o.tip] ? V4T[o.tip](o) : IK.degistir(TIPLER[o.tip](o), 30, '#fff');
 
 const V4 = (W, H) => `
 html,body{background:#EFE9DD}
@@ -49,6 +49,8 @@ html,body{background:#EFE9DD}
 .v4sr::after{content:'';position:absolute;left:46px;bottom:-16px;width:34px;height:34px;background:#fff;transform:rotate(45deg);border-radius:6px}
 .v4sr .tx{font-weight:900;font-size:32px;line-height:1.12;color:#151515}.v4sr small{display:block;font-size:20px;color:#E8402F;letter-spacing:.06em;margin-bottom:4px}
 .il{display:block}
+.karo{flex:none;display:flex;align-items:center;justify-content:center;border-radius:28%;box-shadow:inset 0 -6px 0 rgba(0,0,0,.18),0 18px 26px -12px rgba(60,35,10,.5)}
+.v4ik .karo{border-radius:30%}
 .kart{position:relative;overflow:hidden}
 .gl{position:absolute;top:-20%;bottom:-20%;width:38%;left:0;pointer-events:none;
   background:linear-gradient(100deg,transparent,rgba(255,255,255,.75) 45%,rgba(255,255,255,.0) 70%);transform:translateX(-160%) skewX(-14deg)}
@@ -101,7 +103,7 @@ function frame(t){
     const el = document.getElementById('o'+i), w = +el.dataset.w, h = +el.dataset.h;
     const lt = t - o.t0, out = o.t1 != null ? t - o.t1 : -1;
     let s = 1, op = 0, rot = o.rot || 0, dx = 0, dy = 0, bl = 0, rx = 0;
-    if (lt >= 0) { const k = softLand(lt/.5); op = cl(lt/.14,0,1); dy = (1-k)*60; s = .94 + .06*k; bl = (1-k)*8; rx = (1-k)*22; }
+    if (lt >= 0) { const k = cl(lt/.26,0,1), kb = backOut(k); op = cl(lt/.08,0,1); dy = (1-kb)*110; s = .82 + .18*kb; bl = (1-k)*6; rx = (1-k)*26; rot += (1-kb)*-6; }
     if (o.tip === 'damga' && lt >= 0) { const k = cl(lt/.2,0,1); s = 2.3 - 1.3*k*k; op = cl(lt/.06,0,1); dy = 0; bl = (1-k)*4; rx = 0;
       if (lt > .2) s = 1 + .05*Math.exp(-(lt-.2)*14)*Math.cos((lt-.2)*40); }
     const rig2page = (x, y) => [MX + MS * x / 600, MY + MS * (y + 40 + (MST.bob || 0) - (MST.jump || 0)) / 600];
@@ -112,17 +114,17 @@ function frame(t){
       dx = px - o.x; dy = py - o.y; s = (o.firlat === 'el' ? .32 : .2) + (o.firlat === 'el' ? .68 : .8) * k; op = o.firlat === 'el' ? 1 : cl(lt / .06, 0, 1);
       rot = (o.rot || 0) + (1 - k) * (o.firlat === 'el' ? 200 : 340); bl = Math.sin(k * Math.PI) * 3; rx = 0;
     } else if (o.firlat && lt >= .6) { const k = cl((lt - .6) / .3, 0, 1); s = 1 + .07 * Math.sin(k * Math.PI); }
-    if (out >= 0) { const k = accelExit(out/.24); dy -= k*70; s *= 1 - .08*k; op *= 1-k; bl += k*10; }
+    if (out >= 0) { const k = accelExit(out/.16); dy -= k*90; s *= 1 - .08*k; op *= 1-k; bl += k*10; }
     el.style.opacity = op;
     el.style.transform = 'translate('+(dx - w/2)+'px,'+(dy - h/2)+'px) scale('+(s*OS)+') rotate('+rot+'deg) rotateX('+rx+'deg)';
     el.style.filter = bl > .3 ? 'blur('+bl.toFixed(1)+'px)' : 'none';
     if (op <= 0) return;
     const gl = el.querySelector('.gl'); if (gl) { const k = cl((lt - .35)/.7, 0, 1); gl.style.transform = 'translateX('+(-160 + 460*k)+'%) skewX(-14deg)'; }
-    el.querySelectorAll('[data-sub]').forEach(sub => { const st = (o.altT||[])[+sub.dataset.sub]; const k = st==null ? 1 : softLand((t-st)/.4); sub.style.opacity = cl(k*1.6,0,1); sub.style.transform = 'translateY('+((1-k)*26)+'px)'; sub.style.filter = k < .98 ? 'blur('+((1-k)*5).toFixed(1)+'px)' : 'none'; });
+    el.querySelectorAll('[data-sub]').forEach(sub => { const st = (o.altT||[])[+sub.dataset.sub]; const k = st==null ? 1 : cl((t-st)/.22,0,1), kb = backOut(k); sub.style.opacity = cl(k*2,0,1); sub.style.transform = 'translateX('+((1-kb)*-120)+'px) scale('+(.85+.15*kb)+')'; sub.style.filter = k < .98 ? 'blur('+((1-k)*5).toFixed(1)+'px)' : 'none'; });
     el.querySelectorAll('[data-rz]').forEach(rz => { const st = (o.rozetT||[])[+rz.dataset.rz]; if (st==null) return; const lk = t-st, k = cl(lk/.22,0,1); rz.style.opacity = k; rz.style.transform = 'scale('+(lk<.22 ? 1.6-.6*k*k : 1+.06*Math.exp(-(lk-.22)*12)*Math.cos((lk-.22)*36))+')'; });
     el.querySelectorAll('.il').forEach((il, j) => { const host = il.closest('[data-sub]'); const st = host ? (o.altT||[])[+host.dataset.sub] : o.t0; const lk = t - (st ?? o.t0);
-      const pk = lk < .45 ? (lk < 0 ? 0 : .35 + .65*backOut(cl(lk/.45,0,1))) : 1, fl = Math.sin(t*2.2 + i + j*1.3);
-      il.style.transform = 'translateY('+(fl*4)+'px) rotate('+(fl*3)+'deg) scale('+pk+')'; });
+      const pk = lk < .3 ? (lk < 0 ? 0 : .3 + .7*backOut(cl(lk/.3,0,1))) : 1, fl = Math.sin(t*3.4 + i + j*1.3);
+      il.style.transform = 'translateY('+(fl*6)+'px) rotate('+(fl*5)+'deg) scale('+pk+')'; });
     if (o.tip === 'portal') portal(o, i, el, t);
     el.querySelectorAll('[data-yaz]').forEach(y => { const txt = y.dataset.yaz, st = o.yazT ?? o.t0 + .3, hz = Math.max(o.hiz||9, txt.length/1.2), n = Math.floor(cl((t-st)*hz,0,txt.length)); y.textContent = txt.slice(0,n); });
     el.querySelectorAll('[data-kl]').forEach(m => { const st = (o.altT||[])[+m.dataset.kl]; const k = st==null ? 1 : cl((t-st)/.25,0,1); m.style.opacity = .35 + .65*k; m.classList.toggle('ok', st!=null && t >= st + .1); });
@@ -141,7 +143,8 @@ function frame(t){
   // --- kamera: sürekli nefes (itme + sürüklenme) + hız eşlemeli içe dalış geçişi
   const s0 = bi >= 0 ? SAH[bi] : 0, s1 = SAH[bi + 1] ?? TL.duration;
   const ks = cl((t - s0) / Math.max(1, s1 - s0), 0, 1);
-  let zs = 1 + .045 * ks, tx = nz(t * .6, 1) * 7, ty = nz(t * .5, 4) * 5, blur = 0;
+  let zs = 1 + .07 * ks, tx = nz(t * .9, 1) * 12, ty = nz(t * .8, 4) * 8, blur = 0;
+  const PP = TL.parcalar.reduce((a, p) => p.t0 <= t ? p : a, null); if (PP) { const d = t - PP.t0; if (d < .25) zs *= 1 + .014 * Math.pow(1 - d / .25, 2); }
   const dOut = s1 - t;                                   // çıkan sahne: büyür ve bulanır (accelExit)
   if (bi + 1 < SAH.length && dOut < .2) { const k = accelExit(1 - dOut / .2); zs *= 1 + .28 * k; blur = 12 * k; }
   const dIn = t - s0;                                    // gelen sahne: uzaktan yaklaşıp netleşir (softLand)

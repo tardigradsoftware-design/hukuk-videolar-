@@ -26,6 +26,9 @@
 - Uzun videolarda portal ekranları (imleç, daktilo, tıklama) temsilidir; resmi logo yok, "TEMSİLİ GÖRÜNTÜ" etiketi kalır, kişisel veri/tutar "•••".
 - Yorum çağrısı: anahtar kelime ("PARA yaz") + soru CTA'sı.
 
+- **Emoji yok** (Noto/Windows/Fluent çocuksu duruyor; domuz ikonu asla). İkonlar: Phosphor duotone (`scripts/video/ikonlar.js`, MIT), renkli karo içinde.
+- Kart girişleri yüksek tempolu (~0,25 sn, yaylı); video asla durgun olmamalı (kamera sürekli hareketli).
+
 ## Çıktı
 - Kısa: 720x1280; uzun: 1920x1080; 30 fps, x264 crf 24 animation.
 - `videolar/kisa|uzun/VID_XXX - <başlık>.mp4` → commit + push (branch `ccr-bb0f8884-p7q4dx`).

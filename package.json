@@ -18,7 +18,6 @@
   },
   "homepage": "https://github.com/tardigradsoftware-design/hukuk-videolar-#readme",
   "dependencies": {
-    "@iconify-json/fluent-emoji-flat": "^1.2.6",
-    "emojibase-data": "^18.0.0"
+    "@iconify-json/ph": "^1.2.2"
   }
 }
