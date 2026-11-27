@@ -165,7 +165,7 @@ const W = KISA ? 720 : 1920, H = KISA ? 1280 : 1080;
 const L = KISA
   ? { title: [52, 96, 616], titleSize: 62, sub: [0, 812, 720], subSize: 42, mascot: [170, 840, 400], ogeScale: 1.15 }
   : { title: [90, 70, 1100], titleSize: 76, sub: [0, 940, 1920], subSize: 50, mascot: [1190, 190, 700], ogeScale: 1.35 };
-if (tl.stil === 'v5') { L.sub = [0, 905, 720]; }
+if (tl.stil === 'v5') { L.sub = [0, 880, 720]; }
 if (tl.stil === 'yapaytu' || tl.stil === 'v3' || tl.stil === 'v4') L.mascot = KISA ? [370, 900, 330] : [1310, 440, 580];   // karakter sağ altta
 const html = sayfa({ W, H, L, tl });
 const META_TXT = (outDir, ad) => fs.writeFileSync(path.join(outDir, ad.replace(/\.mp4$/, '.txt')), require('./meta').yaz({ satir, kisa: KISA, basliklar: tl.basliklar, sure: tl.duration }));

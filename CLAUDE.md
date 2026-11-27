@@ -44,7 +44,7 @@ node scripts/video/uret.js VID_XXX kisa|uzun       # render (+ tema: ID'ye göre
 ```
 - Her render otomatik KONTROL raporu + `kontrol/<ID>.jpg` (2 fps) üretir; sorun varsa düzelt, yoksa geç.
 - **Varsayılan stil: v3 (`STIL.md`)**. Eski stiller: `--stil=klasik`, `--stil=yapaytu`.
-- Altyazı: anlamlı 2–3 kelimelik parçalar (≤18 karakter), titremesiz, konuşulan kelime siyah kutu; stil videodan videoya değişmez.
+- Altyazı: anlamlı 2–3 kelimelik parçalar (≤18 karakter), titremesiz; stil videodan videoya değişmez. **v5 (seri üretim): "dev kutu"** — Archivo sıkışık 900 büyük harf siyah, konuşulan kelime eğik (-2°) kırmızı kutu, y≈880. (v3: siyah kutu.)
 - Yayın temposu: YouTube günde 1 shorts + 1 uzun; diğer platformlar günde 1 shorts.
 - **`.txt` meta dosyası yazma** (kullanıcı istemiyor). Gerekirse yalnızca istenince: `--meta` / `--sadece-meta`.
 - Kapak (uzun): kod tabanlı, 3 varyant (A koyu, B sarı, C açık) → `videolar/uzun/kapak/`. Metin: `kapak_yaz.js VID_XXX 'YAZI|VURGU|NESNE' x3` (3–4 kelime, merak boşluğu, başlığı tekrar etme, abartılı vaat yok), sonra `kapak.js VID_XXX`. YouTube'da "Test et ve karşılaştır" ile 3'ü birden yüklenir.
@@ -57,6 +57,7 @@ node scripts/video/uret.js VID_XXX kisa|uzun       # render (+ tema: ID'ye göre
 ## Hareket kütüphanesi
 - Yeni stil/sahne tasarlarken önce `kutuphane/HAREKET.md` + `scripts/video/hareket.js` (skill: `hareket`). Kaynak: prompt-motion.com.
 - v5 "kâğıt kinetik" (maskotsuz): `uret.js VID_XXX kisa --stil=v5`, plan `planlar/VID_XXX_kisa_v5.js` (vuruşlar). `--blur` = gerçek hareket bulanıklığı (3 alt kare, render 3x uzun).
+- **Seri üretim görsel kimliği (v5):** beyaz zemin (#FFF); başlık/kinetik yazı **Archivo** sıkışık 900 (font-stretch 62%); arayüz/metin **Geist**; etiket/mono **Geist Mono**; not **Caveat** el yazısı; vurgu kırmızı #E8402F, ikincil sarı #F6B92B. Remotion grafikleri de aynı yazı tipleri.
 - **Her yeni videoda prompt-motion.com'dan destek al:** senaryoya uyan 1–2 girişi bul (`python3 scripts/video/pm_ara.py ara <anahtar>`), promptunu oku (`pm_ara.py oku <slug>`), tekniği senaryoya uyarla (kopyalama yok). Ara sıra `pm_ara.py yenile`.
 - **Sayı/grafik:** senaryoda gerçek rakam/süre/oran varsa mutlaka görselleştir (uydurma rakam yok). Önce **Remotion** (`remotion/index.jsx`: Sayac, Cubuk, Zaman → v5 vuruşu `tip:'grafik', comp, props`), zor kalırsa **HyperFrames**.
 
