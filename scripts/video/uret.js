@@ -24,7 +24,8 @@ function csv(text) {
 }
 const satir = csv(fs.readFileSync(path.join(KOK, 'veri', 'senaryolar.csv'), 'utf8')).find(r => r['video id'] === ID);
 if (!satir) throw new Error(ID + ' senaryoda yok');
-const metin = satir[KISA ? 'shorts video tts' : 'uzun video tts'];
+const _tv2 = path.join(KOK, 'veri', 'tts_v2', `${ID}_${KISA ? 'kisa' : 'uzun'}.txt`);   // yeni metin (v2) varsa onu kullan
+const metin = fs.existsSync(_tv2) ? fs.readFileSync(_tv2, 'utf8').trim() : satir[KISA ? 'shorts video tts' : 'uzun video tts'];
 const baslik = satir[KISA ? 'shorts video başlığı' : 'uzun video başlığı'];
 const AD = `${ID}_${KISA ? 'short' : 'uzun'}`;
 const ham = path.join(KOK, 'veri', 'ses_ham', `${AD}.mp3`);
@@ -131,7 +132,7 @@ tl.ogeler.forEach(o => {
 tl.zipla.forEach(t => ev(t + .1, 'boing'));
 // v5 vuruşları: her vuruşta bir ses
 if (plan.vuruslar) {
-  tl.vurus = plan.vuruslar.map(b => Object.assign({}, b, { t: Math.max(0, T(b.k)), altT: (b.alt || []).map(T), yazT: b.yazK != null ? T(b.yazK) : null, acT: b.acK != null ? T(b.acK) : null, carpiT: b.carpiK != null ? T(b.carpiK) : null, hlT: b.hlK != null ? T(b.hlK) : null, ekranT: (b.ekranlar || []).map(e => T(e.k)) }));
+  tl.vurus = plan.vuruslar.map(b => Object.assign({}, b, { t: Math.max(0, T(b.k)), altT: (b.alt || []).map(T), yazT: b.yazK != null ? T(b.yazK) : null, acT: b.acK != null ? T(b.acK) : null, carpiT: b.carpiK != null ? T(b.carpiK) : null, hlT: b.hlK != null ? T(b.hlK) : null, ekranT: (b.ekranlar || []).map(e => T(e.k)), aramaT: (b.ekranlar || []).map(e => e.aramaK != null ? T(e.aramaK) : null) }));
   // Remotion: sayı/grafik vuruşlarını şeffaf kare dizisine render et (v5'te <img> olarak oynar)
   tl.vurus.forEach((b, i) => { if (b.tip !== 'grafik') return;
     const son = i + 1 < tl.vurus.length ? tl.vurus[i + 1].t : d.duration, n = Math.max(30, Math.min(150, Math.ceil((son - b.t) * 30) + 6));
@@ -150,6 +151,9 @@ if (plan.vuruslar) {
     if (b.carpiT != null) ev(b.carpiT, 'kagit');
     if (b.tip === 'karisim') { for (let q = 0; q < 6; q++) ev(b.t + .05 + q * .07, 'tik', .5); ev(b.t + .5, 'pop'); }
     if (b.tip === 'telefon') { ev(b.t, 'swish'); b.ekranT.forEach((t, j) => { if (j) { ev(t - .22, 'click'); ev(t, 'swish', .6); } }); if (b.ekranlar.at(-1).basarili) ev(b.ekranT.at(-1) + .2, 'ding'); }
+    if (b.tip === 'kontrol') (b.altT || []).forEach(t => ev(t, 'ding', .5));
+    if (b.tip === 'eposta') (b.altT || []).forEach((t, j) => { const tx = j < 2 ? [b.kime, b.konu][j] || '' : b.satirlar[j - 2] || ''; const hz = Math.max(30, tx.length / 1.1); for (let c = 0; c < tx.length; c += 2) ev(t + c / hz, 'key', .6); });
+    if (b.tip === 'telefon') (b.aramaT || []).forEach((t, j) => { if (t == null) return; const tx = b.ekranlar[j].arama, hz = Math.max(14, tx.length / 1.2); for (let c = 0; c < tx.length; c += 2) ev(t + c / hz, 'key', .6); });
     if (b.yaz) { const st = b.yazT ?? b.t + .3, hz = Math.max(10, b.yaz.length / 1.0); for (let c = 0; c < b.yaz.length; c++) ev(st + c / hz, 'key'); }
   });
 }
@@ -166,7 +170,7 @@ const W = KISA ? 720 : 1920, H = KISA ? 1280 : 1080;
 const L = KISA
   ? { title: [52, 96, 616], titleSize: 62, sub: [0, 812, 720], subSize: 42, mascot: [170, 840, 400], ogeScale: 1.15 }
   : { title: [90, 70, 1100], titleSize: 76, sub: [0, 940, 1920], subSize: 50, mascot: [1190, 190, 700], ogeScale: 1.35 };
-if (tl.stil === 'v5' || tl.stil === 'v6') { L.sub = [0, 880, 720]; }
+if (tl.stil === 'v5' || tl.stil === 'v6') { L.sub = KISA ? [0, 880, 720] : [0, 950, 1920]; }
 tl.mod = tl.stil === 'v6' ? 'top' : null;
 if (tl.stil === 'yapaytu' || tl.stil === 'v3' || tl.stil === 'v4') L.mascot = KISA ? [370, 900, 330] : [1310, 440, 580];   // karakter sağ altta
 const html = sayfa({ W, H, L, tl });
