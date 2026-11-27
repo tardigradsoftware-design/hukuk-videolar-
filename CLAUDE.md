@@ -54,6 +54,10 @@ node scripts/video/uret.js VID_XXX kisa|uzun       # render (+ tema: ID'ye göre
 - Plan öğeleri: edevlet, liste, damga, ikon, nesne (tokmak/belge/kitap), rozet, ok, yorum, adim, arama, portal (cihaz:'telefon', uygulama, ekran türleri: giris/arama/tablo/form/menu), not, kontrol, karsilastir, eposta, soru.
 - Mimik: notr, mutlu, bitkin, saskin, kizgin, dusunceli, korkmus, emin, uzgun. Jest: bekle, selam, anlat, isaret, yukari, omuz, basparmak, belde, dusun, eller_yukari, dur.
 
+## Hareket kütüphanesi
+- Yeni stil/sahne tasarlarken önce `kutuphane/HAREKET.md` + `scripts/video/hareket.js` (skill: `hareket`). Kaynak: prompt-motion.com.
+- v5 "kâğıt kinetik" (maskotsuz): `uret.js VID_XXX kisa --stil=v5`, plan `planlar/VID_XXX_kisa_v5.js` (vuruşlar). `--blur` = gerçek hareket bulanıklığı (3 alt kare, render 3x uzun).
+
 ## Yaratıcı serbestlik (kullanıcı isteği)
 - Tek kalıp yok. Sabit olanlar: ses kuralları, fon müziği yok, kostümsüz maskot, çözünürlük, ilerleme çubuğu yok, altyazı stili, para kazanma uyumu.
 - Geri kalan her şey (sahne düzeni, telefon/masaüstü ekranı, bileşen seçimi, efekt, nesne, kapak kurgusu) senaryoya göre serbestçe seçilir; amaç o konuyu en iyi anlatan, akılda kalan video.

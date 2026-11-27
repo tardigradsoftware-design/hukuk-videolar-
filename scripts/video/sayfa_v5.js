@@ -32,7 +32,7 @@ function sayfa({ W, H, L, tl }) {
 #zemin{position:absolute;inset:0;background:#F2EEE6}
 #doku{position:absolute;inset:-4%;filter:url(#kg);opacity:.9}
 #vin{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 40%,transparent 55%,rgba(40,25,10,.16))}
-body.k #zemin{background:#1B1A19}body.k #doku{opacity:.25}body.k #vin{background:radial-gradient(ellipse at 50% 40%,transparent 45%,rgba(0,0,0,.55))}
+#koyu{position:absolute;inset:0;background:#1B1A19;display:none}body.k #doku{opacity:.25}body.k #vin{background:radial-gradient(ellipse at 50% 40%,transparent 45%,rgba(0,0,0,.55))}
 #gren{position:absolute;inset:0;width:${W}px;height:${H}px;mix-blend-mode:overlay;opacity:.45;pointer-events:none;z-index:9}
 #cam{position:absolute;inset:0;transform-origin:50% 45%}
 .vb{position:absolute;inset:0;pointer-events:none}
@@ -65,8 +65,9 @@ body.k #zemin{background:#1B1A19}body.k #doku{opacity:.25}body.k #vin{background
 body.k #sub span.on{background:#F2EEE6;color:#151515;box-shadow:5px 5px 0 #E8402F}
 </style></head><body>
 <svg width="0" height="0" style="position:absolute"><filter id="kg"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="11"/><feColorMatrix values="0 0 0 0 .55  0 0 0 0 .48  0 0 0 0 .38  0 0 0 .22 0"/></filter></svg>
-<div id="zemin"></div><div id="doku"></div><div id="vin"></div>
+<div id="zemin"></div><div id="doku"></div><div id="koyu"></div><div id="vin"></div>
 <div id="cam">${html}</div><div id="sub"></div><canvas id="gren" width="${W >> 1}" height="${H >> 1}"></canvas>
+<script>${fs.readFileSync(path.join(__dirname, 'hareket.js'), 'utf8')}</script>
 <script>
 const TL = ${JSON.stringify({ vurus: V, kelimeler: tl.kelimeler, parcalar: tl.parcalar, duration: tl.duration })};
 const W = ${W}, H = ${H};
@@ -160,7 +161,11 @@ function frame(t){
       const gn = yr.querySelector('.gn'), p = t - (st + b.yaz.length / hz + .25); gn.style.transform = p > 0 && p < .15 ? 'scale(.88)' : 'scale(1)'; }
     if (b.tip !== 'ui') cizgi(i, lt, b.tip === 'not' ? Math.min(.9, (b.yazi || '').length * .035) : .45);
   });
-  document.body.classList.toggle('k', koyu);
+  // açık↔koyu: renk taşması (prompt-motion: "a black shape floods the whole frame and contracts into the next scene")
+  const KY = document.getElementById('koyu'); let kd = null;
+  TL.vurus.forEach((b, i) => { const pv = TL.vurus[i - 1]; if (b.koyu && !(pv && pv.koyu)) { let j = i; while (j + 1 < N && TL.vurus[j + 1].koyu) j++; kd = kd && t < kd.t0 ? kd : { t0: b.t - .08, kapan: j + 1 < N ? TL.vurus[j + 1].t - .12 : null }; } });
+  if (kd) window.H.tasma(KY, t, { t0: kd.t0, kapan: kd.kapan, ac: .3, x: 360, y: 330, W, H: ${H}, x2: 360, y2: 600 }); else KY.style.display = 'none';
+  document.body.classList.toggle('k', !!(kd && t >= kd.t0 + .12 && (kd.kapan == null || t < kd.kapan + .15)));
   // altyazı: v3 ile aynı stil
   const Wd = TL.kelimeler, sub = document.getElementById('sub'), P = TL.parcalar.find(p => t >= p.t0 && t < p.t1);
   if (!P) { sub.innerHTML = ''; sub.dataset.p = ''; }

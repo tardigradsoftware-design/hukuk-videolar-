@@ -168,16 +168,18 @@ const META_TXT = (outDir, ad) => fs.writeFileSync(path.join(outDir, ad.replace(/
   const browser = await chromium.launch();
   const p = await browser.newPage({ viewport: { width: W, height: H } });
   await p.goto('file://' + tmp); await p.evaluate(() => document.fonts.ready);
-  const FPS = 30, n = Math.ceil(tl.duration * FPS);
-  const ff = spawn('ffmpeg', ['-y', '-v', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-', '-i', tl.audio,
+  const FPS = 30, n = Math.ceil(tl.duration * FPS), BLUR = process.argv.includes('--blur');   // --blur: 3 alt kare + tmix (gerçek hareket bulanıklığı)
+  const ff = spawn('ffmpeg', ['-y', '-v', 'error', '-f', 'image2pipe', '-framerate', String(BLUR ? FPS * 3 : FPS), '-i', '-', '-i', tl.audio,
+    ...(BLUR ? ['-vf', "tmix=frames=3,select='eq(mod(n\\,3)\\,2)',setpts=N/(30*TB)", '-r', '30'] : []),
     '-map', '0:v', '-map', '1:a',
     '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '24', '-preset', 'slow', '-tune', 'animation', '-c:a', 'aac', '-b:a', '192k', '-t', String(tl.duration), '-movflags', '+faststart', outPath], { stdio: ['pipe', 'inherit', 'inherit'] });
   const rapor = {}, kareler = [];
   for (let i = 0; i < n; i++) {
     await p.evaluate(t => frame(t), i / FPS);
     if (i % 15 === 0) { const r = await p.evaluate(t => kontrol(t), i / FPS); r.forEach(m => { (rapor[m] = rapor[m] || []).push((i / FPS).toFixed(1)); }); }
-    const buf = await p.screenshot({ type: 'jpeg', quality: 93 });
-    if (!ff.stdin.write(buf)) await new Promise(r => ff.stdin.once('drain', r));
+    if (BLUR) for (const dt of [-1 / 240, 1 / 240]) { await p.evaluate(t => frame(t), Math.max(0, i / FPS + dt)); const b2 = await p.screenshot({ type: 'jpeg', quality: 93 }); if (!ff.stdin.write(b2)) await new Promise(r => ff.stdin.once('drain', r)); if (dt < 0) { await p.evaluate(t => frame(t), i / FPS); const b1 = await p.screenshot({ type: 'jpeg', quality: 93 }); if (!ff.stdin.write(b1)) await new Promise(r => ff.stdin.once('drain', r)); } }
+    else { const buf = await p.screenshot({ type: 'jpeg', quality: 93 });
+    if (!ff.stdin.write(buf)) await new Promise(r => ff.stdin.once('drain', r)); }
     if (i % 90 === 0) process.stderr.write(`\r${ID} ${TUR}: ${i}/${n}`);
   }
   ff.stdin.end(); await new Promise(r => ff.on('close', r)); await browser.close(); fs.unlinkSync(tmp);
