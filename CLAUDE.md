@@ -36,6 +36,7 @@
 - `veri/`, `tts/` repoya girmez. Render bitmeden mp4 commit etme.
 
 ## Üretim (token tasarruflu)
+- **Render her zaman GitHub Actions'ta** (kullanıcı aksini söyleyene kadar; taslak dahil, yerelde render yok). `istek/<ad>.json` → `{ "id", "tur", "arg": ["--stil=…", "--tema=…", "--blur" | "--taslak"], "dilim": 16 }` ayrı commit + push; iş akışı `.github/workflows/render.yml` (16 paralel dilim → birleştir → mp4'ü dala commit). Girdiler `girdi` dalında (`veri/`); yeni ses/metin gelince oraya ekle. Bitince `git pull`, kontrol, SendUserFile. Saatleri Türkiye saatiyle yaz.
 ```
 node scripts/video/planla.js VID_XXX kisa|uzun     # otomatik plan → planlar/ (sahne, portal, ikon, damga, mimik, fırlatma)
 # kısa: yalnızca başlıkları (baslik.js) iyileştir
