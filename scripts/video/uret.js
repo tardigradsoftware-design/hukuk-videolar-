@@ -178,24 +178,25 @@ const META_TXT = (outDir, ad) => fs.writeFileSync(path.join(outDir, ad.replace(/
 
 (async () => {
   const outDir = path.join(KOK, 'videolar', TUR); fs.mkdirSync(outDir, { recursive: true });
-  const ad = `${ID} - ${baslik.replace(/[\/\\:*?"<>|]/g, '').trim()}${tl.stil === 'yapaytu' ? ' (v2)' : tl.stil === 'v4' ? ' (v4)' : tl.stil === 'v5' ? ' (v5)' : tl.stil === 'v6' ? ' (v6)' : ''}.mp4`;
+  const ad = `${ID} - ${baslik.replace(/[\/\\:*?"<>|]/g, '').trim()}${tl.stil === 'yapaytu' ? ' (v2)' : tl.stil === 'v4' ? ' (v4)' : tl.stil === 'v5' ? ' (v5)' : tl.stil === 'v6' ? ' (v6)' : ''}${process.argv.includes('--taslak') ? ' (taslak)' : ''}.mp4`;
   const outPath = path.join(outDir, ad);
   if (process.argv.includes('--sadece-meta')) { META_TXT(outDir, ad); console.error('✔ meta: ' + ad.replace(/\.mp4$/, '.txt')); return; }
   const tmp = path.join(outDir, `.${ID}.html`); fs.writeFileSync(tmp, html);
   const browser = await chromium.launch();
-  const p = await browser.newPage({ viewport: { width: W, height: H } });
+  const TASLAK = process.argv.includes('--taslak');   // test: yarım çözünürlük, 15 fps, hızlı kodlama (~5x hızlı)
+  const p = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: TASLAK ? .5 : 1 });
   await p.goto('file://' + tmp); await p.evaluate(() => document.fonts.ready);
-  const FPS = 30, n = Math.ceil(tl.duration * FPS), BLUR = process.argv.includes('--blur');   // --blur: 3 alt kare + tmix (gerçek hareket bulanıklığı)
+  const FPS = TASLAK ? 15 : 30, n = Math.ceil(tl.duration * FPS), BLUR = process.argv.includes('--blur') && !TASLAK;   // --blur: 3 alt kare + tmix (gerçek hareket bulanıklığı)
   const ff = spawn('ffmpeg', ['-y', '-v', 'error', '-f', 'image2pipe', '-framerate', String(BLUR ? FPS * 3 : FPS), '-i', '-', '-i', tl.audio,
     ...(BLUR ? ['-vf', "tmix=frames=3,select='eq(mod(n\\,3)\\,2)',setpts=N/(30*TB)", '-r', '30'] : []),
     '-map', '0:v', '-map', '1:a',
-    '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '24', '-preset', 'slow', '-tune', 'animation', '-c:a', 'aac', '-b:a', '192k', '-t', String(tl.duration), '-movflags', '+faststart', outPath], { stdio: ['pipe', 'inherit', 'inherit'] });
+    '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '24', '-preset', TASLAK ? 'veryfast' : 'slow', '-tune', 'animation', '-c:a', 'aac', '-b:a', '192k', '-t', String(tl.duration), '-movflags', '+faststart', outPath], { stdio: ['pipe', 'inherit', 'inherit'] });
   const rapor = {}, kareler = [];
   for (let i = 0; i < n; i++) {
     await p.evaluate(t => frame(t), i / FPS);
     if (i % 15 === 0) { const r = await p.evaluate(t => kontrol(t), i / FPS); r.forEach(m => { (rapor[m] = rapor[m] || []).push((i / FPS).toFixed(1)); }); }
-    if (BLUR) for (const dt of [-1 / 240, 1 / 240]) { await p.evaluate(t => frame(t), Math.max(0, i / FPS + dt)); const b2 = await p.screenshot({ type: 'jpeg', quality: 93 }); if (!ff.stdin.write(b2)) await new Promise(r => ff.stdin.once('drain', r)); if (dt < 0) { await p.evaluate(t => frame(t), i / FPS); const b1 = await p.screenshot({ type: 'jpeg', quality: 93 }); if (!ff.stdin.write(b1)) await new Promise(r => ff.stdin.once('drain', r)); } }
-    else { const buf = await p.screenshot({ type: 'jpeg', quality: 93 });
+    if (BLUR) for (const dt of [-1 / 240, 1 / 240]) { await p.evaluate(t => frame(t), Math.max(0, i / FPS + dt)); const b2 = await p.screenshot({ type: 'jpeg', quality: TASLAK ? 70 : 93 }); if (!ff.stdin.write(b2)) await new Promise(r => ff.stdin.once('drain', r)); if (dt < 0) { await p.evaluate(t => frame(t), i / FPS); const b1 = await p.screenshot({ type: 'jpeg', quality: TASLAK ? 70 : 93 }); if (!ff.stdin.write(b1)) await new Promise(r => ff.stdin.once('drain', r)); } }
+    else { const buf = await p.screenshot({ type: 'jpeg', quality: TASLAK ? 70 : 93 });
     if (!ff.stdin.write(buf)) await new Promise(r => ff.stdin.once('drain', r)); }
     if (i % 90 === 0) process.stderr.write(`\r${ID} ${TUR}: ${i}/${n}`);
   }

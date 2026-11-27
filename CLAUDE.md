@@ -42,6 +42,7 @@ node scripts/video/planla.js VID_XXX kisa|uzun     # otomatik plan → planlar/ 
 # UZUN: otomatik plan taslaktır; metindeki HER somut detay ekranda karşılık bulmalı (elle zenginleştir)
 node scripts/video/uret.js VID_XXX kisa|uzun       # render (+ tema: ID'ye göre bg/başlık/geçiş/altyazı)
 ```
+- **Test aşamasında `--taslak`**: yarım çözünürlük, 15 fps, hızlı kodlama (~4–5x hızlı), dosya adı "(taslak)". Onaydan sonra tam kalite (+`--blur`) render.
 - Her render otomatik KONTROL raporu + `kontrol/<ID>.jpg` (2 fps) üretir; sorun varsa düzelt, yoksa geç.
 - **Varsayılan stil: v3 (`STIL.md`)**. Eski stiller: `--stil=klasik`, `--stil=yapaytu`.
 - Altyazı: anlamlı 2–3 kelimelik parçalar (≤18 karakter), titremesiz; stil videodan videoya değişmez. **v5 (seri üretim): "dev kutu"** — Archivo sıkışık 900 büyük harf siyah, konuşulan kelime eğik (-2°) kırmızı kutu, y≈880. (v3: siyah kutu.)
