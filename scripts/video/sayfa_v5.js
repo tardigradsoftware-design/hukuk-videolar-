@@ -89,6 +89,7 @@ function sayfa({ W, H, L, tl }) {
 .im{position:absolute;left:0;top:0;width:76px;height:76px;filter:drop-shadow(0 10px 8px rgba(0,0,0,.3))}
 .not.tn{top:96px;font-size:70px}
 .rm{position:absolute;transform-origin:50% 50%}.rm img{position:absolute;inset:0;width:100%;height:100%;visibility:hidden}
+#top{position:absolute;left:0;top:0;width:52px;height:52px;margin:-26px 0 0 -26px;border-radius:50%;background:#E8402F;z-index:6;display:${tl.mod === 'top' ? 'block' : 'none'};box-shadow:0 14px 16px -10px rgba(0,0,0,.35)}
 .cz{position:absolute;left:0;top:0;overflow:visible}.cz path{fill:none;stroke:#E8402F;stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
 .vb[data-koyu="1"] .cz path{stroke:#F6B92B}
 #sub{position:absolute;left:${L.sub[0]}px;top:${L.sub[1]}px;width:${L.sub[2]}px;text-align:center;white-space:normal;z-index:8}
@@ -99,11 +100,11 @@ body.k #sub span{color:#F2EEE6;text-shadow:none}body.k #sub span.on{background:#
 </style></head><body>
 <svg width="0" height="0" style="position:absolute"><filter id="kg"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="11"/><feColorMatrix values="0 0 0 0 .55  0 0 0 0 .48  0 0 0 0 .38  0 0 0 .22 0"/></filter></svg>
 <div id="zemin"></div><div id="doku"></div><div id="koyu"></div><div id="vin"></div>
-<div id="cam">${html}</div><div id="sub"></div><canvas id="gren" width="${W >> 1}" height="${H >> 1}"></canvas>
+<div id="cam">${html}<div id="top"></div></div><div id="sub"></div><canvas id="gren" width="${W >> 1}" height="${H >> 1}"></canvas>
 <script>${fs.readFileSync(path.join(__dirname, 'hareket.js'), 'utf8')}</script>
 <script>${fs.readFileSync(path.join(__dirname, 'cizimler.js'), 'utf8')}</script>
 <script>
-const TL = ${JSON.stringify({ vurus: V, kelimeler: tl.kelimeler, parcalar: tl.parcalar, duration: tl.duration })};
+const TL = ${JSON.stringify({ mod: tl.mod || null, vurus: V, kelimeler: tl.kelimeler, parcalar: tl.parcalar, duration: tl.duration })};
 const W = ${W}, H = ${H};
 const cl = (v,a,b) => Math.max(a, Math.min(b, v));
 const eo = k => 1 - Math.pow(1 - cl(k,0,1), 3), ei = k => Math.pow(cl(k,0,1), 3);
@@ -134,6 +135,14 @@ TL.vurus.forEach((b, i) => {
 if (TL.vurus.some(b => b.ikon && b.tip === 'not')) TL.vurus.forEach((b, i) => { if (b.tip === 'not' && b.ikon) { const ik = document.getElementById('ik' + i); ik.style.top = '200px'; } });
 // yorum kutusu sonraki nota yer açsın: not üstte, ok kutuya iner
 TL.vurus.forEach((b, i) => { const pv = TL.vurus[i-1]; if (b.tip === 'not' && pv && pv.tip === 'yorum') { const nt = document.getElementById('nt' + i); nt.style.top = '250px'; const ik = document.getElementById('ik'+i); if (ik) { ik.style.top = '60px'; ik.style.transform = 'scale(.7)'; } } });
+  // v6 "tek top": her vuruşun çapası (top buraya iner, öğeyi o başlatır)
+  window.CAPA = TL.vurus.map((b, i) => { const vb = document.getElementById('vb' + i); vb.style.display = 'block'; const R = e => e.getBoundingClientRect(); let p = { x: W / 2, y: 600 };
+    const tg = vb.querySelector('.tg'), gn = vb.querySelector('.gn'), ik = vb.querySelector('.ik'), v = vb.querySelectorAll('.h.v'), nt = vb.querySelector('.not span'), rm = vb.querySelector('.rm'), tf = vb.querySelector('.tf'), gz = vb.querySelector('.gz'), kx = vb.querySelector('.kx');
+    if (tg) { const r = R(tg); p = { x: r.left + 27, y: r.top + 27, tg: true }; } else if (gn) { const r = R(gn); p = { x: r.left + r.width / 2, y: r.top + r.height / 2 }; }
+    else if (ik) { const r = R(ik); p = { x: r.left + r.width / 2, y: r.top - 20 }; } else if (v.length) { const a = R(v[0]), z = R(v[Math.max(0, v.length - 2)]); p = { x: (a.left + z.right) / 2, y: a.top - 30 }; }
+    else if (kx) { const r = R(kx); p = { x: r.right + 10, y: r.top + 10 }; } else if (nt) { const r = R(nt); p = { x: r.left - 30, y: r.top + r.height / 2 }; }
+    else if (rm || tf || gz) { const r = R(rm || tf || gz); p = { x: r.left + r.width / 2, y: r.top - 10 }; }
+    vb.style.display = ''; return p; });
 }
 let _hz = false;
 const G = document.getElementById('gren'), gx = G.getContext('2d'), GI = gx.createImageData(G.width, G.height);
@@ -141,6 +150,9 @@ function gren(f){ let s = (f * 2654435761) >>> 0; const d = GI.data; for (let i 
 const N = TL.vurus.length;
 const bitis = i => { const b = TL.vurus[i]; if (b.tip === 'yorum') return TL.duration + 9; return i + 1 < N ? TL.vurus[i+1].t : TL.duration + 9; };
 function harfler(el, lt, out){
+  if (TL.mod === 'top') { [...el.querySelectorAll('.sat')].forEach(sa => sa.style.overflow = 'hidden'); [...el.querySelectorAll('.h')].forEach((h, j) => { const k = (lt - j * .014) / .3;
+    let y = k < 0 ? 105 : 105 * (1 - window.H.backOut(Math.min(1, k), .9)); let op = k < 0 ? 0 : 1; if (out >= 0) { const q = ei(out / .16); y = -105 * q; }
+    h.style.opacity = op; h.style.transform = 'translateY(' + y + '%)'; h.style.filter = 'none'; }); return; }
   [...el.querySelectorAll('.h')].forEach((h, j) => {
     const k = (lt - j * .022) / .34;
     let y = 160, sx = .8, sy = 1.3, op = 0;
@@ -227,7 +239,13 @@ function frame(t){
   // açık↔koyu: renk taşması (prompt-motion: "a black shape floods the whole frame and contracts into the next scene")
   const KY = document.getElementById('koyu'); let kd = null;
   TL.vurus.forEach((b, i) => { const pv = TL.vurus[i - 1]; if (b.koyu && !(pv && pv.koyu)) { let j = i; while (j + 1 < N && TL.vurus[j + 1].koyu) j++; kd = kd && t < kd.t0 ? kd : { t0: b.t - .08, kapan: j + 1 < N ? TL.vurus[j + 1].t - .12 : null }; } });
-  if (kd) window.H.tasma(KY, t, { t0: kd.t0, kapan: kd.kapan, ac: .3, x: 360, y: 330, W, H: ${H}, x2: 360, y2: 600 }); else KY.style.display = 'none';
+  if (kd) window.H.tasma(KY, t, { t0: kd.t0, kapan: kd.kapan, ac: .3, x: TL.mod === 'top' && window._top ? window._top.x : 360, y: TL.mod === 'top' && window._top ? window._top.y : 330, W, H: ${H}, x2: 360, y2: 600 }); else KY.style.display = 'none';
+  if (TL.mod === 'top' && window.CAPA) { const C = window.CAPA, T0 = TL.vurus.map(b => b.t); let i = 0; for (let j = 0; j < N; j++) if (t >= T0[j] - .32) i = j;
+    const A = C[i], P = i > 0 ? C[i - 1] : { x: A.x, y: -80 }, d = t - (T0[i] - .32); let x, y, sx = 1, sy = 1;
+    if (d < .32) { const k = d / .32, e = window.H.eo(k); x = P.x + (A.x - P.x) * e; y = P.y + (A.y - P.y) * e - Math.sin(k * Math.PI) * 170; sy = 1 + .25 * Math.sin(k * Math.PI); sx = 1 - .15 * Math.sin(k * Math.PI); }
+    else { x = A.x; y = A.y; const l = d - .32; if (l < .2) { const s2 = Math.sin(l / .2 * Math.PI); sy = 1 - .35 * s2; sx = 1 + .3 * s2; y += 8 * s2; } else { sy = sx = 1 + .04 * Math.sin(t * 6); }
+      const b = TL.vurus[i]; if (A.tg && b.acT != null) x += 42 * window.H.eo((t - b.acT) / .22); }
+    const tp = document.getElementById('top'); tp.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + sx + ',' + sy + ')'; tp.style.background = document.body.classList.contains('k') ? '#F2EEE6' : '#E8402F'; window._top = { x, y }; }
   document.body.classList.toggle('k', !!(kd && t >= kd.t0 + .12 && (kd.kapan == null || t < kd.kapan + .15)));
   // altyazı: v3 ile aynı stil
   const Wd = TL.kelimeler, sub = document.getElementById('sub'), P = TL.parcalar.find(p => t >= p.t0 && t < p.t1);
