@@ -21,11 +21,11 @@ jobs:
       dilimler: ${{ steps.p.outputs.dilimler }}
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 2 }
+        with: { fetch-depth: 20 }
       - id: p
         run: |
           F="${{ github.event.inputs.istek }}"
-          if [ -z "$F" ]; then F=$(git diff --name-only HEAD~1 HEAD -- 'istek/*.json' | tail -1); fi
+          if [ -z "$F" ]; then F=$(git log -1 --format= --name-only --first-parent HEAD -- 'istek/*.json' | tail -1); fi
           echo "dosya=$F" >> $GITHUB_OUTPUT
           N=$(python3 -c "import json;print(json.load(open('$F')).get('dilim',12))")
           echo "dilimler=$(python3 -c "print(list(range($N)))")" >> $GITHUB_OUTPUT
